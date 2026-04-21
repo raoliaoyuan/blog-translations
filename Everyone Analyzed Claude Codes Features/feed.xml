@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:cc="http://cyber.law.harvard.edu/rss/creativeCommonsRssModule.html">
+    <channel>
+        <title><![CDATA[Stories by Han HELOIR YAN, Ph.D. ☕️ on Medium]]></title>
+        <description><![CDATA[Stories by Han HELOIR YAN, Ph.D. ☕️ on Medium]]></description>
+        <link>https://medium.com/@han.heloir?source=rss-4656cac95152------2</link>
+        <image>
+            <url>https://cdn-images-1.medium.com/fit/c/150/150/1*QKpZJpnggjxenDvymZOQ_g@2x.jpeg</url>
+            <title>Stories by Han HELOIR YAN, Ph.D. ☕️ on Medium</title>
+            <link>https://medium.com/@han.heloir?source=rss-4656cac95152------2</link>
+        </image>
+        <generator>Medium</generator>
+        <lastBuildDate>Fri, 10 Apr 2026 01:35:02 GMT</lastBuildDate>
+        <atom:link href="https://medium.com/@han.heloir/feed" rel="self" type="application/rss+xml"/>
+        <webMaster><![CDATA[yourfriends@medium.com]]></webMaster>
+        <atom:link href="http://medium.superfeedr.com" rel="hub"/>
+        <item>
+            <title><![CDATA[Build, Stream, Test: Your First Claude Managed Agent in 30 Minutes]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/data-science-collective/build-stream-test-your-first-claude-managed-agent-in-30-minutes-d83fe01b7b45?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*fYyfW2w-GznKN57a" width="5515"></a></p><p class="medium-feed-snippet">A hands-on Python tutorial for building a retail competitive price monitor, from first API call to automated quality grading</p><p class="medium-feed-link"><a href="https://medium.com/data-science-collective/build-stream-test-your-first-claude-managed-agent-in-30-minutes-d83fe01b7b45?source=rss-4656cac95152------2">Continue reading on Data Science Collective »</a></p></div>]]></description>
+            <link>https://medium.com/data-science-collective/build-stream-test-your-first-claude-managed-agent-in-30-minutes-d83fe01b7b45?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/d83fe01b7b45</guid>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <category><![CDATA[money]]></category>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[software-development]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Thu, 09 Apr 2026 07:57:59 GMT</pubDate>
+            <atom:updated>2026-04-09T07:58:33.845Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Anthropic Just Shipped Three of the Five Harness Layers for Managed Agent, and The Other Two Are on…]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/data-science-collective/anthropic-just-shipped-three-of-the-five-harness-layers-for-managed-agent-and-the-other-two-are-on-14979cb4cf00?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*HXtMxZhd4VAfMtJG" width="5112"></a></p><p class="medium-feed-snippet">The harness stack model that tells you exactly which layers to build, which to buy, and which you&#x2019;re probably missing</p><p class="medium-feed-link"><a href="https://medium.com/data-science-collective/anthropic-just-shipped-three-of-the-five-harness-layers-for-managed-agent-and-the-other-two-are-on-14979cb4cf00?source=rss-4656cac95152------2">Continue reading on Data Science Collective »</a></p></div>]]></description>
+            <link>https://medium.com/data-science-collective/anthropic-just-shipped-three-of-the-five-harness-layers-for-managed-agent-and-the-other-two-are-on-14979cb4cf00?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/14979cb4cf00</guid>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <category><![CDATA[money]]></category>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[life]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Thu, 09 Apr 2026 04:42:44 GMT</pubDate>
+            <atom:updated>2026-04-09T04:43:22.268Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Cursor, Claude Code, and Codex All Run Frontier Models but Their Results Are Completely Different]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/data-science-collective/cursor-claude-code-and-codex-all-run-frontier-models-00427cdb6705?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*ehKKDqZW-hzDeQXZ" width="5376"></a></p><p class="medium-feed-snippet">The Model Is Commodity; The Harness Is the Product: Inside Cursor Cloud Agents&#x2019; Real Architecture</p><p class="medium-feed-link"><a href="https://medium.com/data-science-collective/cursor-claude-code-and-codex-all-run-frontier-models-00427cdb6705?source=rss-4656cac95152------2">Continue reading on Data Science Collective »</a></p></div>]]></description>
+            <link>https://medium.com/data-science-collective/cursor-claude-code-and-codex-all-run-frontier-models-00427cdb6705?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/00427cdb6705</guid>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[life]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Mon, 06 Apr 2026 12:39:53 GMT</pubDate>
+            <atom:updated>2026-04-07T12:11:34.523Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Cursor 3 Is Not an IDE Update. It’s a Bet That You’ll Manage Agents, Not Write Code.]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/@han.heloir/cursor-3-is-not-an-ide-update-its-a-bet-that-you-ll-manage-agents-not-write-code-0d2bc51f0dcb?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*5hD4gUOLci4Ue7KW" width="5760"></a></p><p class="medium-feed-snippet">Why Cursor built a new interface from scratch, what the March 2026 release sequence reveals, and what the developer backlash gets right&#x2026;</p><p class="medium-feed-link"><a href="https://medium.com/@han.heloir/cursor-3-is-not-an-ide-update-its-a-bet-that-you-ll-manage-agents-not-write-code-0d2bc51f0dcb?source=rss-4656cac95152------2">Continue reading on Medium »</a></p></div>]]></description>
+            <link>https://medium.com/@han.heloir/cursor-3-is-not-an-ide-update-its-a-bet-that-you-ll-manage-agents-not-write-code-0d2bc51f0dcb?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/0d2bc51f0dcb</guid>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[money]]></category>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <category><![CDATA[software-development]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Fri, 03 Apr 2026 15:17:56 GMT</pubDate>
+            <atom:updated>2026-04-03T15:19:59.725Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Three “Accidents” in Seven Days: Is Anthropic’s Pre-IPO Transparency Theater or Just Bad Luck?]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/data-science-collective/three-accidents-in-seven-days-is-anthropics-pre-ipo-transparency-theater-or-just-bad-luck-cc56ea3d1e11?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*Em-TaZ8RGXcsMjfc" width="5434"></a></p><p class="medium-feed-snippet">A timeline of Mythos, Harness, and Claude Code&#x2019;s source leak, the $380B valuation behind them, and the question no one in tech media is&#x2026;</p><p class="medium-feed-link"><a href="https://medium.com/data-science-collective/three-accidents-in-seven-days-is-anthropics-pre-ipo-transparency-theater-or-just-bad-luck-cc56ea3d1e11?source=rss-4656cac95152------2">Continue reading on Data Science Collective »</a></p></div>]]></description>
+            <link>https://medium.com/data-science-collective/three-accidents-in-seven-days-is-anthropics-pre-ipo-transparency-theater-or-just-bad-luck-cc56ea3d1e11?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/cc56ea3d1e11</guid>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[money]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Wed, 01 Apr 2026 07:35:11 GMT</pubDate>
+            <atom:updated>2026-04-05T11:09:02.770Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Everyone Analyzed Claude Code’s Features. Nobody Analyzed Its Architecture.]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/data-science-collective/everyone-analyzed-claude-codes-features-nobody-analyzed-its-architecture-1173470ab622?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*fJwyKc8hc5l9vm0D" width="4003"></a></p><p class="medium-feed-snippet">Five hundred thousand lines of leaked source code reveal that the moat in AI coding tools is not the model. It is the harness.</p><p class="medium-feed-link"><a href="https://medium.com/data-science-collective/everyone-analyzed-claude-codes-features-nobody-analyzed-its-architecture-1173470ab622?source=rss-4656cac95152------2">Continue reading on Data Science Collective »</a></p></div>]]></description>
+            <link>https://medium.com/data-science-collective/everyone-analyzed-claude-codes-features-nobody-analyzed-its-architecture-1173470ab622?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/1173470ab622</guid>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Tue, 31 Mar 2026 16:22:45 GMT</pubDate>
+            <atom:updated>2026-03-31T16:24:18.488Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[What Is the Secret Sauce of Cursor’s Composer 2?]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/data-science-collective/what-is-the-secret-sauce-of-cursors-composer-2-48dc8b04c8b2?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*2fWqEwUzMuu2tuqM" width="3000"></a></p><p class="medium-feed-snippet">Cursor&#x2019;s answer to Claude Code and Codex isn&#x2019;t a better model. It&#x2019;s a system where a million users make the model better every five hours.</p><p class="medium-feed-link"><a href="https://medium.com/data-science-collective/what-is-the-secret-sauce-of-cursors-composer-2-48dc8b04c8b2?source=rss-4656cac95152------2">Continue reading on Data Science Collective »</a></p></div>]]></description>
+            <link>https://medium.com/data-science-collective/what-is-the-secret-sauce-of-cursors-composer-2-48dc8b04c8b2?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/48dc8b04c8b2</guid>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[coding]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Mon, 30 Mar 2026 17:51:22 GMT</pubDate>
+            <atom:updated>2026-03-30T17:53:56.577Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Post-Training Matters More Than Pretraining Now: SFT, RLHF, DPO, and GRPO.]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://ai.gopubby.com/post-training-matters-more-than-pretraining-now-sft-rlhf-dpo-and-grpo-1f9beffd391a?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*DwUvfluwdvq5a-cI" width="4480"></a></p><p class="medium-feed-snippet">From imitating to reasoning</p><p class="medium-feed-link"><a href="https://ai.gopubby.com/post-training-matters-more-than-pretraining-now-sft-rlhf-dpo-and-grpo-1f9beffd391a?source=rss-4656cac95152------2">Continue reading on AI Advances »</a></p></div>]]></description>
+            <link>https://ai.gopubby.com/post-training-matters-more-than-pretraining-now-sft-rlhf-dpo-and-grpo-1f9beffd391a?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/1f9beffd391a</guid>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[life]]></category>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <category><![CDATA[deep-learning]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Wed, 25 Mar 2026 16:52:14 GMT</pubDate>
+            <atom:updated>2026-03-25T18:48:15.242Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[What Cursor Didn’t Say About Composer 2 (And What a Developer Found in the API)]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/data-science-collective/what-cursor-didnt-say-about-composer-2-and-what-a-developer-found-in-the-api-c67c31629c46?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*4etx8S8oq6mbltWe" width="3840"></a></p><p class="medium-feed-snippet">The benchmark was innovative. The engineering was real. The model ID told a different story.</p><p class="medium-feed-link"><a href="https://medium.com/data-science-collective/what-cursor-didnt-say-about-composer-2-and-what-a-developer-found-in-the-api-c67c31629c46?source=rss-4656cac95152------2">Continue reading on Data Science Collective »</a></p></div>]]></description>
+            <link>https://medium.com/data-science-collective/what-cursor-didnt-say-about-composer-2-and-what-a-developer-found-in-the-api-c67c31629c46?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/c67c31629c46</guid>
+            <category><![CDATA[life]]></category>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <category><![CDATA[software-development]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Sat, 21 Mar 2026 07:48:45 GMT</pubDate>
+            <atom:updated>2026-03-26T17:33:06.457Z</atom:updated>
+        </item>
+        <item>
+            <title><![CDATA[Five Charts Cursor Didn’t Explain]]></title>
+            <description><![CDATA[<div class="medium-feed-item"><p class="medium-feed-image"><a href="https://medium.com/data-science-collective/five-charts-cursor-didnt-explain-7d99095d9494?source=rss-4656cac95152------2"><img src="https://cdn-images-1.medium.com/max/2600/0*F8DDGcjYEsaOqRBB" width="3024"></a></p><p class="medium-feed-snippet">What CursorBench Quietly Reveals About the Future of Coding Agent Evaluation</p><p class="medium-feed-link"><a href="https://medium.com/data-science-collective/five-charts-cursor-didnt-explain-7d99095d9494?source=rss-4656cac95152------2">Continue reading on Data Science Collective »</a></p></div>]]></description>
+            <link>https://medium.com/data-science-collective/five-charts-cursor-didnt-explain-7d99095d9494?source=rss-4656cac95152------2</link>
+            <guid isPermaLink="false">https://medium.com/p/7d99095d9494</guid>
+            <category><![CDATA[software-development]]></category>
+            <category><![CDATA[artificial-intelligence]]></category>
+            <category><![CDATA[machine-learning]]></category>
+            <category><![CDATA[software-engineering]]></category>
+            <category><![CDATA[life]]></category>
+            <dc:creator><![CDATA[Han HELOIR YAN, Ph.D. ☕️]]></dc:creator>
+            <pubDate>Fri, 20 Mar 2026 07:19:40 GMT</pubDate>
+            <atom:updated>2026-03-26T17:33:09.556Z</atom:updated>
+        </item>
+    </channel>
+</rss>
