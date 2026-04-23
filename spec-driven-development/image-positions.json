@@ -1,0 +1,54 @@
+[
+  {
+    "index": 0,
+    "type": "h1",
+    "text": "Spec-driven development"
+  },
+  {
+    "index": 1,
+    "type": "h2",
+    "text": "Defining spec-driven development and competing interpretations of it"
+  },
+  {
+    "index": 2,
+    "type": "h2",
+    "text": "The context of spec-driven development’s emergence"
+  },
+  {
+    "index": 3,
+    "type": "h2",
+    "text": "What is a spec?"
+  },
+  {
+    "index": 4,
+    "type": "h2",
+    "text": "What makes a good spec?"
+  },
+  {
+    "index": 5,
+    "type": "h2",
+    "text": "Spec-driven development in practice"
+  },
+  {
+    "index": 6,
+    "type": "h2",
+    "text": "Spec-driven development and context engineering"
+  },
+  {
+    "index": 7,
+    "type": "h2",
+    "text": "Is spec-driven development just a return to waterfall?"
+  },
+  {
+    "index": 8,
+    "type": "img",
+    "src": "https://miro.medium.com/v2/resize:fit:996/0*B8c5JubjFf7k-tcU.jpeg",
+    "alt": "",
+    "caption": ""
+  },
+  {
+    "index": 9,
+    "type": "h2",
+    "text": "The challenges and risks of spec-driven development"
+  }
+]
