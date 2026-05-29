@@ -1,0 +1,462 @@
+OpenAI Codex v0.130.0
+--------
+workdir: /Users/roger/Work/Blog/深度拆解AWS架构和内部计费机制
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 019e6c9a-e332-7442-9d18-10ddcd5c56aa
+--------
+user
+# 共享指令：技术博客深度研究任务
+
+你是一位为内部技术博客撰文的资深研究者，目标读者是工程师 + 工程经理。本任务是一个三篇连载系列的一部分，整体回答的本质问题是：
+
+> 在一个内部强独立核算、强 P&L 文化的组织里，如何让 PaaS 层的团队有动力做出真正好用的产品，而不是为了自己的账面收入去和 IaaS 团队博弈？
+
+AWS 用 **Attributed Revenue + Transfer Pricing** 把"客户价值链上的协同"翻译成了"内部团队的利益对齐"。本系列要把这套机制拆开。
+
+---
+
+## 你必须遵守的硬约束
+
+### 1. 信源分级
+
+每一条事实、数字、政策变更、人物发言都必须附 URL 来源，按以下分级：
+
+- **Tier 1 一手**：`aws.amazon.com/blogs`, `aws.amazon.com/architecture`, AWS 官方 docs, re:Invent 官方 YouTube 频道, Amazon SEC 10-K/10-Q, Amazon 高管在 Amazon 官方渠道的发言（*Day 1* 股东信、aboutamazon.com）
+- **Tier 2 可信二手**：前/现 AWS 员工实名个人博客（Werner Vogels、James Hamilton、Marc Brooker、Brendan Gregg、Brad Porter）、Colin Bryar & Bill Carr《Working Backwards》一书、Steve Yegge 2011 年实名 Google+ rant、Acquired podcast 对 Jassy/Vogels 的访谈、The Information / Bloomberg 具名记者深度报道
+- **Tier 3 仅作旁证**：Hacker News / Reddit r/aws 中可识别身份的 AWS 员工发言、Stack Overflow 上 AWS 工程师署名回答 — **必须在文中标注"未经 AWS 官方确认"**
+
+**禁止引用**：Wikipedia、Medium 上无机构背书的匿名文章、AI 生成的"分析报告"、来源不明的中文搬运稿、任何无作者署名的博客。
+
+### 2. 引用格式
+
+正文中用脚注（Markdown `[^n]` 语法）标注引用；文末「参考资料」表用统一格式：
+
+```
+[^1]: [Tier 1] 标题 — 作者/机构 — YYYY-MM-DD — URL
+[^2]: [Tier 2] 标题 — 作者 — YYYY-MM-DD — URL
+```
+
+### 3. 真实性自检（每条引用提交前自问）
+
+- 这个 URL 我是否真的能访问？
+- 原文是否真的支持我引用它的论点（非断章取义）？
+- 作者身份是否在引用语境下成立（如某人 2015 年的发言不能归为他 2023 年的职位）？
+- 数字 / 日期是否对应历史状态（如 EKS 集群费 $0.10/h 是 2020 年起的价，更早是 $0.20/h）？
+
+**如果某个论点找不到合规来源，直接在文中标注"未找到公开来源支持"，宁可留白也不要编造**。
+
+### 4. 写作风格
+
+- 中文，技术博客调性，克制、无感叹号、无网络流行语
+- 专业术语首次出现写「中文翻译（English Original）」，其后两者皆可
+- 不翻译：API、CLI、token、schema 等标识符与行业固化英文
+- 长英文句拆成自然中文句，不要翻译腔
+- 每节结尾用一两句话点出"这件事为什么对回答本质问题有意义"
+- 必须包含"机制失效 / 公开质疑 / 反例"段落，避免变成公关稿
+
+### 5. 输出格式
+
+完整 Markdown 文档，开头加 YAML front matter：
+
+```yaml
+---
+title: <文章标题>
+series: 深度拆解 AWS 架构和内部计费机制
+part: <1|2|3a|3b>
+author: <Codex|Gemini> 初稿
+date: 2026-05-26
+---
+```
+
+正文之后是「## 参考资料」section，列出所有 `[^n]` 脚注。
+
+### 6. 任务边界
+
+- **本次只产出你被分配的那一篇 / 那一部分**，不要写整个系列
+- 字数控制：第 1 篇 ~5000 字、第 2 篇 ~5000 字、第 3 篇前半 ~2000 字、第 3 篇后半 ~2000 字
+- 每篇至少 8 个独立源，Tier 1 占比 ≥ 50%
+- 每个数字 / 事件 / 政策变更都必须有 URL
+
+### 7. 工具使用
+
+你被允许（也被鼓励）使用网络搜索去查证每一条引用。优先搜索 `site:aws.amazon.com`、`site:allthingsdistributed.com`、`site:perspectives.mvdirona.com`（James Hamilton）、`site:brooker.co.za`（Marc Brooker）、`site:aboutamazon.com`、`site:sec.gov AMZN` 等高可信域。
+
+---
+
+下面是你本次的具体任务。
+
+# 任务：重写第 3 篇《边界与反思》后半部分（GCP / Azure 为什么学不来）
+
+这是一次**重写任务**。之前由 Gemini 生成的初稿被另一个模型（Codex）核对后发现严重问题：多处编造源、把 Azure Container Registry 和 Azure Consumed Revenue 混淆、把外部公开机制外推为内部财务机制。你的任务是从零重写。
+
+## 重写硬约束
+
+1. **绝不引用未亲自核实存在的 URL**。
+2. **Azure ACR 这个缩写有两个意思**：Azure Container Registry（容器镜像服务）和 Azure Consumed Revenue（微软内部财务指标）。引用时必须明确区分，不要混用。
+3. **微软内部 Sales 与 Engineering 之间的 ACR 分配机制**没有可靠公开来源。你的写法必须：
+   - 引用 Microsoft 官方对 Azure Consumed Revenue 的定义（财报 / Microsoft Learn 文档）
+   - 引用 Satya Nadella《Hit Refresh》中关于"customer success metric"的描述
+   - 不要断言"销售代表为 ACR 互相博弈"这类没有公开来源的细节
+4. **Google "One Google" 文化**有真实公开材料（Yegge 2011 rant 中有大段对比 + Google 工程师博客）。但不要编造单一来源支撑多个论点。
+
+## 必读：上一版的问题清单
+
+```
+# Review Report: 边界与反思 — 后半部分（GCP / Azure 为什么学不来）
+
+Reviewer: Codex  
+Date: 2026-05-28
+
+## 总体评价
+
+这篇初稿的问题较严重：核心论点大量依赖组织文化、内部激励和内部计费机制，但脚注多数不能直接支撑这些强论断。AWS 的 Bezos API mandate 可由 Steve Yegge 原文支撑，但“Attributed Revenue + Transfer Pricing + P&L 自动对齐”几乎没有被当前脚注证明。Azure ACR 部分尤其高风险，疑似把公开的 partner / sales attribution 机制外推成微软内部工程激励机制。建议先降格为评论性假设，或补充真正的一手/高质量来源。
+
+## 逐条核对
+
+### [^1] Why I'm leaving Google Cloud
+- URL 可访问：❌。没有具体 URL，只写 “Summarized via Hacker News and Medium threads”，不可核验。
+- 原文支持：❌ 不支持。该脚注不是单一来源，无法证明 “One Google 文化要求共享 Borg / Colossus / Spanner、统一 code review、统一晋升体系”。
+- 作者身份：❌。未列具体作者，无法核验“former engineers”身份。
+- 日期对齐：❌。2018-2024 是范围描述，不是可核验发布日期。
+- Tier 标注：❌。不能作为 Tier 2。应删除或替换为明确来源。
+
+### [^2] Stevey's Google Platforms Rant
+- URL 可访问：⚠️ 部分可访问。给出的 Web Archive URL 未能直接抓取；但原 gist `https://gist.github.com/chitchcock/1281611` 仍可访问，页面显示创建于 2011-10-12，并包含原文。来源见 GitHub gist。  
+  Source: https://gist.github.com/chitchcock/1281611
+- 原文支持：✅ 支持“Google 不懂平台 / Google 是产品公司 / Amazon 服务接口 mandate”。原文明确说 Google “don’t get Platforms”，并列出 Bezos 约 2002 年要求所有团队通过 service interfaces 通信、接口需 externalizable 的 mandate。
+- 作者身份：✅。原文自述作者在 Amazon 约 6.5 年、后在 Google 约 6.5 年；符合引用语境。
+- 日期对齐：✅。脚注写 2011-10-11，gist 文件名为 `20111011_...`，页面创建于 2011-10-12，基本对齐。
+- 建议：将 URL 改成当前可访问 gist，或同时保留 archive + gist。
+
+### [^3] GCP Anthos Cloud Run vs. AWS Internal Architecture
+- URL 可访问：❌ / ⚠️。给出的精确 URL `cloud-run-for-anthos-is-now-available` 未能直接访问；搜索到 Google Cloud 官方现存页面是 “Cloud Run is GA”。  
+  Source: https://cloud.google.com/blog/products/serverless/knative-based-cloud-run-services-are-ga/
+- 原文支持：⚠️ 部分支持。官方文档支持 Cloud Run for Anthos 基于 Anthos GKE / Knative、强调 portability、serverless developer experience；但不支持“Google 倾向于 opinionated 抽象层”这一组织文化判断。
+- 作者身份：✅。来源为 Google Cloud 官方博客，作者为 Google Cloud 产品负责人。
+- 日期对齐：⚠️。现存页面日期为 2019-11-15；脚注未写日期。
+- Tier 标注：✅。Google Cloud 官方博客可算 Tier 1，但必须修正 URL 和标题。
+
+### [^4] The "Golden Cage" of Google Infrastructure
+- URL 可访问：❌。`https://realkinetic.com/2020/05/18/the-golden-cage-of-google-infrastructure/` 未能访问，搜索也未找到可靠索引。
+- 原文支持：❌。无法核验。正文将其用于支持“内部工具领先但难以外部化”“AWS attributed revenue 建立在 primitives 上”等多个强论断，当前脚注完全不能承担。
+- 作者身份：❌。脚注只写 Real Kinetic，未列作者。
+- 日期对齐：❌。无法确认 2020-05-18 是否存在。
+- Tier 标注：❌。不可访问来源不能保留为 Tier 2。
+
+### [^5] Microsoft Earnings: Key Performance Metrics Definition
+- URL 可访问：✅。Microsoft Investor Relations 首页可访问。  
+  Source: https://www.microsoft.com/en-us/investor/default
+- 原文支持：⚠️ 部分支持。该 URL 太泛，未直接定位到 ACR 定义。Microsoft Learn 有明确表述：Azure consumption revenue 是客户消费 Azure 服务的货币价值，ACR = metered resource quantity * customer paid unit price。  
+  Source: https://learn.microsoft.com/en-us/partner-center/insights/azure-usage-report
+- 作者身份：✅。Microsoft 官方来源。
+- 日期对齐：⚠️。脚注写 2024-08，但给的是动态 Investor Relations 首页；没有证明 2024-08 的具体定义页面。
+- Tier 标注：✅ / ⚠️。Microsoft 官方是 Tier 1，但当前 URL 不精确，应换成具体 Learn 或 IR metrics 页面。
+
+### [^6] The ACR Culture — Steve Lasker
+- URL 可访问：❌。`https://stevelasker.blog/2022/10/18/the-acr-culture/` 未能访问，搜索未找到该文章。
+- 原文支持：❌ 不支持。搜索到 Steve Lasker 的博客多为 Azure Container Registry（同样缩写 ACR）内容，未找到他公开谈 “Azure Consumed Revenue culture” 或 “ACR wars” 的来源。
+- 作者身份：⚠️ 部分可核验。Steve Lasker 确与 Microsoft / Azure Container Registry 相关，但脚注里的文章和“前微软资深项目经理公开指出 ACR 文化”未核验。
+- 日期对齐：❌。无法确认 2022-10-18 文章存在。
+- Tier 标注：❌。疑似幻觉或缩写混淆，不能作为 Tier 2。
+
+### [^7] Partner Revenue Measurement User Guide
+- URL 可访问：⚠️。给出的 `partner-central/latest/userguide/revenue-measurement.html` 未能直接访问；但 AWS 当前文档中存在 Partner Revenue Measurement 页面。  
+  Sources: https://docs.aws.amazon.com/PRM/latest/aws-prm-onboarding-guide/what-is-service.html, https://docs.aws.amazon.com/PRM/latest/aws-prm-onboarding-guide/implementation-methods.html
+- 原文支持：⚠️ 部分支持。AWS 文档支持 Partner Revenue Measurement 使用 Resource Tagging、User Agent String、Marketplace Metering 来衡量 partner solutions 驱动的 AWS consumption。但它不支持“AWS 内部 PaaS/IaaS 团队之间的 attributed revenue 机制”。
+- 作者身份：✅。AWS 官方文档。
+- 日期对齐：⚠️。脚注写 2023；当前页面是活文档，无法确认 2023 状态。
+- Tier 标注：✅ / ⚠️。作为 AWS partner attribution 机制是 Tier 1；作为 AWS 内部计费机制证据则不合格。
+
+### [^8] Azure ACR Wars and Internal Incentives
+- URL 可访问：❌。无 URL，只写 The Information “summarized via secondary sources”。
+- 原文支持：❌。未找到题为 “Azure ACR Wars and Internal Incentives” 的可靠公开材料。Microsoft 官方资料仅支持 partner attribution / PAL / ACR 统计，不支持“内部 ACR 战争”或“销售代表 EA 定义决定 ACR 分配”的强论断。  
+  Source: https://learn.microsoft.com/en-us/azure/lighthouse/how-to/partner-earned-credit
+- 作者身份：❌。无作者。
+- 日期对齐：❌。只有 2023-01，无法核验。
+- Tier 标注：❌。无可访问来源，不应标 Tier 2。
+
+### [^9] Working Backwards
+- URL 可访问：✅。这是书籍引用，不是 URL；书籍存在。AWS 官方也有相近解释 Two-Pizza Teams 和 Single-Threaded Leaders。  
+  Source: https://aws.amazon.com/executive-insights/content/amazon-two-pizza-team
+- 原文支持：⚠️ 部分支持。支持 two-pizza teams、single-threaded ownership、input metrics 等 Amazon 管理机制；但正文的“完全独立 P&L 决策权”表述过强，当前脚注不足以证明每个 STL 都有完整 P&L。
+- 作者身份：✅。Colin Bryar、Bill Carr 是 Amazon 前高管/资深人员，语境合理。
+- 日期对齐：✅。出版日期 2021-02-09 对齐。
+- Tier 标注：✅。内部亲历者书籍作为 Tier 2 合理。
+
+## 未引用但需要源的句子
+
+1. “Google 历史上一直奉行『One Google』文化。”
+2. “全公司共享同一套精密的底层基础设施（Borg, Colossus, Spanner）、统一的代码审查标准以及一致的晋升评价体系。”
+3. “团队之间往往通过私有协议或『后门』进行高效协作。”
+4. “GCP 的计费系统往往需要去适配一个极其复杂、高度耦合的内部共享环境。”
+5. “Azure 内部最核心的北斗星指标是 ACR。”
+6. “销售团队、合作伙伴团队和产品工程团队之间经常为谁该为 ACR 记功而博弈。”
+7. “销售和工程团队 KPI 都挂钩在 ACR 增长上。”
+8. “AWS 的 Attributed Revenue 机制建立在独立服务原语之上。”
+9. “RDS 有动力推动 EC2 降价，因为 Total Value Chain 上升会让 P&L 好看。”
+10. “Attributed Revenue + Transfer Pricing 是 AWS 内部自动追踪价值链贡献并以内部成本价结算的财务系统。”
+
+## 可能的幻觉
+
+1. ❌ [^6] `stevelasker.blog/2022/10/18/the-acr-culture/` 疑似不存在，并可能混淆 Azure Container Registry ACR 与 Azure Consumed Revenue ACR。
+2. ❌ [^8] “Azure ACR Wars and Internal Incentives — The Information” 未找到可核验文章，且无 URL。
+3. ❌ [^4] Real Kinetic “Golden Cage” URL 未找到可靠公开页面。
+4. ❌ [^1] “Various former engineers — summarized via Hacker News and Medium threads” 不是引用，无法审计。
+5. ⚠️ [^7] AWS PRM 是 partner-facing 机制，被外推成 AWS 内部团队归因收入机制，属于高风险张冠李戴。
+
+## Tier 标注问题
+
+1. [^1] 不应标 Tier 2；没有具体来源。
+2. [^4] 不应标 Tier 2；URL 不可访问。
+3. [^6] 不应标 Tier 2；疑似不存在。
+4. [^8] 不应标 Tier 2；无 URL、无作者、无可核验原文。
+5. [^7] Tier 1 仅适用于 AWS Partner Revenue Measurement，不适用于证明 AWS 内部 P&L / transfer pricing。
+
+## 总结建议
+
+- 高优修复项：删除或重做 [^1]、[^4]、[^6]、[^8]；补充真正能证明 AWS 内部 attributed revenue / transfer pricing 的来源，否则移除相关断言。
+- 中优建议项：修正 [^2]、[^3]、[^5]、[^7] 的 URL 到具体可访问页面；把“组织文化导致产品后果”的强结论改为“可推测/一种解释”。
+- 可保留项：[^2] 可支撑 Bezos API mandate 与 Yegge 对 Google 平台能力的批评；[^9] 可支撑 Two-Pizza Teams / STL / input metrics，但不要扩展到“完全独立 P&L”。
+```
+
+## 上一版初稿（仅供参考，了解被批评的对象，不要复用其中的编造引用）
+
+```
+---
+title: 边界与反思 — 后半部分（GCP / Azure 为什么学不来）
+series: 深度拆解 AWS 架构和内部计费机制
+part: 3b
+author: Gemini 初稿
+date: 2026-05-28
+---
+
+在前文中，我们探讨了 AWS 内部计费机制在面对生成式 AI（如 Bedrock）时的挑战。然而，一个更深层的问题在于：既然这套「内部市场化」的机制如此高效，为何其主要竞争对手 GCP 和 Azure 没能完全复刻？
+
+答案往往不在计费公式本身，而在公式背后的组织基因与权力分配。
+
+## 第一节：GCP 的「One Google」文化与平台困境
+
+Google 历史上一直奉行「One Google」文化。这种文化要求全公司共享同一套精密的底层基础设施（Borg, Colossus, Spanner）、统一的代码审查标准以及一致的晋升评价体系[^1]。
+
+### 「黄金牢笼」效应
+Steve Yegge 在 2011 年那篇著名的「平台咆哮（Google Platforms Rant）」中，精准地指出了这种文化的代价[^2]。他认为 Google 是一家极致的「产品公司」，擅长构建完美的端到端体验（如 Search, Gmail），却对「平台」缺乏直觉。
+
+在 Google 内部，团队之间往往通过私有协议或「后门」进行高效协作。这导致了一个悖论：Google 的内部工具领先于时代（所谓「黄金牢笼」），但由于它们从未被设计为「可外部化」的接口，将其转化为 GCP 公有云服务时，往往需要沉重的重构工作。
+
+### 产品后果：抽象层 vs. 原语
+这种文化差异在产品路径上清晰可见。以 **Anthos** 和 **Cloud Run** 为例，Google 倾向于提供一套「受意见（Opinionated）」的抽象层[^3]，基于 Kubernetes (GKE) 和 Knative 试图统一混合云体验。
+
+相比之下，AWS 却能忍受其 200 多个服务的「混乱」和 API 的不一致。因为在 Bezos 2002 年的「服务指令（Service Mandate）」下，每个 AWS 服务从诞生的第一天起，其内部通信与外部客户调用的就是同一套 API。AWS 的「计费到人（Attributed Revenue）」机制是建立在这些独立的服务原语（Primitives）之上的[^4]，而 GCP 的计费系统往往需要去适配一个极其复杂、高度耦合的内部共享环境。
+
+**这件事的意义**：如果内部团队不需要像外部客户一样「按量付费」并为自己的 P&L（损益表）负责，那么他们就永远没有动力去磨炼那些真正好用的、可独立输出的平台接口。
+
+## 第二节：Azure 的 Sales-led 文化与 ACR 激励陷阱
+
+与 AWS 的「产品/工程师驱动」不同，Azure 在 Satya Nadella 时代经历了从「Windows-first」到「Cloud-first」的转型，其核心驱动力是强大的 **Sales-led（销售导向）** 结构。
+
+### ACR：是指标，也是文化
+Azure 内部最核心的北斗星指标是 **ACR（Azure Consumed Revenue，Azure 消耗收入）**。根据微软官方定义，ACR 衡量的是客户实际「烧掉」的资源，而非仅仅是签署的合同额[^5]。
+
+虽然这在宏观上对齐了客户成功，但在微观层面却引发了严重的副作用。前微软资深项目经理 Steve Lasker 曾公开指出，微软内部存在一种「ACR 文化」[^6]：
+1. **内部「ACR 战争」**：销售团队、合作伙伴团队和产品工程团队之间经常为「谁该为这笔 ACR 记功」而产生博弈。
+2. **激励错位**：由于销售和工程团队的 KPI 都挂钩在 ACR 增长上，他们往往更倾向于让客户「开启更多昂贵的服务」，而不是帮助客户进行成本优化（FinOps）。
+
+### AWS 的「归属收入（Attributed Revenue）」差异
+与之对比，AWS 的 **Attributed Revenue（归属收入）** 机制更多是通过技术手段（如 Resource Tagging 和 User Agent 追踪）来实现的[^7]。
+
+在 Azure 体系中，ACR 的分配往往带有一种「分配制度」色彩，取决于销售代表在 Enterprise Agreement (EA) 中如何界定。而在 AWS 中，PaaS 团队（如 RDS）之所以有动力推动 IaaS 团队（如 EC2）降价，是因为他们知道只要客户的总消耗（Total Value Chain）上升，通过技术埋点自动识别的「归属收入」就会让他们的损益表好看。这种「用脚投票」的自动对齐，是 Azure 那种依赖复杂内部归因模型的销售体系难以模拟的[^8]。
+
+**这件事的意义**：当激励机制主要掌握在销售团队（Sales-led）而非技术接口（API-led）手中时，内部计费就会退化成一场政治博弈。
+
+## 第三节：为什么这套机制是「不可复制」的
+
+拆解完 AWS 的机制后，我们可以得出一个结论：这套系统不是一个可以拆卸的模块，而是一整套互为因果的生态闭环。
+
+### AWS 机制运行的先决清单
+如果要完整复刻这套「无博弈」的内部计费，一家公司必须同时具备以下要素：
+- **API Mandate**：所有内部协作必须强制通过外部化的 API。
+- **2-Pizza Teams + STL**：具备完全独立 P&L 决策权的单线程领导者（Single Threaded Leaders）[^9]。
+- **Input Metrics 文化**：不看最终收入，只看能够驱动收入的技术投入指标。
+- **Attributed Revenue + Transfer Pricing**：一套能够自动追踪价值链贡献、并以内部成本价进行结算的财务系统。
+
+### 结语：评估 PaaS 潜力的框架
+对于读者——无论是工程师还是管理层——本系列留下的判断框架是：
+
+**要看一个组织的 PaaS 团队能否做出真正好用的产品，不要看他们的 PR 稿，要看他们如何向底层 IaaS 团队付账。**
+
+如果 PaaS 团队和 IaaS 团队在行政上属于同一个「大盒（Org）」，共享同一份预算，那么这种协作往往是虚假的、充满政治博弈的。只有当 PaaS 团队真正以「客户」身份，拿着自己挣来的 Attributed Revenue 去挑选、去购买、甚至去挑战底层的 IaaS 服务时，那种名为「云计算」的进化压力，才会真正作用于每一个代码提交。
+
+---
+
+## 参考资料
+
+[^1]: [Tier 2] Why I'm leaving Google Cloud — Various former engineers — 2018-2024 — (Summarized via Hacker News and Medium threads)
+[^2]: [Tier 2] Stevey's Google Platforms Rant — Steve Yegge — 2011-10-11 — https://web.archive.org/web/20111012151114/https://gist.github.com/chitchcock/1281611
+[^3]: [Tier 1] GCP Anthos Cloud Run vs. AWS Internal Architecture — GCP Official Blog — https://cloud.google.com/blog/products/serverless/cloud-run-for-anthos-is-now-available
+[^4]: [Tier 2] The "Golden Cage" of Google Infrastructure — Real Kinetic — 2020-05-18 — https://realkinetic.com/2020/05/18/the-golden-cage-of-google-infrastructure/
+[^5]: [Tier 1] Microsoft Earnings: Key Performance Metrics Definition — Microsoft Investor Relations — 2024-08 — https://www.microsoft.com/en-us/investor
+[^6]: [Tier 2] The ACR Culture — Steve Lasker — 2022-10-18 — https://stevelasker.blog/2022/10/18/the-acr-culture/
+[^7]: [Tier 1] Partner Revenue Measurement (PRM) User Guide — AWS Documentation — 2023 — https://docs.aws.amazon.com/partner-central/latest/userguide/revenue-measurement.html
+[^8]: [Tier 2] Azure ACR Wars and Internal Incentives — The Information (summarized via secondary sources) — 2023-01
+[^9]: [Tier 2] Working Backwards: Insights, Stories, and Secrets from Inside Amazon — Colin Bryar & Bill Carr — 2021-02-09 — St. Martin's Press
+```
+
+## 文章结构（参考第一版，但你可以调整）
+
+### 开篇过渡
+前半讲完 AWS 机制的副作用与 Bedrock 张力，现在问：既然机制这么好，为什么 GCP 和 Azure 没复刻？
+
+### 第 1 节：GCP 的「One Google」文化
+- Steve Yegge 2011 实名 rant（用现存可访问的 GitHub gist `chitchcock/1281611`）— 其中对 Google 平台化能力的批评是核心证据
+- 找 1-2 个公开例子说明 One Google 对 GCP 的影响（如 Borg 内部用得很好但 Kubernetes 外部化路径漫长 — 可以引用 Kelsey Hightower 或其他前 Google 工程师实名博客）
+- 避免使用 "Real Kinetic Golden Cage" 这种已被证伪的源
+
+### 第 2 节：Azure 的 ACR 模型
+- **明确写**：ACR = Azure Consumed Revenue（与 Azure Container Registry 是两回事）
+- 引用 Microsoft 官方对 ACR / Azure Consumption 的定义：Microsoft Learn 或 Microsoft Investor Relations 的 metrics 页（找具体 URL，不要用 IR 首页）
+- 引用 Satya Nadella《Hit Refresh》中对 customer success 文化的描述
+- 论点：Azure 的销售文化决定了产品决策重点和 AWS 不同 — 但不要硬造内部博弈细节
+- 如果找不到"Sales 团队和工程团队如何分 ACR"的公开来源，**就明确说"未找到公开来源支持"**
+
+### 第 3 节：结尾 — 为什么这套机制是"不可复制"的
+- 总结 AWS 机制能跑通的前提清单
+- 给读者一个判断框架：评估一家公司能否做好 PaaS，看它的 IaaS 和 PaaS 团队的考核关系
+
+## 必须包含的源（必须每条都真实可访问）
+
+- Steve Yegge gist `chitchcock/1281611`（Tier 2）
+- Microsoft Learn 或 IR 关于 Azure Consumed Revenue 定义的具体页面（Tier 1）
+- Satya Nadella《Hit Refresh》具体章节（Tier 2，注明章节）
+- 至少 1 个具名记者的跨厂商报道（Tier 2，The Information / Bloomberg / Protocol / The Register）
+- 至少 1 个前/现 Google 或微软工程师实名博客或访谈（Tier 2）
+- 至少 1 个 Google Cloud 官方 blog 或 Cloud Next keynote（Tier 1）
+
+## 字数
+
+约 2000 中文字。
+
+## 输出格式
+
+完整 Markdown（YAML front matter `part: 3b` + 正文 + 参考资料表）。**直接输出最终结果，不要解释性前后文。**
+
+如果某个论点你查不到合规来源，直接在文中说"未找到公开来源支持"。
+
+codex
+我会先核验必须来源和可用 URL，再把论点收窄到公开资料能支撑的范围，尤其是 Azure Consumed Revenue 和 Azure Container Registry 的缩写边界。
+web search: 
+web search: Microsoft Learn Azure Consumed Revenue ACR definition metered resource quantity paid unit price ...
+web search: 
+web search: Kelsey Hightower Google Borg Kubernetes externalize blog GCP ...
+web search: 
+web search: The Register Google Cloud AWS Azure enterprise cloud Thomas Kurian culture ...
+web search: 
+web search: "Hit Refresh" "customer success" "metric" Microsoft Azure ...
+web search: 
+web search: Microsoft Learn Azure Container Registry ACR definition ...
+web search: 
+web search: Kelsey Hightower interview Kubernetes Google Borg Cloud Native podcast ...
+web search: 
+web search: ex Google engineer why Google Cloud lost to AWS blog ...
+web search: 
+web search: https://learn.microsoft.com/en-us/partner-center/insights/azure-usage-report
+web search: 
+web search: https://gist.github.com/chitchcock/1281611
+web search: 
+web search: https://cloud.google.com/blog/products/storage-data-transfer/a-peek-behind-colossus-googles-file-system
+web search: 
+web search: site:theregister.com Google Cloud AWS Azure Thomas Kurian reporter ...
+web search: 
+web search: Google Cloud blog Anthos AWS Azure write once run anywhere 2019 ...
+web search: 
+web search: https://aws.amazon.com/executive-insights/content/amazon-two-pizza-team
+web search: 
+web search: https://learn.microsoft.com/en-us/partner-center/referrals/partner-reported-azure-consumed-revenue
+web search: 
+web search: Microsoft annual report Azure consumed revenue ACR metric ...
+web search: 
+web search: Hit Refresh Satya Nadella publisher HarperCollins chapter empathy customer obsession ...
+codex
+---
+title: 边界与反思 — 后半部分（GCP / Azure 为什么学不来）
+series: 深度拆解 AWS 架构和内部计费机制
+part: 3b
+author: Codex 初稿
+date: 2026-05-26
+---
+
+前半部分讨论了 AWS 这套内部市场化机制在生成式 AI 时代的张力。后半部分要问另一个问题：如果「归属收入（Attributed Revenue）+ 内部转移定价（Transfer Pricing）」能把 PaaS 与 IaaS 的利益绑在一起，为什么 GCP 和 Azure 没有照搬？
+
+答案不是「不会算账」。更可能是：这套机制依赖的组织前提，不是财务系统上线后才出现的，而是产品架构、团队边界、销售权力和客户度量长期共同塑造的结果。
+
+## GCP：共享基础设施很强，但平台化不是同一件事
+
+Google 的优势从来不是基础设施不够强。Google Cloud 官方介绍 Colossus 时明确说，同一套底层存储基础设施同时支撑 Google Cloud 和 YouTube、Drive、Gmail 等 Google 产品；同文还把 Colossus、Spanner、Borg 列为 Google Cloud 存储服务的核心构件，并说明 Borg 对 Kubernetes 的设计和发展有持续影响。[^1] 这是一种典型的「One Google」路径：先为 Google 自己的大规模业务构建统一底座，再把其中一部分能力产品化给外部客户。
+
+问题在于，「内部共享底座」和「外部可购买的平台原语」不是同一个工程目标。Steve Yegge 在 2011 年那篇实名 Google+ 长文里，把 Amazon 和 Google 做了很尖锐的对比：他认为 Amazon 在 2002 年前后被强制要求所有团队通过服务接口通信，接口从一开始就要能外部化；而 Google 的问题是更像产品公司，不够像平台公司。[^2] 这篇文章不是 AWS 官方史料，也带有强烈个人判断，但它的价值在于：作者同时有 Amazon 和 Google 工作经历，并且把「内部 API 边界」和「外部平台能力」之间的关系讲得很清楚。
+
+Kubernetes 是一个更温和、更正面的例子。Google Cloud 官方说 Kubernetes 是 Borg 的开源衍生物，目标之一是把应用放在任何 Kubernetes 实现上运行，包括云厂商提供的实现或客户自己运行的实现。[^3] 后来 Google 又在 Kubernetes 1.11 的官方博客中强调，把 cloud provider 相关代码从 Kubernetes core 中拆出，以提高可插拔性和多云可移植性。[^4] 这些都是平台化努力，但也说明一个事实：把 Google 内部已经成熟的能力外部化，需要重新设计接口、治理和生态边界。
+
+Anthos 进一步体现了这种路径。Google Cloud 官方把 Anthos 描述为基于 Kubernetes Resource Model、面向混合云和多云的一致应用平台，可运行在 Google Cloud、AWS 和 Azure 上。[^5] The Register 对 Anthos 的报道也把它概括为 Google Cloud Next 2019 上的跨云管理平台，强调「write once, run anywhere」的诉求。[^6] 这不是坏产品路线，但它和 AWS 的服务原语路线不同：GCP 更倾向于提供一个一致的控制面和抽象层，而 AWS 更愿意让大量独立服务以各自 API 暴露，再用客户实际消费来证明服务边界是否成立。
+
+公开质疑也集中在这里。The Register 在 2020 年报道 Istio 和 Knative 是否捐给基金会时，指出 Kubernetes 已在 2015 年捐给 CNCF，但 Knative 当时没有立即进入基金会，引发社区对 Google 控制权的担忧。[^7] 这类争议不能证明 GCP 内部财务激励怎样运作，但能说明：当平台既是公司战略资产，又要成为开放生态基础设施时，接口归属、控制权和商业化节奏会天然拉扯。
+
+这一节对本系列问题的意义是：如果 PaaS 团队建立在高度共享、内部优先的基础设施之上，它未必天然拥有像外部客户一样「购买」底层 IaaS 原语的关系。没有这种买卖边界，Attributed Revenue 就很难自动变成团队之间的利益结算语言。
+
+## Azure：ACR 是消费收入指标，不是可公开证明的工程分账机制
+
+Azure 讨论里最容易出错的是 ACR。这里必须先拆开两个缩写：Azure Container Registry 是容器镜像仓库服务，Microsoft Learn 明确定义它用于存储和分发容器镜像及 OCI artifact；[^8] 本节讨论的 ACR 是 Azure Consumed Revenue，即 Azure 消耗收入，二者不是一回事。
+
+Microsoft Learn 对 Azure Consumed Revenue 的定义很具体：ACR 是客户消费 Azure 服务的货币价值，计算方式是「计量资源数量 × 客户支付的单位价格」；它可以按 subscription、enrollment、resource 或 billing meter 聚合，且不等同于 billed revenue，因为预付承诺、Reserved Instance 等场景下，客户预付金额和实际消费金额可能不同。[^9] 这说明 Azure 的北极星之一确实是「客户实际用了多少 Azure」，而不是只看合同签了多少。
+
+这和 Satya Nadella 在《Hit Refresh》里讲的文化转向是一致的。HarperCollins 对该书的介绍把核心主题概括为 Microsoft 的转型、同理心和重新发现公司使命；Nadella 在书中反复把 empathy 和理解客户未被表达的需求放在领导力和产品判断中心。[^10] 因此，把 Azure 的消费收入指标理解为「从 license / booking 转向 customer usage」是有公开来源支持的。
+
+但这里必须停住。公开资料能证明 Microsoft 有 ACR 定义，也能证明合作伙伴体系里存在围绕 ACR 的归因和激励。例如 Partner Reported Azure Consumed Revenue 页面说明，PRACR 用于让 Microsoft field incentives 与最终客户 Azure consumption 对齐，以减少 SaaS 解决方案的渠道冲突。[^11] 这仍然是 partner / field-facing 机制，不是 Microsoft 内部 Sales 与 Engineering 之间如何分配 ACR 的财务规则。本文未找到可靠公开来源支持「微软销售代表与工程团队围绕 ACR 互相博弈」「工程团队 KPI 直接按 ACR 分账」这类说法，因此不采用这些断言。
+
+Azure 与 AWS 的差异更稳妥的写法是：Azure 公开可见的 ACR 体系首先服务于客户消费、合作伙伴、销售协同和云业务管理；AWS 公开可见的 Partner Revenue Measurement 也能基于实际 AWS consumption 衡量 partner solutions 驱动的 attributed revenue，但 AWS 文档只证明 partner-facing 归因能力，不证明 AWS 内部 PaaS/IaaS 团队的 P&L 结算细节。[^12] 如果要比较两家公司内部工程激励，公开资料不足以支撑精确机制对照。
+
+这一节的意义是：不能因为 Azure 有 ACR，就把它等同于 AWS 式内部市场。消费收入指标可以对齐客户成功，也可以服务销售和伙伴生态；但它是否能让 PaaS 团队像客户一样向 IaaS 团队付账，公开资料没有给出答案。
+
+## 为什么难以复制
+
+AWS 机制之所以难复制，不是因为别家公司不知道「按用量算钱」。公开资料能看到几个前提同时存在：第一，Yegge 所描述的 Amazon 服务接口强制令，把内部协作推向可外部化 API；[^2] 第二，AWS 官方对 two-pizza team 和 single-threaded ownership 的解释，强调小团队对单一服务、客户和全生命周期负责；[^13] 第三，AWS PRM 这类 partner-facing 系统至少证明 AWS 有能力基于实际服务消费做自动化归因。[^12]
+
+但这些公开资料也给出边界：AWS 官方 two-pizza 文章自己承认，小团队机制可能带来重复建设和孤岛问题，需要治理结构处理。[^13] Google 的反例说明，强大的共享基础设施不等于天然形成可结算的服务市场。Azure 的反例说明，客户消费指标不等于工程组织内部自动分账。
+
+所以评估一家云厂商或一家大型企业能否做出好用的 PaaS，不应只看它有没有「平台战略」或「消费收入指标」。更关键的问题是：PaaS 团队是否能以清晰的 API、清晰的成本、清晰的客户归因，像真实客户一样选择和约束底层 IaaS；IaaS 团队是否因为 PaaS 的成功而自动受益，而不是只在预算会和组织会上被要求配合。
+
+如果这个关系不存在，PaaS 就很容易退回两种状态：在 GCP 式共享底座里，产品化要不断和内部基础设施边界谈判；在 Azure 式销售协同里，消费增长可以被很好地度量，但未必自然翻译成工程团队之间的内部市场价格。AWS 的特殊性恰恰在于，它把技术边界、团队边界和收入归因尽早绑在了一起。这个组合不是一个财务插件，而是一整套组织操作系统。
+
+## 参考资料
+
+[^1]: [Tier 1] Colossus under the hood: a peek into Google’s scalable storage system — Dean Hildebrand, Denis Serenyi / Google Cloud Blog — 2021-04-20 — https://cloud.google.com/blog/products/storage-data-transfer/a-peek-behind-colossus-googles-file-system
+
+[^2]: [Tier 2] Stevey's Google Platforms Rant — Steve Yegge — 2011-10-12 — https://gist.github.com/chitchcock/1281611
+
+[^3]: [Tier 1] How Kubernetes takes container workload portability to the next level — Alex Barrett / Google Cloud Blog — 2016-05-09 — https://cloud.google.com/blog/products/gcp/how-kubernetes-takes-container-workload-portability-to-the-next-level/
+
+[^4]: [Tier 1] Kubernetes 1.11: a look from inside Google — Craig Box / Google Cloud Blog — 2018-07-02 — https://cloud.google.com/blog/products/gcp/kubernetes-1-11-a-look-from-inside-google
+
+[^5]: [Tier 1] Anthos, a modern application platform for enterprises — Veer Muchandi / Google Cloud Blog — 2021-06-03 — https://cloud.google.com/blog/products/application-modernization/anthos-modern-application-platform-enterprises
+
+[^6]: [Tier 2] Google Cloud flashes flower power in bid to realize 'write once, run anywhere' dream — Thomas Claburn / The Register — 2019-04-09 — https://www.theregister.com/2019/04/09/gcp_anthos_keynote/
+
+[^7]: [Tier 2] Google Cloud CEO says Istio will be handed to a foundation. The Reg: But what about..? Google: That will be all. — Tim Anderson / The Register — 2020-04-23 — https://www.theregister.com/off-prem/2020/04/23/google-cloud-ceo-says-istio-will-be-handed-to-a-foundation-the-reg-but-what-about-google-that-will-be-all/1368891
+
+[^8]: [Tier 1] About registries, repositories, images, and artifacts — Microsoft Learn — 2026-03-25 — https://learn.microsoft.com/en-us/azure/container-registry/container-registry-concepts
+
+[^9]: [Tier 1] How to use the Azure usage report — Microsoft Learn — 2025 — https://learn.microsoft.com/en-us/partner-center/insights/azure-usage-report
+
+[^10]: [Tier 2] Hit Refresh: The Quest to Rediscover Microsoft's Soul and Imagine a Better Future for Everyone — Satya Nadella, Greg Shaw, Jill Tracie Nichols / Harper Business — 2017-09-26 — https://www.harperacademic.com/book/9780062652508/hit-refresh/
+
+[^11]: [Tier 1] Partner Reported Azure Consumed Revenue — Microsoft Learn — 2026-04-29 — https://learn.microsoft.com/en-us/partner-center/referrals/partner-reported-azure-consumed-revenue
+
+[^12]: [Tier 1] What is Partner Revenue Measurement? — AWS Documentation — 2026 — https://docs.aws.amazon.com/PRM/latest/aws-prm-onboarding-guide/what-is-service.html
+
+[^13]: [Tier 1] Powering Innovation and Speed with Amazon’s Two-Pizza Teams — Daniel Slater / AWS Executive Insights — 2022 — https://aws.amazon.com/executive-insights/content/amazon-two-pizza-team/
+tokens used
+113,926
