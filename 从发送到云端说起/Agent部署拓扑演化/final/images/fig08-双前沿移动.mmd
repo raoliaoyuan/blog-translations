@@ -1,0 +1,8 @@
+flowchart LR
+  subgraph CLOUD["能力前沿 → 向云 / 大集群集中"]
+    F1["复杂代码 · 长上下文<br/>深度研究 · 高可靠 Agent"]
+  end
+  subgraph EDGE["效率前沿 → 向端侧 / 边缘扩散"]
+    F2["蒸馏 · 量化 · MoE<br/>意图识别 · 脱敏 · 草稿 · 动作闭环"]
+  end
+  CLOUD -. "边界随时间动态移动" .- EDGE

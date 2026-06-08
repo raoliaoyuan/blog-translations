@@ -1,0 +1,9 @@
+flowchart LR
+  G["全球用户 / SaaS"]
+  subgraph C["公有云"]
+    A6["云 Agent 运行时<br/>弹性 · 多租户"]
+    M6["frontier 大模型<br/>批处理 · 高利用率"]
+  end
+  G -- "请求" --> A6
+  A6 -- "弹性调用" --> M6
+  M6 -- "结果" --> A6

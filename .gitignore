@@ -9,3 +9,4 @@ article_content.txt
 # Editor
 .vscode/
 .obsidian/
+.claude/

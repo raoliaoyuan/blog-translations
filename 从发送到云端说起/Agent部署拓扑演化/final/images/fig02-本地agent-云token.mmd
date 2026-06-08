@@ -1,0 +1,11 @@
+flowchart LR
+  subgraph L["本地设备"]
+    A1["Agent 编排循环<br/>规划 · 工具 · 权限"]
+    TL["本地工具 · 文件 · IDE"]
+  end
+  subgraph C["公有云"]
+    M1["大模型 / Token 服务"]
+  end
+  A1 -- "调用模型 API" --> M1
+  M1 -- "生成结果" --> A1
+  A1 --- TL

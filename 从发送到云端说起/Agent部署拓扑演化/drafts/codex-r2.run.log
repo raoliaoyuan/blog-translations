@@ -1,0 +1,857 @@
+Reading additional input from stdin...
+OpenAI Codex v0.130.0
+--------
+workdir: /Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /Users/roger/.codex/memories]
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019e913b-ab86-79d2-a215-ca1bc82f61b4
+--------
+user
+这是第 2 轮。我（合著的另一位分析师）已读完你的首轮分析 drafts/codex-r1.md。先肯定：网格分流框架、七个决定变量、中国侧（昇腾端边云、NIM 气隙、网信办法规、一体机厂商）都很扎实。但我要对几个核心判断提出实质质疑，请你在第 3 轮里**逐条正面回应**——可以坚持、可以修正、可以让步，但都要给理由和（尽量）官方或权威数据。
+
+## 质疑 1（针对 Thesis 2 与你自标薄弱点 1）：Token 经济学其实结构性利好云，本地是利基而非默认。
+前沿模型推理靠**大批量、高利用率**摊薄成本（连续批处理、KV cache 复用、MoE 稀疏激活、专用集群）。个人/单机本地算力**大多数时间闲置**，单位 token 成本通常高于云。一台 DGX Spark（约 $4,699）服务单人，按全生命周期折旧+电费算，对多数高频任务的单位成本未必优于云 API。
+请回应：你 Thesis 2 说本地先吃"高频、低风险、够用"子任务——但"高频"恰恰是云批处理最划算的区间。本地真正的护城河是不是只剩**隐私、低延迟交互、离线、合规**这四点，而非成本？有没有可复现的成本对比证据支持"本地更便宜"？
+
+## 质疑 2（针对 Thesis 4/5）：Apple Private Cloud Compute 代表的"可验证私有云"可能吃掉本地化/私有化的隐私论证。
+PCC 证明了"云端规模 + 端到端加密 + 可审计、不留存用户数据"可以同时成立。如果可验证私有云成为标准，企业"为隐私必须自建气隙"的理由会被削弱——既要隐私又要 frontier 能力的负载，可能流向"可验证的托管私有云/主权云"，而不是企业自建数据中心。
+请回应：你把强合规场景判给"企业私有云 Agent + 企业数据中心 Token"。但可验证私有云（PCC 模式、主权云、云厂商的 confidential computing）会不会成为第三条路，把这块需求分走？中美在这一点上会不会分化（美国更接受可验证托管，中国因数据出境/信创更坚持自建）？
+
+## 质疑 3（针对 Thesis 5 与中国一体机）：2025"一体机元年"是结构性需求还是 DeepSeek+信创的采购脉冲？
+当前一体机热很大程度由两件事驱动：DeepSeek-R1 的"出圈时刻"+ 信创/国产化的政策性采购（政务、军工、央国企刚需）。这类采购未必反映可持续的、由经济性驱动的需求。
+请回应：有没有证据表明这是**可持续的复购/扩容**，而不是 2025 一次性脉冲？一体机在中小企业（无政策强制）里有真实经济性吗？运维复杂度（你自标薄弱点 3）会不会让一部分回流到公有云/托管？
+
+## 质疑 4（贯穿全局）：能力鸿沟在持续拉大，会不会让"本地够用"长期追不上？
+前沿模型规模与能力仍在快速增长（见上一篇文章里的算力投资规模）。端侧能跑 3B–200B，但与云端最强模型的差距是否会长期存在甚至扩大？如果是，"小模型够用"的边界会不会被前沿任务的水涨船高不断侵蚀？
+请回应：分流边界是**稳定**的还是**随时间向云回摆**的？给出你的动态判断。
+
+## 质疑 5（框架本身）：两轴解耦后，真正的问题是"贵的那部分（Token）放哪"。
+Agent 编排本身很轻（规划、状态、工具调用），可以几乎在任何地方跑；**贵且重的是 Token 服务**。所以分流的主矛盾是推理放哪，而 Agent 位置主要被"到工具/数据的延迟"和"数据引力（data gravity）"牵引。
+请回应：是否同意把框架重心从"六个格子并列"收敛为"先定 Token 服务位置（成本/合规/能力），再让 Agent 位置跟随数据与工具"？还是你认为 Agent 位置有独立的决定性？
+
+## 链接修正（我已 curl 验活你的 R1 链接，整体很好，仅一处需换源）
+- 失效：`https://www.hpe.com/us/en/private-cloud-ai.html`（连接失败/不可达）。请改用可访问的官方页，例如 `https://www.hpe.com/us/en/solutions/artificial-intelligence/nvidia-collaboration.html`（NVIDIA AI Computing by HPE）或具体 HPE 新闻稿。
+- `docs.redhat.com` 与 `openai.com/index/...` curl 返回 403，但属反爬、浏览器可访问，保留即可。
+
+## 输出要求
+写入文件 drafts/codex-r2.md。逐条回应质疑 1–5（标注"接受/部分接受/反驳"），给理由与（尽量）官方或权威链接；可修订你的 Thesis。新增链接仍须真实可访问、官方优先、不得编造。文末附"## 我仍坚持 / 我已修正"两个清单，便于我做最终综合。
+codex
+我会先读首轮稿件和目录结构，再查证本轮需要的官方/权威来源，最后把逐条回应写进 `drafts/codex-r2.md`。
+exec
+/bin/zsh -lc "sed -n '1,260p' drafts/codex-r1.md" in /Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化
+ succeeded in 0ms:
+# AI Agent 的部署拓扑会如何演化：首轮分析
+
+本文截至日期：2026-06-04。下文将“事实”与“判断/推断”分开写：事实尽量使用官方产品页、官方博客、官方文档或法规原文；判断/推断用于解释未来分流。
+
+## 0. 两根轴的含义
+
+本文把 Agent 系统拆成两个正交维度：
+
+- Agent 编排/执行位置（orchestration/execution location）：负责规划、工具调用、状态管理、权限控制、文件/应用操作和长任务调度的位置。
+- Token 服务位置（model inference/token serving location）：负责模型推理、上下文处理、生成 token 和模型路由的位置。
+
+一个关键前提是：**Agent 的执行位置不必等于 Token 的推理位置**。例如，事实层面，[Claude Code 产品页](https://www.claude.com/product/claude-code)写明 Claude Code 在本地终端运行并直接调用模型 API；事实层面，[OpenAI Codex 介绍](https://openai.com/index/introducing-codex/)则把 Codex 描述为云端软件工程 Agent，可在云端沙箱中并行处理任务。二者代表的不是“谁替代谁”，而是不同格子的早期样本。
+
+## 1. 网格分流判断
+
+**判断/推断：未来不会收敛到单一拓扑，而会按工作负载分流。Agent 执行位置主要跟随工具、数据和动作边界；Token 服务位置主要跟随模型质量、单位 token 成本、合规和本地硬件。**
+
+| 拓扑格子 | 适合留下的工作负载 | 不适合的工作负载 | 决定变量 |
+| --- | --- | --- | --- |
+| 本地 Agent + 云端 Token | 代码编辑、个人知识库检索、桌面自动化、需要本地文件/IDE/CLI 权限但仍依赖最强模型的任务。事实样本是 [Claude Code 本地终端形态](https://www.claude.com/product/claude-code) 和 [OpenAI Codex CLI/云端 Agent 并存](https://openai.com/index/introducing-codex/)。 | 需要离线、强数据驻留、禁止代码/提示出域的场景。 | 本地工具可达性、模型质量、云 API 成本、企业允许数据出境的边界。 |
+| 云端 Agent + 云端 Token | 异步长任务、并行 bug 修复、批量代码审查、云端构建/测试、从手机或浏览器发起的后台任务。事实样本是 [Claude Code on the web](https://claude.com/blog/claude-code-on-the-web) 和 [OpenAI Codex 云端软件工程 Agent](https://openai.com/index/introducing-codex/)。 | 需要持续访问本地设备、内网系统、离线密钥、私有硬件或受限数据的任务。 | Always-on、并行度、沙箱隔离、协作审计、代码仓库托管位置。 |
+| 本地 Agent + 本地 Token | OS/应用控制、低延迟交互、敏感文本改写、局部代码补全、个人/家庭记忆、离线助手、轻量工具调用。事实支撑包括 [Microsoft Copilot+ PC 本地功能说明](https://www.microsoft.com/en-us/windows/copilot-plus-pcs)、[Apple Intelligence 的端侧模型与 Private Cloud Compute](https://security.apple.com/documentation/private-cloud-compute)、[LM Studio 离线运行说明](https://lmstudio.ai/docs/app/offline)。 | 高难度推理、超长上下文、复杂多模态、需要最新 frontier model 的任务。 | NPU/GPU/RAM、散热和电池、模型蒸馏/量化、可接受质量阈值。 |
+| 家庭/企业内网边缘 Agent + 中心 Token | 家庭中枢、门店/网点/工厂/医院科室内的多设备共享推理；摄像头、文档、会议、内网系统统一接入。事实层面，[华为昇腾计算](https://e.huawei.com/cn/products/computing/ascend)明确覆盖端、边、云，产品形态包括模块、板卡、小站、服务器、集群；[Atlas 500 A2 智能小站](https://e.huawei.com/cn/products/computing/ascend/atlas-500)定位边缘应用。 | 强依赖全球协作、突发超大并发、需要跨区域弹性算力的任务。 | 多设备摊销、局域网低延迟、数据不出场域、7x24、边缘运维能力。 |
+| 企业私有云 Agent + 企业数据中心 Token | 金融、医疗、政务、制造研发、涉密/气隙环境、企业内部 RAG 和业务流程 Agent。事实支撑包括 [NVIDIA NIM 气隙部署文档](https://docs.nvidia.com/nim/large-language-models/latest/deployment/air-gap-deployment.html)、[Red Hat OpenShift AI disconnected 环境文档](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed_in_a_disconnected_environment/deploying-openshift-ai-in-a-disconnected-environment_install)、[HPE Private Cloud AI](https://www.hpe.com/us/en/private-cloud-ai.html)。 | 小团队低频实验、无法承担 GPU/运维成本、需要最新公有云模型能力的任务。 | 合规、数据驻留、审计、可用预算、GPU 利用率、供应链主权。 |
+| 公有云 Agent + 公有云 Token | frontier model 推理、短期峰值、全球 SaaS、训练/微调实验、跨组织协作、低前期资本开支。事实层面，[NVIDIA NIM](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)支持云、数据中心、工作站等不同基础设施，[阿里云百炼](https://www.alibabacloud.com/help/zh/doc-detail/2579562.html)集成千问和主流第三方模型并提供 API。 | 数据不能出域、气隙、强本地动作闭环、高频低延迟桌面交互。 | 弹性、模型可得性、供应商锁定、跨境合规、单位 token 价格。 |
+
+## 2. 决定性变量
+
+**1. 延迟：Agent 的“动作延迟”比单次 token 延迟更重要。**  
+事实：Copilot+ PC 页面把 Recall、Windows Studio Effects、实时字幕、照片超分等描述为本地运行、无需互联网的体验，[Microsoft Copilot+ PC 官方页](https://www.microsoft.com/en-us/windows/copilot-plus-pcs)同时给出 NPU 40+ TOPS 这一类别门槛。判断/推断：凡是嵌入键盘、鼠标、摄像头、系统设置、会议字幕、应用内改写的任务，云端 300ms 到数秒的链路波动会直接破坏体验，因此会优先本地化；而代码修复、报告生成、数据清洗等“分钟级任务”可容忍云端 Agent。
+
+**2. Token 成本经济学：高频、稳定、可预测负载会从租用 token 迁向自建推理。**  
+事实：NVIDIA 把 NIM 描述为可下载、自托管、可运行在云、数据中心、工作站的推理微服务，[NVIDIA NIM 官方页](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)和[NIM Run Anywhere 文档](https://docs.api.nvidia.com/nim/docs/run-anywhere)都强调自托管。判断/推断：当企业有稳定高 QPS 的内部知识库、客服、质检、文档处理流量时，GPU 折旧和运维成本有机会低于长期公有云 token 账单；但低频、波峰不稳定、模型快速换代的负载仍会留在公有云。
+
+**3. 隐私、数据驻留和合规：决定 Token 服务是否能出域。**  
+事实：中国国家网信办《促进和规范数据跨境流动规定》对数据出境安全评估、个人信息出境标准合同、个人信息保护认证和豁免条件作出规定，[网信办原文](https://www.cac.gov.cn/2024-03/22/c_1712776612187994.htm)和[答记者问](https://www.cac.gov.cn/2024-03/22/c_1712776611649184.htm)均明确“重要数据”和个人信息出境是监管对象；《数据出境安全评估办法》也规定了向境外提供重要数据等触发评估的情形，[办法原文](https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm)。判断/推断：在中国政企、金融、医疗、央国企和信创环境里，合规压力会把相当一部分 Agent 与 Token 服务都推向内网、私有云或一体机。
+
+**4. Always-on 自主性：长期运行的 Agent 倾向云端或边缘中枢。**  
+事实：Claude Code on the web 允许用户在 Anthropic 管理的云基础设施上分配多个并行编码任务，[Anthropic 官方博客](https://claude.com/blog/claude-code-on-the-web)把它定位为浏览器/移动端可监控的云端任务；OpenAI 也把 Codex 描述为云端软件工程 Agent，可并行处理任务，[OpenAI Codex 介绍](https://openai.com/index/introducing-codex/)。判断/推断：笔记本会休眠、断网、换网络；真正的后台 Agent 更适合云端或家庭/企业边缘盒子。但如果 Agent 需要操作本地 App、文件和外设，云端常常只能做“计划与生成”，最终执行仍要回到本地。
+
+**5. 本地硬件：NPU/GPU/RAM 正在把“够用模型”推到端侧。**  
+事实：NVIDIA DGX Spark 官方页标称 128GB 统一内存和最高 1 petaFLOP FP4 AI 计算性能，[DGX Spark 官方页](https://www.nvidia.com/en-us/products/workstations/dgx-spark/)；Microsoft Copilot+ PC 要求 40+ TOPS NPU，[Copilot+ PC 官方页](https://www.microsoft.com/en-us/windows/copilot-plus-pcs)；AMD Ryzen AI 300 系列发布材料称 NPU 最高 50 TOPS，[AMD 官方新闻稿](https://www.amd.com/en/newsroom/press-releases/2024-6-2-amd-unveils-next-gen-zen-5-ryzen-processors-to-p.html)；Qualcomm Snapdragon X 系列产品资料列出 Hexagon NPU，[Qualcomm Snapdragon X 产品列表](https://www.qualcomm.com/laptops/products)。判断/推断：端侧 token 不会先覆盖“所有 AI”，而会先覆盖短上下文、低风险、高频、可离线的局部步骤。
+
+**6. 模型效率：小模型、蒸馏、量化、MoE 会改变分流边界。**  
+事实：Apple 公开了约 3B 参数端侧语言模型和更大的服务器模型设计，[Apple 基础模型研究说明](https://machinelearning.apple.com/research/introducing-apple-foundation-models)；Microsoft Phi Silica 是面向 Windows Copilot+ PC NPU 的本地小语言模型，[Phi Silica 平台卡](https://learn.microsoft.com/en-us/windows/ai/cards/phi-silica-platform-card)；Google Gemma 3n 官方定位是可在手机、平板、笔记本本地运行的开放模型，[Google DeepMind Gemma 3n](https://deepmind.google/en/models/gemma/gemma-3n/)；Qwen3 官方发布覆盖 0.6B 到 235B 的 dense/MoE 系列，[Qwen3 官方博客](https://qwenlm.github.io/blog/qwen3/)；DeepSeek-R1 官方仓库提供基于 Qwen 和 Llama 的 1.5B、7B、8B、14B、32B、70B 蒸馏模型，[DeepSeek-R1 GitHub](https://github.com/deepseek-ai/DeepSeek-R1)；Mistral 3 官方发布包含面向边缘/本地的 Ministral 3B、8B、14B，[Mistral 3 官方发布](https://mistral.ai/fr/news/mistral-3)。判断/推断：小模型会先承担路由、分类、草稿、结构化抽取、工具参数生成、隐私预处理，而不是直接取代最强模型。
+
+**7. 主权与出口管制：会改变企业对“可控算力”的估值。**  
+事实：美国商务部 BIS 对中国先进计算、半导体制造和高带宽内存相关项目加强出口管制，[BIS 官方新闻稿](https://www.bis.gov/press-release/commerce-strengthens-export-controls-restrict-chinas-capability-produce-advanced-semiconductors-military)。事实：中国侧华为昇腾提供端、边、云全场景 AI 基础设施，[华为昇腾计算官方页](https://e.huawei.com/cn/products/computing/ascend)；百度千帆页面提供私有化部署入口，[百度智能云千帆](https://cloud.baidu.com/product/qianfan.html)。判断/推断：出口管制会让中国政企更重视国产芯片、国产推理框架和私有化方案；美国及盟友企业则会更重视供应链合规、云服务区域和模型权重可控性。
+
+## 3. 真实案例与趋势
+
+### 3.1 当前主流与新兴 Agent 形态
+
+事实：本地 Agent + 云端 Token 已经是开发者工具的主流形态之一。Claude Code 官方称其在本地终端运行、可使用 CLI 工具并调用模型 API，[Claude Code 产品页](https://www.claude.com/product/claude-code)；OpenAI 在 Codex 介绍中同时提到本地运行的 Codex CLI 和云端 Codex Agent，[OpenAI Codex 介绍](https://openai.com/index/introducing-codex/)。
+
+事实：云端 Agent + 云端 Token 正在成为“异步工作台”。Anthropic 的 Claude Code on the web 在 Anthropic 管理的云基础设施上运行多个编码任务，[官方博客](https://claude.com/blog/claude-code-on-the-web)；OpenAI Codex 是云端软件工程 Agent，可在云端并行处理任务，[OpenAI 官方介绍](https://openai.com/index/introducing-codex/)。
+
+判断/推断：这两种形态会长期共存。本地 Agent 负责“贴近开发环境和权限边界”，云端 Agent 负责“贴近持续运行和并行算力”。
+
+### 3.2 端侧硬件：从 AI PC 到个人 AI 超算
+
+事实：NVIDIA 正在把本地 AI Agent 作为 RTX PC 与 DGX Spark 的卖点。DGX Spark 官方页给出 128GB 统一内存和最高 1 petaFLOP FP4 AI 性能，[DGX Spark 官方页](https://www.nvidia.com/en-us/products/workstations/dgx-spark/)；NVIDIA 也发布面向 RTX AI PC 的基础模型和 NIM-ready 生态，[NVIDIA RTX AI PC 官方新闻](https://nvidianews.nvidia.com/news/nvidia-launches-ai-foundation-models-for-rtx-ai-pcs)；NIM microservices 可部署在云、数据中心、工作站和边缘，[NVIDIA NIM 官方页](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)。
+
+事实：Apple 采用“端侧优先 + Private Cloud Compute（PCC）”的混合模型。Apple PCC 安全文档称 Apple Intelligence 能在设备上处理时尽量本地处理，复杂请求进入 PCC，[PCC 安全指南](https://security.apple.com/documentation/private-cloud-compute)；Apple 机器学习研究说明公开了端侧模型与服务器模型的分工，[Apple 基础模型研究说明](https://machinelearning.apple.com/research/introducing-apple-foundation-models)。
+
+事实：Microsoft 把 Copilot+ PC 定义为带 40+ TOPS NPU 的 Windows 11 PC，[Copilot+ PC 官方页](https://www.microsoft.com/en-us/windows/copilot-plus-pcs)；Phi Silica 是面向 Copilot+ PC NPU 的本地小语言模型，[Phi Silica 平台卡](https://learn.microsoft.com/en-us/windows/ai/cards/phi-silica-platform-card)。
+
+事实：AMD Ryzen AI 300 系列官方材料称 NPU 最高 50 TOPS，[AMD 官方新闻稿](https://www.amd.com/en/newsroom/press-releases/2024-6-2-amd-unveils-next-gen-zen-5-ryzen-processors-to-p.html)。事实：Qualcomm Snapdragon X 产品线集成 Hexagon NPU，[Qualcomm Snapdragon X 产品列表](https://www.qualcomm.com/laptops/products)。
+
+判断/推断：端侧硬件的意义不只是“把大模型塞进 PC”，而是让 Agent 的若干高频子步骤变成固定成本、低延迟、可离线能力。
+
+### 3.3 本地推理软件：把 Token 服务商品化
+
+事实：Ollama 官方 Docker 博客称其让大语言模型在本地运行，交互发生在本地环境，[Ollama 官方博客](https://ollama.com/blog/ollama-is-now-available-as-an-official-docker-image)。事实：LM Studio 官方页定位为“Run AI models, locally and privately”，[LM Studio 官方页](https://lmstudio.ai/)；其离线文档称下载模型后聊天、文档 RAG 和本地服务器均可离线运行，[LM Studio 离线文档](https://lmstudio.ai/docs/app/offline)。事实：llama.cpp 官方仓库目标是以最小设置在广泛硬件上运行 LLM 推理，[llama.cpp GitHub](https://github.com/ggml-org/llama.cpp)。事实：vLLM 官方定位为高吞吐、内存高效的 LLM 推理和服务引擎，[vLLM 官方页](https://vllm.ai/)。
+
+判断/推断：Ollama/LM Studio/llama.cpp 代表“个人和工作站推理”，vLLM/NIM 代表“服务器推理”。它们共同降低了 Token 服务迁出公有云的迁移成本。
+
+### 3.4 小模型“够用”趋势
+
+事实：Microsoft Phi Silica 面向 Copilot+ PC NPU 本地运行，[Phi Silica 平台卡](https://learn.microsoft.com/en-us/windows/ai/cards/phi-silica-platform-card)。事实：Google Gemma 3n 官方定位为可在手机、平板、笔记本本地运行，[Gemma 3n 官方页](https://deepmind.google/en/models/gemma/gemma-3n/)。事实：Qwen3 提供从 0.6B 到 235B 的模型系列，[Qwen3 官方博客](https://qwenlm.github.io/blog/qwen3/)；DeepSeek-R1 提供 1.5B 到 70B 的蒸馏模型，[DeepSeek-R1 GitHub](https://github.com/deepseek-ai/DeepSeek-R1)；Mistral 3 提供 3B、8B、14B 的 Ministral 边缘/本地模型，[Mistral 3 官方发布](https://mistral.ai/fr/news/mistral-3)。
+
+判断/推断：Agent 系统会越来越多采用“多模型路由”：本地小模型先做意图识别、权限判断、工具 schema 填充、敏感信息脱敏、草稿生成；只有当任务越过质量阈值或需要深度推理时，才路由到云端或私有数据中心的大模型。
+
+### 3.5 企业私有/气隙：从“能部署”走向“标准产品”
+
+事实：NVIDIA AI Enterprise 是面向云、数据中心、边缘的企业 AI 软件平台，[NVIDIA AI Enterprise 文档](https://docs.nvidia.com/ai-enterprise/index.html)；NIM LLM 文档提供气隙部署流程，说明可在无互联网连接、无远端模型仓库访问的环境中运行 NIM，[NIM 气隙部署文档](https://docs.nvidia.com/nim/large-language-models/latest/deployment/air-gap-deployment.html)。事实：Red Hat OpenShift AI Self-Managed 支持 disconnected environment 安装，[Red Hat 官方文档](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed_in_a_disconnected_environment/deploying-openshift-ai-in-a-disconnected-environment_install)。事实：Dell AI Factory with NVIDIA 覆盖工作站、数据中心和云，[Dell 官方博客](https://www.dell.com/en-us/blog/simplifying-ai-in-the-enterprise/)；HPE Private Cloud AI 是与 NVIDIA 共建的私有云 AI 方案，[HPE Private Cloud AI](https://www.hpe.com/us/en/private-cloud-ai.html)。
+
+判断/推断：私有化不会只发生在模型推理层。企业要的是“Agent 运行时 + 权限 + 审计 + 数据连接 + 推理服务 + 运维”的整体交付。这会推动“AI factory / 大模型一体机 / 私有 Agent 平台”成为采购品类。
+
+### 3.6 协议层：MCP 让本地 Agent 够到本地工具与数据
+
+事实：Anthropic 发布 Model Context Protocol（模型上下文协议，MCP），称其是连接 AI 工具与数据源的开放标准，[Anthropic MCP 发布](https://www.anthropic.com/news/model-context-protocol?cam=claude)。事实：MCP 规范允许服务器暴露工具，供模型调用，[MCP 工具规范](https://modelcontextprotocol.io/specification/2025-06-18/server/tools)。事实：Claude 文档把 MCP 类比为连接模型与数据源/工具的标准方式，[Anthropic MCP 文档](https://docs.anthropic.com/en/docs/mcp)。
+
+判断/推断：MCP 会强化“Agent 留在靠近工具和数据的位置”。当本地文件系统、浏览器、数据库、设计工具、企业 SaaS 都可通过 MCP 暴露能力时，本地/内网 Agent 的价值上升；云端模型仍可参与推理，但不一定拥有工具执行权。
+
+### 3.7 中国侧：国产算力、DeepSeek 本地化、信创与一体机
+
+事实：华为昇腾计算官方页称其基于昇腾 AI 处理器和基础软件，提供模块、板卡、小站、服务器、集群等产品形态，覆盖端、边、云，[华为昇腾计算](https://e.huawei.com/cn/products/computing/ascend)。事实：Atlas 800I A3 面向互联网、金融等行业的大模型推理场景，[华为 Atlas 800I A3](https://e.huawei.com/cn/products/computing/ascend/atlas-800i-a3)；Atlas 500 A2 智能小站面向边缘应用，[华为 Atlas 500 A2](https://e.huawei.com/cn/products/computing/ascend/atlas-500)。
+
+事实：中国 AI PC 也在走“端云混合/个人智能体”路线。华为 MateBook X Pro 页面称其有 AI 专属芯片、模型和应用加持，并提供端云 AI 体验，[华为 MateBook X Pro](https://consumer.huawei.com/cn/laptops/matebook-x-pro-ultra-premium-edition/)；联想天禧智能体 PC 端说明把天禧描述为个人超级智能体，[联想知识库](https://iknow.lenovo.com.cn/detail/dc_429817.html)；联想开天宣布全系 PC 可搭载天禧 AI Pro 智能体，面向信创 AI PC，[联想官方知识库](https://www.lenovo.com.cn/wiki/article-51809.html)。
+
+事实：DeepSeek 本地化和私有化已经进入云厂商与一体机产品。DeepSeek-R1 官方仓库提供开源/蒸馏模型与 vLLM 部署示例，[DeepSeek-R1 GitHub](https://github.com/deepseek-ai/DeepSeek-R1)。华为云提供“快速搭建 DeepSeek 推理系统”实践，[华为云部署文档](https://support.huaweicloud.com/deepseek-aislt/deepseek_05.html)；华为云新闻称已适配 DeepSeek-V4-Flash API 和昇腾算子优化，[华为云新闻](https://www.huaweicloud.com/news/2026/20260424172129152.html)。百度千帆页面提供私有化部署能力，[百度智能云千帆](https://cloud.baidu.com/product/qianfan.html)；百度 DeepSeek 页面介绍千帆一体机和昆仑芯 P800 的 DeepSeek 私有化部署方案，[百度 DeepSeek 页面](https://cloud.baidu.com/deepseek.html?track=home_jingangwei)。阿里云百炼集成千问全系列和主流第三方大模型，并提供模型 API，[阿里云百炼说明](https://www.alibabacloud.com/help/zh/doc-detail/2579562.html)；阿里云帮助文档列出百炼上的 DeepSeek 模型服务，[阿里云 DeepSeek 文档](https://help.aliyun.com/zh/model-studio/siliconflow-deepseek-api)。商汤大模型一体机页面称支持 SenseNova、DeepSeek 等模型并提供全国产化硬件选型，[商汤大模型一体机](https://www.sensecore.cn/product/AI-in-One)；ZStack 智塔 AI 一体机 DeepSeek 版称支持国产 CPU/GPU 适配和信创要求，[ZStack 智塔 AI 一体机](https://www.zstack.io/product/aiosDeepSeek/)。
+
+判断/推断：中国的分流会比美国更偏向私有化和内网化，原因不是单一的“模型开源”，而是三股力量叠加：一是数据出境与重要数据监管，二是信创/国产化采购，三是出口管制下对可控算力供应链的重估。
+
+## 4. 核心论点
+
+**Thesis 1：Agent 执行位置会跟随工具与数据，Token 服务位置会被动态路由。**  
+证据：Claude Code 本地终端形态说明本地 Agent 对本地 CLI/代码库有天然优势，[Claude Code 产品页](https://www.claude.com/product/claude-code)；Codex 和 Claude Code on the web 说明云端 Agent 对并行、后台、云端沙箱有优势，[OpenAI Codex](https://openai.com/index/introducing-codex/)、[Claude Code on the web](https://claude.com/blog/claude-code-on-the-web)。推断：同一企业会同时采用本地 Agent、云端 Agent 和内网 Agent，而不是选一个唯一形态。
+
+**Thesis 2：本地 Token 会先吃掉“高频、低风险、够用”的子任务，而不是直接替代云端 frontier model。**  
+证据：Copilot+ PC 以 40+ TOPS NPU 支撑本地 AI 体验，[Microsoft Copilot+ PC](https://www.microsoft.com/en-us/windows/copilot-plus-pcs)；Phi Silica、Gemma 3n、Qwen3 小尺寸、DeepSeek-R1 distill、Ministral 都指向端侧/本地小模型可用性，[Phi Silica](https://learn.microsoft.com/en-us/windows/ai/cards/phi-silica-platform-card)、[Gemma 3n](https://deepmind.google/en/models/gemma/gemma-3n/)、[Qwen3](https://qwenlm.github.io/blog/qwen3/)、[DeepSeek-R1](https://github.com/deepseek-ai/DeepSeek-R1)、[Mistral 3](https://mistral.ai/fr/news/mistral-3)。推断：未来 Agent 的常见结构会是“小模型在本地做前处理与动作闭环，大模型在云端/私有云做困难推理”。
+
+**Thesis 3：边缘中心 Token 会成为家庭、门店、工厂、医院、园区的中间态。**  
+证据：华为昇腾覆盖端、边、云并提供边缘小站，[华为昇腾](https://e.huawei.com/cn/products/computing/ascend)、[Atlas 500 A2](https://e.huawei.com/cn/products/computing/ascend/atlas-500)；NVIDIA NIM 可在工作站、数据中心和边缘运行，[NVIDIA NIM](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)。推断：边缘中心能在“数据不出场域”和“多设备共享算力”之间取得折中，尤其适合摄像头、会议、文档、传感器和局域网业务系统。
+
+**Thesis 4：强合规行业会采购“私有 Agent + 私有 Token + 审计治理”的整包，而非单独采购模型。**  
+证据：NIM 支持气隙部署，[NIM 气隙部署](https://docs.nvidia.com/nim/large-language-models/latest/deployment/air-gap-deployment.html)；OpenShift AI 支持 disconnected 环境，[Red Hat 文档](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed_in_a_disconnected_environment/deploying-openshift-ai-in-a-disconnected-environment_install)；Dell/HPE 提供 AI Factory/Private Cloud AI，[Dell AI Factory](https://www.dell.com/en-us/blog/simplifying-ai-in-the-enterprise/)、[HPE Private Cloud AI](https://www.hpe.com/us/en/private-cloud-ai.html)。推断：金融、医疗、政务和央国企会把 Agent 平台看成受控基础设施，而不是单纯 SaaS 订阅。
+
+**Thesis 5：中国市场会形成更强的“本地化部署拉力”。**  
+证据：中国数据出境规则和安全评估制度提供合规约束，[网信办《促进和规范数据跨境流动规定》](https://www.cac.gov.cn/2024-03/22/c_1712776612187994.htm)、[《数据出境安全评估办法》](https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm)；华为昇腾、百度千帆私有化、DeepSeek 一体机和信创一体机产品说明都指向私有化供给侧成熟，[华为昇腾](https://e.huawei.com/cn/products/computing/ascend)、[百度 DeepSeek](https://cloud.baidu.com/deepseek.html?track=home_jingangwei)、[商汤一体机](https://www.sensecore.cn/product/AI-in-One)、[ZStack DeepSeek 一体机](https://www.zstack.io/product/aiosDeepSeek/)。推断：在中国，企业私有云 Agent + 企业数据中心 Token、边缘 Agent + 中心 Token 会比美国更早进入规模化采购。
+
+## 5. 本轮自标薄弱点
+
+**薄弱点 1：本地 Token 的真实总拥有成本仍缺少跨厂商、可复现实测。**  
+我可以论证硬件和软件条件成熟，但“本地推理一定更便宜”取决于 GPU 利用率、电价、运维、模型更新、峰谷负载和云 API 价格。云厂商 token 价格变化很快，本轮没有使用具体价格做结论。
+
+**薄弱点 2：小模型“够用”的边界高度任务相关。**  
+端侧模型在摘要、改写、分类、工具参数生成上更容易够用；在复杂代码修改、数学推理、长上下文法律/医疗分析上可能不足。本文把小模型定位为 Agent 子步骤和路由层，而不是全能替代，但具体比例需要场景评测支撑。
+
+**薄弱点 3：企业私有化热潮可能被运维复杂度反噬。**  
+NIM、OpenShift AI、HPE/Dell/国内一体机降低了部署门槛，但私有 Agent 平台仍涉及权限、审计、RAG 数据治理、模型评测、GPU 调度和安全响应。若企业无法持续运营，可能回流到公有云或托管私有云。
+
+exec
+/bin/zsh -lc 'pwd && rg --files' in /Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化
+ succeeded in 0ms:
+/Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化
+discussion/link-check-r1.tsv
+discussion/claude-research-notes.md
+prompts/codex-r1.md
+prompts/codex-r2-challenge.md
+drafts/codex-r2.run.log
+drafts/codex-r1.md
+drafts/codex-r1.run.log
+
+web search: 
+web search: NVIDIA DGX Spark official price $4699 128GB unified memory 1 PFLOP FP4
+web search: 
+web search: https://marketplace.nvidia.com/en-us/developer/dgx-spark/
+web search: 
+web search: OpenAI API pricing official GPT-5.1 GPT-5.2 input output tokens price 2026
+web search: 
+web search: https://openai.com/api/pricing/
+web search: 
+web search: vLLM continuous batching pagedattention official documentation throughput memory efficient serving engine
+web search: 
+web search: Apple Private Cloud Compute security guide stateless no data retained verifiable transparency official
+web search: 
+web search: Azure confidential computing official protect data in use enclaves trusted execution environments
+web search: 
+web search: AWS European Sovereign Cloud official customers government regulated workloads data residency operational autonomy
+web search: 
+web search: 2025 大模型一体机 市场 复购 扩容 DeepSeek 信创 IDC 一体机 报告
+web search: 
+web search: https://www.caict.ac.cn/kxyj/qwfb/ztbg/202510/P020251031405764520571.pdf
+web search: 
+web search: 
+web search: 
+web search: "全国大模型一体机" "中标金额" 2752万 3669万
+web search: 
+web search: site:ccgp.gov.cn DeepSeek 大模型一体机 采购 中标 公告 2025
+web search: 
+web search: 爱尔眼科 联想 AI 一体机 DeepSeek 本地部署 官方
+web search: 
+web search: 2026 AI Index frontier models compute scaling investment Stanford AI Index official 2026 PDF
+web search: 
+web search: https://hai.stanford.edu/ai-index/2026-ai-index-report/technical-performance
+web search: 
+web search: OpenAI Agents SDK official agents are models instructions tools handoffs guardrails
+web search: 
+web search: https://www.hpe.com/us/en/solutions/artificial-intelligence/nvidia-collaboration.html
+codex
+我已确认首轮的论点主要问题不在“格子分流”本身，而在对本地 Token 成本、私有化需求强度、一体机持续性的表述偏强。接下来会把第 3 轮写成“逐条回应 + 修订后 Thesis”的稿件，避免把缺证据的推断写成事实。
+codex
+我现在开始写文件，核心修订会是：成本论点从“高频默认转本地”改成“只有高利用率/强约束/质量够用时才可能转本地”；同时把 PCC、confidential computing、主权云作为第三条路纳入框架。
+apply patch
+patch: completed
+/Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+diff --git a/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md b/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a79740a95819496e283383fd73fc24010e306ca2
+--- /dev/null
++++ b/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+@@ -0,0 +1,111 @@
++# AI Agent 部署拓扑演化：第 3 轮回应
++
++本文截至日期：2026-06-04。本轮目标不是重写首轮全文，而是逐条回应合著分析师对 `drafts/codex-r1.md` 的五个质疑，并修订需要收窄的 Thesis。结论先写在前面：我接受“Token 服务位置是主矛盾”的重心调整，也接受“单人/低利用率本地推理不能默认更便宜”的批评；我仍坚持 Agent 位置有独立意义，但它更像控制平面、权限边界和动作位置，而不是主要成本中心。
++
++## 质疑 1：Token 经济学是否结构性利好云，本地只剩隐私/低延迟/离线/合规
++
++**判断：接受主要批评，修正 Thesis 2。**
++
++我把首轮 Thesis 2 写成“本地 Token 会先吃掉高频、低风险、够用子任务”，其中“高频”表述过宽。更准确的版本应是：**本地 Token 先吃掉低风险、低延迟、隐私敏感、可离线、质量够用、且本地硬件已被充分利用的子任务；成本只有在高利用率和质量可替代同时成立时才是优势。**
++
++理由如下。
++
++第一，云端确实有结构性成本优势。大规模推理服务能通过连续批处理、KV cache/prefix cache、请求调度和高利用率摊薄 GPU 成本。vLLM 官方说明其核心是 PagedAttention、continuous batching 和高吞吐服务能力，[vLLM 官方页](https://vllm.ai/)与 NVIDIA vLLM 文档也强调 PagedAttention 可降低 KV cache 浪费、支持更大 batch、提升吞吐，[NVIDIA vLLM overview](https://docs.nvidia.com/deeplearning/frameworks/vllm-release-notes/overview.html)。NVIDIA NIM 也把 LLM 推理定位为低延迟、高吞吐的优化微服务，可跑在云、数据中心、工作站和边缘，[NVIDIA NIM 官方页](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)。这些机制对单人本地机器并不天然成立，因为个人负载很难把硬件持续打满。
++
++第二，云厂商有批处理和缓存价格杠杆。OpenAI 官方价格页列出 Batch API 可对输入和输出节省 50%，并列出 cached input 价格；例如 2026-06-04 页面上 GPT-5.4 mini 标准价格是 input $0.75 / 1M、cached input $0.075 / 1M、output $4.50 / 1M，Batch 进一步降到 input $0.375 / 1M、output $2.25 / 1M，[OpenAI API pricing](https://developers.openai.com/api/docs/pricing)。这直接削弱了“高频一定本地更便宜”的说法。
++
++第三，用 DGX Spark 做单人推理的成本不能轻率判优。NVIDIA 官方商城列出的 DGX Spark 价格是 **$4,699**，[NVIDIA Marketplace](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/)；官方硬件文档列出 128GB 统一内存、最高 1 PFLOP FP4、240W 电源、GB10 SoC TDP 140W，[DGX Spark hardware guide](https://docs.nvidia.com/dgx/dgx-spark/hardware.html)。即便只按 36 个月折旧，硬件也约 $130/月，另加电费、维护、闲置、模型更新和机会成本。若拿云端 mini 模型的批处理 output $2.25 / 1M tokens 对比，单月仅折旧就相当于约 58M output tokens；加入电费和运维后更高。这个粗算不是性能 benchmark，但足以说明：**单人本地成本优势没有被证明，尤其不能和云端批处理直接竞争。**
++
++因此我收回“高频天然迁向本地”的强说法。本地真正稳定的护城河主要是你列的四项：**隐私、低延迟交互、离线、合规**。成本是第五项，但只在以下条件下成立：负载稳定、硬件利用率高、可接受较小/较旧/开源模型、已有运维能力、或本地硬件本来就为其他任务沉没投入。企业数据中心或边缘中心比个人 PC 更可能满足这些条件。
++
++## 质疑 2：PCC/可验证私有云是否吃掉本地化/私有化隐私论证
++
++**判断：部分接受，并修订 Thesis 4/5。**
++
++我同意 PCC 代表的“可验证私有云”会成为第三条路，不能把强合规需求简单二分为“公有云 API”与“企业自建气隙”。Apple PCC 的关键不是“云端私有化营销”，而是把 stateless computation、端到端加密、软件透明度、远程证明和外部研究者验证组合起来。Apple PCC 安全指南明确把“stateless computation on personal user data”和“verifiable transparency”列为安全目标，[Apple PCC Security Guide](https://security.apple.com/documentation/private-cloud-compute)；Apple 的 PCC 研究博客也强调用户数据对 Apple 不可访问，[Private Cloud Compute: A new frontier for AI privacy in the cloud](https://security.apple.com/com/blog/private-cloud-compute/)。
++
++这会分走一部分“既要隐私又要 frontier 能力”的需求。更广义地看，AWS Nitro Enclaves 可创建隔离执行环境处理敏感数据，[AWS Nitro Enclaves](https://aws.amazon.com/ec2/nitro/nitro-enclaves/)；Google Confidential VM 提供 memory encryption / encryption-in-use，[Google Confidential VM docs](https://docs.cloud.google.com/compute/docs/about-confidential-vm)；Azure Confidential Computing 官方说明其用硬件证明的 TEE 保护 data in use，[Azure Confidential Computing overview](https://learn.microsoft.com/en-us/azure/confidential-computing/overview)。主权云也在走同一方向：Microsoft Sovereign Cloud 强调数据驻留、运营监督和客户控制加密，[Microsoft Sovereign Public Cloud](https://learn.microsoft.com/en-us/industry/sovereign-cloud/sovereign-public-cloud/overview-sovereign-public-cloud)；AWS European Sovereign Cloud 强调 EU 内数据驻留和运营自治，[AWS European Sovereign Cloud](https://aws.eu/european-sovereign-cloud/)。
++
++但我不认为它会完全吃掉企业私有化和气隙部署，原因有三点。
++
++第一，PCC 目前是 Apple 生态内的 Apple Intelligence 架构，不是通用企业 LLM 托管标准。它证明了方向，不等于所有企业 Agent 负载都已有等价产品。
++
++第二，confidential computing 主要降低“云运营商/宿主机看到 data in use”的风险，但没有自动解决所有问题：控制平面、司法辖区、供应链、模型权重可控性、日志与审计、离线连续性、内网工具访问、监管现场检查仍然存在。
++
++第三，气隙不是只为隐私，也是为运营隔离、国家安全、涉密网络、故障域隔离和供应链主权。NVIDIA NIM 的 LLM 文档提供 air-gap deployment，[NIM air-gap deployment](https://docs.nvidia.com/nim/large-language-models/latest/deployment/air-gap-deployment.html)；Red Hat OpenShift AI 也有 disconnected environment 安装文档，[Red Hat OpenShift AI disconnected environment](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed_in_a_disconnected_environment/deploying-openshift-ai-in-a-disconnected-environment_install)。这些不是 PCC 的替代品，而是另一类强隔离需求。
++
++中美会分化。美国和欧洲的受监管企业更可能接受“托管私有云 / confidential AI / sovereign cloud”，因为它保留云端规模、模型更新和运维能力。中国则会更偏向国内专有云、企业私有云、一体机或本地托管，原因是数据出境规则、重要数据治理、信创/国产化、政企采购习惯共同作用。网信办《促进和规范数据跨境流动规定》和《数据出境安全评估办法》仍是中国侧边界条件，[规定原文](https://www.cac.gov.cn/2024-03/22/c_1712776612187994.htm)、[评估办法](https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm)。修订后的 Thesis 4 应加入：**强合规需求会分流到三类方案：自建/气隙、托管私有云/主权云、可验证 confidential cloud；不同国家和行业的比例不同。**
++
++## 质疑 3：2025“一体机元年”是结构性需求还是 DeepSeek + 信创采购脉冲
++
++**判断：部分接受，且对首轮中国一体机判断降温。**
++
++我同意：2025 年的一体机热潮里有明显的 DeepSeek 出圈和信创/国产化采购脉冲。首轮把“供给侧成熟”和“采购品类形成”写得偏积极，但没有证明可持续复购/扩容。
++
++支持结构性需求的证据主要是“使用门槛和合规场景”而不是“普遍经济性”。中国信通院《大模型一体机应用研究报告（2025 年）》认为，一体机通过软硬一体封装模型加载、推理加速、知识集成和接口调度，降低使用门槛、缩短部署到见效周期；报告还指出，推理一体机是当前落地主导形态，政务、金融、医疗、制造等行业在数据安全、私有化部署、低延迟和行业知识适配上有明确选型需求，[中国信通院报告 PDF](https://www.caict.ac.cn/kxyj/qwfb/ztbg/202510/P020251031405764520571.pdf)。政府采购网也能看到真实采购项目，例如电子科技大学“AI 大模型训练与推理一体机等”中标金额 618 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202504/t20250411_24429839.htm)；中国科学院软件研究所 2026 年“大模型服务器采购项目”中标金额 410 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202603/t20260306_26237417.htm)。医疗侧也有联想为爱尔眼科本地部署 DeepSeek 的官方案例，[联想案例](https://brand.lenovo.com.cn/brand/ppn03261.html?brandType=&innerKey=&key=%E8%81%94%E6%83%B3&page=1&source=fromwww&type=brand&years=)。
++
++但反证也很强。中国信通院同一报告明确提醒：本地化部署提高初始采购成本和后期运维成本，包括硬件购置、机房改造、电力供应和专业运维团队；在超大规模训练和海量高并发服务中存在瓶颈，更适用于数据隐私要求极高、业务规模相对稳定、且具备资金与技术支持能力的行业用户。另据中国电信天翼智库在 C114 的跟踪文章，2025 年一体机舆情热度从高点回落，截至 2025 年 9 月全国大模型一体机合计中标金额仅 2752 万元，按时序预估全年 3669 万元，远低于年初乐观预测，[C114/天翼智库](https://www.c114.com.cn/news/117/a1300068.html)。这说明“厂商供给和概念热”不等于“客户持续复购”。
++
++所以我的修订判断是：**2025 的通用大模型一体机热潮包含明显一次性脉冲；可持续部分不是“买一台盒子跑 DeepSeek”，而是行业化、可运维、可扩容的私有 AI 平台。**中小企业若没有强合规、固定高并发、内网数据闭环或本地低延迟要求，真实经济性通常不如公有云 API/MaaS/托管私有云。运维复杂度会让相当一部分客户回流到公有云或托管方案。
++
++## 质疑 4：能力鸿沟持续拉大，“本地够用”是否长期追不上
++
++**判断：部分接受。分流边界不是稳定边界，而是动态边界。**
++
++我同意 frontier 能力还在快速提高，本地“够用”的边界会被不断重新定义。Stanford HAI 2026 AI Index 写到，frontier models 在 Humanity's Last Exam 上一年提升 30 个百分点；同时截至 2026 年 3 月，最强闭源模型领先最强开源模型 3.3%，高于 2024 年 8 月的 0.5%；Agent 在结构化 benchmark 上仍约三分之一失败，[Stanford AI Index 2026 Technical Performance](https://hai.stanford.edu/ai-index/2026-ai-index-report/technical-performance)。Epoch AI 的模型数据库持续跟踪训练 compute、参数、训练成本等，并把 frontier model 定义为发布时训练 compute 处在前 10 的模型，[Epoch AI Models](https://epoch.ai/data/ai-models)。这些数据都支持“前沿线仍在移动”。
++
++但这不是单向“向云回摆”。更准确的动态是两条前沿同时移动：
++
++1. **能力前沿向云/大集群移动。**复杂代码、长上下文法律/医疗、深度研究、多模态推理、高可靠 Agent、需要最新 benchmark 能力的任务，会继续向公有云或大型私有云 Token 服务集中。
++
++2. **效率前沿向端侧/边缘扩散。**已经过时一代的 frontier 能力会通过蒸馏、量化、小模型、MoE、推理引擎优化扩散到本地。NVIDIA DGX Spark 官方称单机可测试和推理最高 200B 参数模型，[DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/)；Apple 公开了约 3B 参数端侧模型和更大的服务器模型分工，[Apple Foundation Models](https://machinelearning.apple.com/research/introducing-apple-foundation-models)；DeepSeek-R1 提供 1.5B 到 70B 的蒸馏模型，[DeepSeek-R1 GitHub](https://github.com/deepseek-ai/DeepSeek-R1)；Qwen3 覆盖 0.6B 到 235B，[Qwen3 blog](https://qwenlm.github.io/blog/qwen3/)。
++
++因此边界会“分层摆动”：最难任务向云和大型私有云回摆；低风险、短上下文、私密、低延迟、离线、工具参数化、RAG 前处理、草稿和过滤任务向本地扩散。我的修订 Thesis 2 是：**本地 Token 的份额会在请求数量上增长，但在最高价值/最高难度 tokens 上不一定增长；它更像 Agent 系统的第一跳、过滤器和动作闭环，而不是 frontier model 替代品。**
++
++## 质疑 5：真正的问题是“贵的 Token 放哪”，Agent 位置应跟随数据和工具
++
++**判断：接受框架重心调整，但保留 Agent 位置的独立决定性。**
++
++我同意把决策顺序从“六个格子并列”改为：
++
++1. **先定 Token 服务位置。**核心变量是模型能力、单位 token 成本、合规/数据驻留、可验证隐私、利用率、弹性和供应链。
++2. **再定 Agent 执行位置。**核心变量是数据与工具在哪里、动作权限在哪里、审计与密钥在哪里、是否需要低延迟/离线/always-on。
++
++OpenAI Agents SDK 把 agent 定义为带 instructions、tools、handoffs、guardrails 和 structured outputs 的 LLM 配置，[OpenAI Agents SDK](https://openai.github.io/openai-agents-python/agents/)；LangChain 文档也把 agents 描述为把语言模型和工具结合起来、决定使用哪些工具并迭代完成任务的系统，[LangChain agents](https://docs.langchain.com/oss/python/langchain/agents)。这说明 Agent 编排层本身通常不是主要算力成本中心，真正贵的是反复调用模型生成/推理 tokens。
++
++但 Agent 位置仍有独立决定性，尤其在以下场景：
++
++- **权限与动作边界。**能否操作本地文件、IDE、浏览器、数据库、内网系统、OT 设备，不取决于 Token 在哪，而取决于 Agent runtime 在哪、拥有什么凭据和执行沙箱。
++- **数据引力与工具延迟。**大量业务数据、日志、代码仓库、设计文件、医疗/工控系统在内网或设备侧，Agent 留在数据旁边可以减少数据搬运和权限暴露。
++- **审计和安全责任。**企业通常需要记录谁授权、Agent 调了什么工具、读写了什么数据、失败后如何回滚。这是控制平面问题，不只是模型推理问题。
++- **离线和 always-on。**云端 Agent 适合长任务和并行，边缘 Agent 适合门店/工厂/医院科室的连续运行，本地 Agent 适合桌面动作闭环。
++
++因此六格框架仍有用，但它应降级为“部署诊断矩阵”，不应被读成六类同等重要的市场。新框架应是：**Token 是成本与能力中心，Agent 是控制平面与动作边界；两者解耦，但 Token 位置优先决策。**
++
++## 修订后的 Thesis
++
++**Thesis 1（保留但重写）：Agent 与 Token 解耦仍是核心前提；但决策顺序应先定 Token 服务位置，再让 Agent 位置跟随数据、工具、权限和动作延迟。**
++
++**Thesis 2（明显修正）：本地 Token 不会因“高频”天然胜出。它会先承担低风险、低延迟、隐私敏感、离线、质量够用且本地硬件利用率足够的子任务；单人本地推理默认不是成本赢家。**
++
++**Thesis 3（保留）：边缘中心 Token 仍是家庭、门店、工厂、医院、园区的中间态，但成立条件是多设备共享、局域网低延迟、数据不出场域和可运维。**
++
++**Thesis 4（修正）：强合规行业不会只走企业自建私有云，还会分流到可验证私有云、confidential cloud、托管私有云和主权云。气隙/自建仍存在，但不是唯一答案。HPE 链接修正为 [NVIDIA AI Computing by HPE](https://www.hpe.com/us/en/solutions/artificial-intelligence/nvidia-collaboration.html)，该页继续覆盖 HPE 与 NVIDIA 的 AI factory、Private Cloud AI 和 Sovereign AI factory。**
++
++**Thesis 5（降温）：中国市场的本地化部署拉力仍强于美国，但 2025 一体机热潮包含 DeepSeek + 信创采购脉冲。可持续需求会集中在政务、金融、医疗、制造、能源等强合规/强数据闭环行业，以及能提供行业应用、运维和扩容路径的厂商；通用一体机不应被视为普遍经济性成立。**
++
++## 我仍坚持
++
++- Agent 执行位置与 Token 服务位置必须解耦分析。
++- 未来不会收敛到单一拓扑，而是按能力、成本、合规、数据和动作边界分流。
++- 本地/边缘 Token 会增长，但主要增长在第一跳、前处理、过滤、低延迟动作闭环和隐私敏感任务。
++- 中国市场相对美国会有更强的私有化、本地化、国产化拉力。
++- 企业买的不是“模型”本身，而是模型服务、Agent runtime、权限、审计、RAG、数据治理和运维的组合。
++
++## 我已修正
++
++- 不再把“高频”本身视为本地成本优势；高频也可能正是云端批处理最有优势的区间。
++- 不再把强合规场景默认判给“企业自建私有云/气隙”；新增可验证私有云、confidential cloud、托管私有云、主权云作为第三条路。
++- 不再把 2025 一体机热潮直接等同于长期可持续需求；目前复购/扩容证据不足，通用一体机可能是采购脉冲。
++- 不再把“小模型够用”描述成稳定边界；边界会随 frontier 能力提高而动态移动。
++- 六格框架降级为诊断矩阵；文章主线改为“先定 Token 放哪，再定 Agent 跑哪”。
+
+diff --git a/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md b/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a79740a95819496e283383fd73fc24010e306ca2
+--- /dev/null
++++ b/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+@@ -0,0 +1,111 @@
++# AI Agent 部署拓扑演化：第 3 轮回应
++
++本文截至日期：2026-06-04。本轮目标不是重写首轮全文，而是逐条回应合著分析师对 `drafts/codex-r1.md` 的五个质疑，并修订需要收窄的 Thesis。结论先写在前面：我接受“Token 服务位置是主矛盾”的重心调整，也接受“单人/低利用率本地推理不能默认更便宜”的批评；我仍坚持 Agent 位置有独立意义，但它更像控制平面、权限边界和动作位置，而不是主要成本中心。
++
++## 质疑 1：Token 经济学是否结构性利好云，本地只剩隐私/低延迟/离线/合规
++
++**判断：接受主要批评，修正 Thesis 2。**
++
++我把首轮 Thesis 2 写成“本地 Token 会先吃掉高频、低风险、够用子任务”，其中“高频”表述过宽。更准确的版本应是：**本地 Token 先吃掉低风险、低延迟、隐私敏感、可离线、质量够用、且本地硬件已被充分利用的子任务；成本只有在高利用率和质量可替代同时成立时才是优势。**
++
++理由如下。
++
++第一，云端确实有结构性成本优势。大规模推理服务能通过连续批处理、KV cache/prefix cache、请求调度和高利用率摊薄 GPU 成本。vLLM 官方说明其核心是 PagedAttention、continuous batching 和高吞吐服务能力，[vLLM 官方页](https://vllm.ai/)与 NVIDIA vLLM 文档也强调 PagedAttention 可降低 KV cache 浪费、支持更大 batch、提升吞吐，[NVIDIA vLLM overview](https://docs.nvidia.com/deeplearning/frameworks/vllm-release-notes/overview.html)。NVIDIA NIM 也把 LLM 推理定位为低延迟、高吞吐的优化微服务，可跑在云、数据中心、工作站和边缘，[NVIDIA NIM 官方页](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)。这些机制对单人本地机器并不天然成立，因为个人负载很难把硬件持续打满。
++
++第二，云厂商有批处理和缓存价格杠杆。OpenAI 官方价格页列出 Batch API 可对输入和输出节省 50%，并列出 cached input 价格；例如 2026-06-04 页面上 GPT-5.4 mini 标准价格是 input $0.75 / 1M、cached input $0.075 / 1M、output $4.50 / 1M，Batch 进一步降到 input $0.375 / 1M、output $2.25 / 1M，[OpenAI API pricing](https://developers.openai.com/api/docs/pricing)。这直接削弱了“高频一定本地更便宜”的说法。
++
++第三，用 DGX Spark 做单人推理的成本不能轻率判优。NVIDIA 官方商城列出的 DGX Spark 价格是 **$4,699**，[NVIDIA Marketplace](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/)；官方硬件文档列出 128GB 统一内存、最高 1 PFLOP FP4、240W 电源、GB10 SoC TDP 140W，[DGX Spark hardware guide](https://docs.nvidia.com/dgx/dgx-spark/hardware.html)。即便只按 36 个月折旧，硬件也约 $130/月，另加电费、维护、闲置、模型更新和机会成本。若拿云端 mini 模型的批处理 output $2.25 / 1M tokens 对比，单月仅折旧就相当于约 58M output tokens；加入电费和运维后更高。这个粗算不是性能 benchmark，但足以说明：**单人本地成本优势没有被证明，尤其不能和云端批处理直接竞争。**
++
++因此我收回“高频天然迁向本地”的强说法。本地真正稳定的护城河主要是你列的四项：**隐私、低延迟交互、离线、合规**。成本是第五项，但只在以下条件下成立：负载稳定、硬件利用率高、可接受较小/较旧/开源模型、已有运维能力、或本地硬件本来就为其他任务沉没投入。企业数据中心或边缘中心比个人 PC 更可能满足这些条件。
++
++## 质疑 2：PCC/可验证私有云是否吃掉本地化/私有化隐私论证
++
++**判断：部分接受，并修订 Thesis 4/5。**
++
++我同意 PCC 代表的“可验证私有云”会成为第三条路，不能把强合规需求简单二分为“公有云 API”与“企业自建气隙”。Apple PCC 的关键不是“云端私有化营销”，而是把 stateless computation、端到端加密、软件透明度、远程证明和外部研究者验证组合起来。Apple PCC 安全指南明确把“stateless computation on personal user data”和“verifiable transparency”列为安全目标，[Apple PCC Security Guide](https://security.apple.com/documentation/private-cloud-compute)；Apple 的 PCC 研究博客也强调用户数据对 Apple 不可访问，[Private Cloud Compute: A new frontier for AI privacy in the cloud](https://security.apple.com/com/blog/private-cloud-compute/)。
++
++这会分走一部分“既要隐私又要 frontier 能力”的需求。更广义地看，AWS Nitro Enclaves 可创建隔离执行环境处理敏感数据，[AWS Nitro Enclaves](https://aws.amazon.com/ec2/nitro/nitro-enclaves/)；Google Confidential VM 提供 memory encryption / encryption-in-use，[Google Confidential VM docs](https://docs.cloud.google.com/compute/docs/about-confidential-vm)；Azure Confidential Computing 官方说明其用硬件证明的 TEE 保护 data in use，[Azure Confidential Computing overview](https://learn.microsoft.com/en-us/azure/confidential-computing/overview)。主权云也在走同一方向：Microsoft Sovereign Cloud 强调数据驻留、运营监督和客户控制加密，[Microsoft Sovereign Public Cloud](https://learn.microsoft.com/en-us/industry/sovereign-cloud/sovereign-public-cloud/overview-sovereign-public-cloud)；AWS European Sovereign Cloud 强调 EU 内数据驻留和运营自治，[AWS European Sovereign Cloud](https://aws.eu/european-sovereign-cloud/)。
++
++但我不认为它会完全吃掉企业私有化和气隙部署，原因有三点。
++
++第一，PCC 目前是 Apple 生态内的 Apple Intelligence 架构，不是通用企业 LLM 托管标准。它证明了方向，不等于所有企业 Agent 负载都已有等价产品。
++
++第二，confidential computing 主要降低“云运营商/宿主机看到 data in use”的风险，但没有自动解决所有问题：控制平面、司法辖区、供应链、模型权重可控性、日志与审计、离线连续性、内网工具访问、监管现场检查仍然存在。
++
++第三，气隙不是只为隐私，也是为运营隔离、国家安全、涉密网络、故障域隔离和供应链主权。NVIDIA NIM 的 LLM 文档提供 air-gap deployment，[NIM air-gap deployment](https://docs.nvidia.com/nim/large-language-models/latest/deployment/air-gap-deployment.html)；Red Hat OpenShift AI 也有 disconnected environment 安装文档，[Red Hat OpenShift AI disconnected environment](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed_in_a_disconnected_environment/deploying-openshift-ai-in-a-disconnected-environment_install)。这些不是 PCC 的替代品，而是另一类强隔离需求。
++
++中美会分化。美国和欧洲的受监管企业更可能接受“托管私有云 / confidential AI / sovereign cloud”，因为它保留云端规模、模型更新和运维能力。中国则会更偏向国内专有云、企业私有云、一体机或本地托管，原因是数据出境规则、重要数据治理、信创/国产化、政企采购习惯共同作用。网信办《促进和规范数据跨境流动规定》和《数据出境安全评估办法》仍是中国侧边界条件，[规定原文](https://www.cac.gov.cn/2024-03/22/c_1712776612187994.htm)、[评估办法](https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm)。修订后的 Thesis 4 应加入：**强合规需求会分流到三类方案：自建/气隙、托管私有云/主权云、可验证 confidential cloud；不同国家和行业的比例不同。**
++
++## 质疑 3：2025“一体机元年”是结构性需求还是 DeepSeek + 信创采购脉冲
++
++**判断：部分接受，且对首轮中国一体机判断降温。**
++
++我同意：2025 年的一体机热潮里有明显的 DeepSeek 出圈和信创/国产化采购脉冲。首轮把“供给侧成熟”和“采购品类形成”写得偏积极，但没有证明可持续复购/扩容。
++
++支持结构性需求的证据主要是“使用门槛和合规场景”而不是“普遍经济性”。中国信通院《大模型一体机应用研究报告（2025 年）》认为，一体机通过软硬一体封装模型加载、推理加速、知识集成和接口调度，降低使用门槛、缩短部署到见效周期；报告还指出，推理一体机是当前落地主导形态，政务、金融、医疗、制造等行业在数据安全、私有化部署、低延迟和行业知识适配上有明确选型需求，[中国信通院报告 PDF](https://www.caict.ac.cn/kxyj/qwfb/ztbg/202510/P020251031405764520571.pdf)。政府采购网也能看到真实采购项目，例如电子科技大学“AI 大模型训练与推理一体机等”中标金额 618 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202504/t20250411_24429839.htm)；中国科学院软件研究所 2026 年“大模型服务器采购项目”中标金额 410 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202603/t20260306_26237417.htm)。医疗侧也有联想为爱尔眼科本地部署 DeepSeek 的官方案例，[联想案例](https://brand.lenovo.com.cn/brand/ppn03261.html?brandType=&innerKey=&key=%E8%81%94%E6%83%B3&page=1&source=fromwww&type=brand&years=)。
++
++但反证也很强。中国信通院同一报告明确提醒：本地化部署提高初始采购成本和后期运维成本，包括硬件购置、机房改造、电力供应和专业运维团队；在超大规模训练和海量高并发服务中存在瓶颈，更适用于数据隐私要求极高、业务规模相对稳定、且具备资金与技术支持能力的行业用户。另据中国电信天翼智库在 C114 的跟踪文章，2025 年一体机舆情热度从高点回落，截至 2025 年 9 月全国大模型一体机合计中标金额仅 2752 万元，按时序预估全年 3669 万元，远低于年初乐观预测，[C114/天翼智库](https://www.c114.com.cn/news/117/a1300068.html)。这说明“厂商供给和概念热”不等于“客户持续复购”。
++
++所以我的修订判断是：**2025 的通用大模型一体机热潮包含明显一次性脉冲；可持续部分不是“买一台盒子跑 DeepSeek”，而是行业化、可运维、可扩容的私有 AI 平台。**中小企业若没有强合规、固定高并发、内网数据闭环或本地低延迟要求，真实经济性通常不如公有云 API/MaaS/托管私有云。运维复杂度会让相当一部分客户回流到公有云或托管方案。
++
++## 质疑 4：能力鸿沟持续拉大，“本地够用”是否长期追不上
++
++**判断：部分接受。分流边界不是稳定边界，而是动态边界。**
++
++我同意 frontier 能力还在快速提高，本地“够用”的边界会被不断重新定义。Stanford HAI 2026 AI Index 写到，frontier models 在 Humanity's Last Exam 上一年提升 30 个百分点；同时截至 2026 年 3 月，最强闭源模型领先最强开源模型 3.3%，高于 2024 年 8 月的 0.5%；Agent 在结构化 benchmark 上仍约三分之一失败，[Stanford AI Index 2026 Technical Performance](https://hai.stanford.edu/ai-index/2026-ai-index-report/technical-performance)。Epoch AI 的模型数据库持续跟踪训练 compute、参数、训练成本等，并把 frontier model 定义为发布时训练 compute 处在前 10 的模型，[Epoch AI Models](https://epoch.ai/data/ai-models)。这些数据都支持“前沿线仍在移动”。
++
++但这不是单向“向云回摆”。更准确的动态是两条前沿同时移动：
++
++1. **能力前沿向云/大集群移动。**复杂代码、长上下文法律/医疗、深度研究、多模态推理、高可靠 Agent、需要最新 benchmark 能力的任务，会继续向公有云或大型私有云 Token 服务集中。
++
++2. **效率前沿向端侧/边缘扩散。**已经过时一代的 frontier 能力会通过蒸馏、量化、小模型、MoE、推理引擎优化扩散到本地。NVIDIA DGX Spark 官方称单机可测试和推理最高 200B 参数模型，[DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/)；Apple 公开了约 3B 参数端侧模型和更大的服务器模型分工，[Apple Foundation Models](https://machinelearning.apple.com/research/introducing-apple-foundation-models)；DeepSeek-R1 提供 1.5B 到 70B 的蒸馏模型，[DeepSeek-R1 GitHub](https://github.com/deepseek-ai/DeepSeek-R1)；Qwen3 覆盖 0.6B 到 235B，[Qwen3 blog](https://qwenlm.github.io/blog/qwen3/)。
++
++因此边界会“分层摆动”：最难任务向云和大型私有云回摆；低风险、短上下文、私密、低延迟、离线、工具参数化、RAG 前处理、草稿和过滤任务向本地扩散。我的修订 Thesis 2 是：**本地 Token 的份额会在请求数量上增长，但在最高价值/最高难度 tokens 上不一定增长；它更像 Agent 系统的第一跳、过滤器和动作闭环，而不是 frontier model 替代品。**
++
++## 质疑 5：真正的问题是“贵的 Token 放哪”，Agent 位置应跟随数据和工具
++
++**判断：接受框架重心调整，但保留 Agent 位置的独立决定性。**
++
++我同意把决策顺序从“六个格子并列”改为：
++
++1. **先定 Token 服务位置。**核心变量是模型能力、单位 token 成本、合规/数据驻留、可验证隐私、利用率、弹性和供应链。
++2. **再定 Agent 执行位置。**核心变量是数据与工具在哪里、动作权限在哪里、审计与密钥在哪里、是否需要低延迟/离线/always-on。
++
++OpenAI Agents SDK 把 agent 定义为带 instructions、tools、handoffs、guardrails 和 structured outputs 的 LLM 配置，[OpenAI Agents SDK](https://openai.github.io/openai-agents-python/agents/)；LangChain 文档也把 agents 描述为把语言模型和工具结合起来、决定使用哪些工具并迭代完成任务的系统，[LangChain agents](https://docs.langchain.com/oss/python/langchain/agents)。这说明 Agent 编排层本身通常不是主要算力成本中心，真正贵的是反复调用模型生成/推理 tokens。
++
++但 Agent 位置仍有独立决定性，尤其在以下场景：
++
++- **权限与动作边界。**能否操作本地文件、IDE、浏览器、数据库、内网系统、OT 设备，不取决于 Token 在哪，而取决于 Agent runtime 在哪、拥有什么凭据和执行沙箱。
++- **数据引力与工具延迟。**大量业务数据、日志、代码仓库、设计文件、医疗/工控系统在内网或设备侧，Agent 留在数据旁边可以减少数据搬运和权限暴露。
++- **审计和安全责任。**企业通常需要记录谁授权、Agent 调了什么工具、读写了什么数据、失败后如何回滚。这是控制平面问题，不只是模型推理问题。
++- **离线和 always-on。**云端 Agent 适合长任务和并行，边缘 Agent 适合门店/工厂/医院科室的连续运行，本地 Agent 适合桌面动作闭环。
++
++因此六格框架仍有用，但它应降级为“部署诊断矩阵”，不应被读成六类同等重要的市场。新框架应是：**Token 是成本与能力中心，Agent 是控制平面与动作边界；两者解耦，但 Token 位置优先决策。**
++
++## 修订后的 Thesis
++
++**Thesis 1（保留但重写）：Agent 与 Token 解耦仍是核心前提；但决策顺序应先定 Token 服务位置，再让 Agent 位置跟随数据、工具、权限和动作延迟。**
++
++**Thesis 2（明显修正）：本地 Token 不会因“高频”天然胜出。它会先承担低风险、低延迟、隐私敏感、离线、质量够用且本地硬件利用率足够的子任务；单人本地推理默认不是成本赢家。**
++
++**Thesis 3（保留）：边缘中心 Token 仍是家庭、门店、工厂、医院、园区的中间态，但成立条件是多设备共享、局域网低延迟、数据不出场域和可运维。**
++
++**Thesis 4（修正）：强合规行业不会只走企业自建私有云，还会分流到可验证私有云、confidential cloud、托管私有云和主权云。气隙/自建仍存在，但不是唯一答案。HPE 链接修正为 [NVIDIA AI Computing by HPE](https://www.hpe.com/us/en/solutions/artificial-intelligence/nvidia-collaboration.html)，该页继续覆盖 HPE 与 NVIDIA 的 AI factory、Private Cloud AI 和 Sovereign AI factory。**
++
++**Thesis 5（降温）：中国市场的本地化部署拉力仍强于美国，但 2025 一体机热潮包含 DeepSeek + 信创采购脉冲。可持续需求会集中在政务、金融、医疗、制造、能源等强合规/强数据闭环行业，以及能提供行业应用、运维和扩容路径的厂商；通用一体机不应被视为普遍经济性成立。**
++
++## 我仍坚持
++
++- Agent 执行位置与 Token 服务位置必须解耦分析。
++- 未来不会收敛到单一拓扑，而是按能力、成本、合规、数据和动作边界分流。
++- 本地/边缘 Token 会增长，但主要增长在第一跳、前处理、过滤、低延迟动作闭环和隐私敏感任务。
++- 中国市场相对美国会有更强的私有化、本地化、国产化拉力。
++- 企业买的不是“模型”本身，而是模型服务、Agent runtime、权限、审计、RAG、数据治理和运维的组合。
++
++## 我已修正
++
++- 不再把“高频”本身视为本地成本优势；高频也可能正是云端批处理最有优势的区间。
++- 不再把强合规场景默认判给“企业自建私有云/气隙”；新增可验证私有云、confidential cloud、托管私有云、主权云作为第三条路。
++- 不再把 2025 一体机热潮直接等同于长期可持续需求；目前复购/扩容证据不足，通用一体机可能是采购脉冲。
++- 不再把“小模型够用”描述成稳定边界；边界会随 frontier 能力提高而动态移动。
++- 六格框架降级为诊断矩阵；文章主线改为“先定 Token 放哪，再定 Agent 跑哪”。
+
+codex
+文件已写入。现在我会快速检查稿件结构、链接替换和是否还残留首轮失效的 HPE URL，再做必要的收尾修正。
+exec
+/bin/zsh -lc "sed -n '1,260p' drafts/codex-r2.md" in /Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化
+ succeeded in 0ms:
+# AI Agent 部署拓扑演化：第 3 轮回应
+
+本文截至日期：2026-06-04。本轮目标不是重写首轮全文，而是逐条回应合著分析师对 `drafts/codex-r1.md` 的五个质疑，并修订需要收窄的 Thesis。结论先写在前面：我接受“Token 服务位置是主矛盾”的重心调整，也接受“单人/低利用率本地推理不能默认更便宜”的批评；我仍坚持 Agent 位置有独立意义，但它更像控制平面、权限边界和动作位置，而不是主要成本中心。
+
+## 质疑 1：Token 经济学是否结构性利好云，本地只剩隐私/低延迟/离线/合规
+
+**判断：接受主要批评，修正 Thesis 2。**
+
+我把首轮 Thesis 2 写成“本地 Token 会先吃掉高频、低风险、够用子任务”，其中“高频”表述过宽。更准确的版本应是：**本地 Token 先吃掉低风险、低延迟、隐私敏感、可离线、质量够用、且本地硬件已被充分利用的子任务；成本只有在高利用率和质量可替代同时成立时才是优势。**
+
+理由如下。
+
+第一，云端确实有结构性成本优势。大规模推理服务能通过连续批处理、KV cache/prefix cache、请求调度和高利用率摊薄 GPU 成本。vLLM 官方说明其核心是 PagedAttention、continuous batching 和高吞吐服务能力，[vLLM 官方页](https://vllm.ai/)与 NVIDIA vLLM 文档也强调 PagedAttention 可降低 KV cache 浪费、支持更大 batch、提升吞吐，[NVIDIA vLLM overview](https://docs.nvidia.com/deeplearning/frameworks/vllm-release-notes/overview.html)。NVIDIA NIM 也把 LLM 推理定位为低延迟、高吞吐的优化微服务，可跑在云、数据中心、工作站和边缘，[NVIDIA NIM 官方页](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)。这些机制对单人本地机器并不天然成立，因为个人负载很难把硬件持续打满。
+
+第二，云厂商有批处理和缓存价格杠杆。OpenAI 官方价格页列出 Batch API 可对输入和输出节省 50%，并列出 cached input 价格；例如 2026-06-04 页面上 GPT-5.4 mini 标准价格是 input $0.75 / 1M、cached input $0.075 / 1M、output $4.50 / 1M，Batch 进一步降到 input $0.375 / 1M、output $2.25 / 1M，[OpenAI API pricing](https://developers.openai.com/api/docs/pricing)。这直接削弱了“高频一定本地更便宜”的说法。
+
+第三，用 DGX Spark 做单人推理的成本不能轻率判优。NVIDIA 官方商城列出的 DGX Spark 价格是 **$4,699**，[NVIDIA Marketplace](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/)；官方硬件文档列出 128GB 统一内存、最高 1 PFLOP FP4、240W 电源、GB10 SoC TDP 140W，[DGX Spark hardware guide](https://docs.nvidia.com/dgx/dgx-spark/hardware.html)。即便只按 36 个月折旧，硬件也约 $130/月，另加电费、维护、闲置、模型更新和机会成本。若拿云端 mini 模型的批处理 output $2.25 / 1M tokens 对比，单月仅折旧就相当于约 58M output tokens；加入电费和运维后更高。这个粗算不是性能 benchmark，但足以说明：**单人本地成本优势没有被证明，尤其不能和云端批处理直接竞争。**
+
+因此我收回“高频天然迁向本地”的强说法。本地真正稳定的护城河主要是你列的四项：**隐私、低延迟交互、离线、合规**。成本是第五项，但只在以下条件下成立：负载稳定、硬件利用率高、可接受较小/较旧/开源模型、已有运维能力、或本地硬件本来就为其他任务沉没投入。企业数据中心或边缘中心比个人 PC 更可能满足这些条件。
+
+## 质疑 2：PCC/可验证私有云是否吃掉本地化/私有化隐私论证
+
+**判断：部分接受，并修订 Thesis 4/5。**
+
+我同意 PCC 代表的“可验证私有云”会成为第三条路，不能把强合规需求简单二分为“公有云 API”与“企业自建气隙”。Apple PCC 的关键不是“云端私有化营销”，而是把 stateless computation、端到端加密、软件透明度、远程证明和外部研究者验证组合起来。Apple PCC 安全指南明确把“stateless computation on personal user data”和“verifiable transparency”列为安全目标，[Apple PCC Security Guide](https://security.apple.com/documentation/private-cloud-compute)；Apple 的 PCC 研究博客也强调用户数据对 Apple 不可访问，[Private Cloud Compute: A new frontier for AI privacy in the cloud](https://security.apple.com/com/blog/private-cloud-compute/)。
+
+这会分走一部分“既要隐私又要 frontier 能力”的需求。更广义地看，AWS Nitro Enclaves 可创建隔离执行环境处理敏感数据，[AWS Nitro Enclaves](https://aws.amazon.com/ec2/nitro/nitro-enclaves/)；Google Confidential VM 提供 memory encryption / encryption-in-use，[Google Confidential VM docs](https://docs.cloud.google.com/compute/docs/about-confidential-vm)；Azure Confidential Computing 官方说明其用硬件证明的 TEE 保护 data in use，[Azure Confidential Computing overview](https://learn.microsoft.com/en-us/azure/confidential-computing/overview)。主权云也在走同一方向：Microsoft Sovereign Cloud 强调数据驻留、运营监督和客户控制加密，[Microsoft Sovereign Public Cloud](https://learn.microsoft.com/en-us/industry/sovereign-cloud/sovereign-public-cloud/overview-sovereign-public-cloud)；AWS European Sovereign Cloud 强调 EU 内数据驻留和运营自治，[AWS European Sovereign Cloud](https://aws.eu/european-sovereign-cloud/)。
+
+但我不认为它会完全吃掉企业私有化和气隙部署，原因有三点。
+
+第一，PCC 目前是 Apple 生态内的 Apple Intelligence 架构，不是通用企业 LLM 托管标准。它证明了方向，不等于所有企业 Agent 负载都已有等价产品。
+
+第二，confidential computing 主要降低“云运营商/宿主机看到 data in use”的风险，但没有自动解决所有问题：控制平面、司法辖区、供应链、模型权重可控性、日志与审计、离线连续性、内网工具访问、监管现场检查仍然存在。
+
+第三，气隙不是只为隐私，也是为运营隔离、国家安全、涉密网络、故障域隔离和供应链主权。NVIDIA NIM 的 LLM 文档提供 air-gap deployment，[NIM air-gap deployment](https://docs.nvidia.com/nim/large-language-models/latest/deployment/air-gap-deployment.html)；Red Hat OpenShift AI 也有 disconnected environment 安装文档，[Red Hat OpenShift AI disconnected environment](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed_in_a_disconnected_environment/deploying-openshift-ai-in-a-disconnected-environment_install)。这些不是 PCC 的替代品，而是另一类强隔离需求。
+
+中美会分化。美国和欧洲的受监管企业更可能接受“托管私有云 / confidential AI / sovereign cloud”，因为它保留云端规模、模型更新和运维能力。中国则会更偏向国内专有云、企业私有云、一体机或本地托管，原因是数据出境规则、重要数据治理、信创/国产化、政企采购习惯共同作用。网信办《促进和规范数据跨境流动规定》和《数据出境安全评估办法》仍是中国侧边界条件，[规定原文](https://www.cac.gov.cn/2024-03/22/c_1712776612187994.htm)、[评估办法](https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm)。修订后的 Thesis 4 应加入：**强合规需求会分流到三类方案：自建/气隙、托管私有云/主权云、可验证 confidential cloud；不同国家和行业的比例不同。**
+
+## 质疑 3：2025“一体机元年”是结构性需求还是 DeepSeek + 信创采购脉冲
+
+**判断：部分接受，且对首轮中国一体机判断降温。**
+
+我同意：2025 年的一体机热潮里有明显的 DeepSeek 出圈和信创/国产化采购脉冲。首轮把“供给侧成熟”和“采购品类形成”写得偏积极，但没有证明可持续复购/扩容。
+
+支持结构性需求的证据主要是“使用门槛和合规场景”而不是“普遍经济性”。中国信通院《大模型一体机应用研究报告（2025 年）》认为，一体机通过软硬一体封装模型加载、推理加速、知识集成和接口调度，降低使用门槛、缩短部署到见效周期；报告还指出，推理一体机是当前落地主导形态，政务、金融、医疗、制造等行业在数据安全、私有化部署、低延迟和行业知识适配上有明确选型需求，[中国信通院报告 PDF](https://www.caict.ac.cn/kxyj/qwfb/ztbg/202510/P020251031405764520571.pdf)。政府采购网也能看到真实采购项目，例如电子科技大学“AI 大模型训练与推理一体机等”中标金额 618 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202504/t20250411_24429839.htm)；中国科学院软件研究所 2026 年“大模型服务器采购项目”中标金额 410 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202603/t20260306_26237417.htm)。医疗侧也有联想为爱尔眼科本地部署 DeepSeek 的官方案例，[联想案例](https://brand.lenovo.com.cn/brand/ppn03261.html?brandType=&innerKey=&key=%E8%81%94%E6%83%B3&page=1&source=fromwww&type=brand&years=)。
+
+但反证也很强。中国信通院同一报告明确提醒：本地化部署提高初始采购成本和后期运维成本，包括硬件购置、机房改造、电力供应和专业运维团队；在超大规模训练和海量高并发服务中存在瓶颈，更适用于数据隐私要求极高、业务规模相对稳定、且具备资金与技术支持能力的行业用户。另据中国电信天翼智库在 C114 的跟踪文章，2025 年一体机舆情热度从高点回落，截至 2025 年 9 月全国大模型一体机合计中标金额仅 2752 万元，按时序预估全年 3669 万元，远低于年初乐观预测，[C114/天翼智库](https://www.c114.com.cn/news/117/a1300068.html)。这说明“厂商供给和概念热”不等于“客户持续复购”。
+
+所以我的修订判断是：**2025 的通用大模型一体机热潮包含明显一次性脉冲；可持续部分不是“买一台盒子跑 DeepSeek”，而是行业化、可运维、可扩容的私有 AI 平台。**中小企业若没有强合规、固定高并发、内网数据闭环或本地低延迟要求，真实经济性通常不如公有云 API/MaaS/托管私有云。运维复杂度会让相当一部分客户回流到公有云或托管方案。
+
+## 质疑 4：能力鸿沟持续拉大，“本地够用”是否长期追不上
+
+**判断：部分接受。分流边界不是稳定边界，而是动态边界。**
+
+我同意 frontier 能力还在快速提高，本地“够用”的边界会被不断重新定义。Stanford HAI 2026 AI Index 写到，frontier models 在 Humanity's Last Exam 上一年提升 30 个百分点；同时截至 2026 年 3 月，最强闭源模型领先最强开源模型 3.3%，高于 2024 年 8 月的 0.5%；Agent 在结构化 benchmark 上仍约三分之一失败，[Stanford AI Index 2026 Technical Performance](https://hai.stanford.edu/ai-index/2026-ai-index-report/technical-performance)。Epoch AI 的模型数据库持续跟踪训练 compute、参数、训练成本等，并把 frontier model 定义为发布时训练 compute 处在前 10 的模型，[Epoch AI Models](https://epoch.ai/data/ai-models)。这些数据都支持“前沿线仍在移动”。
+
+但这不是单向“向云回摆”。更准确的动态是两条前沿同时移动：
+
+1. **能力前沿向云/大集群移动。**复杂代码、长上下文法律/医疗、深度研究、多模态推理、高可靠 Agent、需要最新 benchmark 能力的任务，会继续向公有云或大型私有云 Token 服务集中。
+
+2. **效率前沿向端侧/边缘扩散。**已经过时一代的 frontier 能力会通过蒸馏、量化、小模型、MoE、推理引擎优化扩散到本地。NVIDIA DGX Spark 官方称单机可测试和推理最高 200B 参数模型，[DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/)；Apple 公开了约 3B 参数端侧模型和更大的服务器模型分工，[Apple Foundation Models](https://machinelearning.apple.com/research/introducing-apple-foundation-models)；DeepSeek-R1 提供 1.5B 到 70B 的蒸馏模型，[DeepSeek-R1 GitHub](https://github.com/deepseek-ai/DeepSeek-R1)；Qwen3 覆盖 0.6B 到 235B，[Qwen3 blog](https://qwenlm.github.io/blog/qwen3/)。
+
+因此边界会“分层摆动”：最难任务向云和大型私有云回摆；低风险、短上下文、私密、低延迟、离线、工具参数化、RAG 前处理、草稿和过滤任务向本地扩散。我的修订 Thesis 2 是：**本地 Token 的份额会在请求数量上增长，但在最高价值/最高难度 tokens 上不一定增长；它更像 Agent 系统的第一跳、过滤器和动作闭环，而不是 frontier model 替代品。**
+
+## 质疑 5：真正的问题是“贵的 Token 放哪”，Agent 位置应跟随数据和工具
+
+**判断：接受框架重心调整，但保留 Agent 位置的独立决定性。**
+
+我同意把决策顺序从“六个格子并列”改为：
+
+1. **先定 Token 服务位置。**核心变量是模型能力、单位 token 成本、合规/数据驻留、可验证隐私、利用率、弹性和供应链。
+2. **再定 Agent 执行位置。**核心变量是数据与工具在哪里、动作权限在哪里、审计与密钥在哪里、是否需要低延迟/离线/always-on。
+
+OpenAI Agents SDK 把 agent 定义为带 instructions、tools、handoffs、guardrails 和 structured outputs 的 LLM 配置，[OpenAI Agents SDK](https://openai.github.io/openai-agents-python/agents/)；LangChain 文档也把 agents 描述为把语言模型和工具结合起来、决定使用哪些工具并迭代完成任务的系统，[LangChain agents](https://docs.langchain.com/oss/python/langchain/agents)。这说明 Agent 编排层本身通常不是主要算力成本中心，真正贵的是反复调用模型生成/推理 tokens。
+
+但 Agent 位置仍有独立决定性，尤其在以下场景：
+
+- **权限与动作边界。**能否操作本地文件、IDE、浏览器、数据库、内网系统、OT 设备，不取决于 Token 在哪，而取决于 Agent runtime 在哪、拥有什么凭据和执行沙箱。
+- **数据引力与工具延迟。**大量业务数据、日志、代码仓库、设计文件、医疗/工控系统在内网或设备侧，Agent 留在数据旁边可以减少数据搬运和权限暴露。
+- **审计和安全责任。**企业通常需要记录谁授权、Agent 调了什么工具、读写了什么数据、失败后如何回滚。这是控制平面问题，不只是模型推理问题。
+- **离线和 always-on。**云端 Agent 适合长任务和并行，边缘 Agent 适合门店/工厂/医院科室的连续运行，本地 Agent 适合桌面动作闭环。
+
+因此六格框架仍有用，但它应降级为“部署诊断矩阵”，不应被读成六类同等重要的市场。新框架应是：**Token 是成本与能力中心，Agent 是控制平面与动作边界；两者解耦，但 Token 位置优先决策。**
+
+## 修订后的 Thesis
+
+**Thesis 1（保留但重写）：Agent 与 Token 解耦仍是核心前提；但决策顺序应先定 Token 服务位置，再让 Agent 位置跟随数据、工具、权限和动作延迟。**
+
+**Thesis 2（明显修正）：本地 Token 不会因“高频”天然胜出。它会先承担低风险、低延迟、隐私敏感、离线、质量够用且本地硬件利用率足够的子任务；单人本地推理默认不是成本赢家。**
+
+**Thesis 3（保留）：边缘中心 Token 仍是家庭、门店、工厂、医院、园区的中间态，但成立条件是多设备共享、局域网低延迟、数据不出场域和可运维。**
+
+**Thesis 4（修正）：强合规行业不会只走企业自建私有云，还会分流到可验证私有云、confidential cloud、托管私有云和主权云。气隙/自建仍存在，但不是唯一答案。HPE 链接修正为 [NVIDIA AI Computing by HPE](https://www.hpe.com/us/en/solutions/artificial-intelligence/nvidia-collaboration.html)，该页继续覆盖 HPE 与 NVIDIA 的 AI factory、Private Cloud AI 和 Sovereign AI factory。**
+
+**Thesis 5（降温）：中国市场的本地化部署拉力仍强于美国，但 2025 一体机热潮包含 DeepSeek + 信创采购脉冲。可持续需求会集中在政务、金融、医疗、制造、能源等强合规/强数据闭环行业，以及能提供行业应用、运维和扩容路径的厂商；通用一体机不应被视为普遍经济性成立。**
+
+## 我仍坚持
+
+- Agent 执行位置与 Token 服务位置必须解耦分析。
+- 未来不会收敛到单一拓扑，而是按能力、成本、合规、数据和动作边界分流。
+- 本地/边缘 Token 会增长，但主要增长在第一跳、前处理、过滤、低延迟动作闭环和隐私敏感任务。
+- 中国市场相对美国会有更强的私有化、本地化、国产化拉力。
+- 企业买的不是“模型”本身，而是模型服务、Agent runtime、权限、审计、RAG、数据治理和运维的组合。
+
+## 我已修正
+
+- 不再把“高频”本身视为本地成本优势；高频也可能正是云端批处理最有优势的区间。
+- 不再把强合规场景默认判给“企业自建私有云/气隙”；新增可验证私有云、confidential cloud、托管私有云、主权云作为第三条路。
+- 不再把 2025 一体机热潮直接等同于长期可持续需求；目前复购/扩容证据不足，通用一体机可能是采购脉冲。
+- 不再把“小模型够用”描述成稳定边界；边界会随 frontier 能力提高而动态移动。
+- 六格框架降级为诊断矩阵；文章主线改为“先定 Token 放哪，再定 Agent 跑哪”。
+
+exec
+/bin/zsh -lc 'wc -l drafts/codex-r2.md' in /Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化
+ succeeded in 0ms:
+     111 drafts/codex-r2.md
+
+exec
+/bin/zsh -lc 'rg -n "private-cloud-ai|hpe.com|质疑|接受|部分接受|反驳|我仍坚持|我已修正" drafts/codex-r2.md' in /Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化
+ succeeded in 0ms:
+3:本文截至日期：2026-06-04。本轮目标不是重写首轮全文，而是逐条回应合著分析师对 `drafts/codex-r1.md` 的五个质疑，并修订需要收窄的 Thesis。结论先写在前面：我接受“Token 服务位置是主矛盾”的重心调整，也接受“单人/低利用率本地推理不能默认更便宜”的批评；我仍坚持 Agent 位置有独立意义，但它更像控制平面、权限边界和动作位置，而不是主要成本中心。
+5:## 质疑 1：Token 经济学是否结构性利好云，本地只剩隐私/低延迟/离线/合规
+7:**判断：接受主要批评，修正 Thesis 2。**
+19:因此我收回“高频天然迁向本地”的强说法。本地真正稳定的护城河主要是你列的四项：**隐私、低延迟交互、离线、合规**。成本是第五项，但只在以下条件下成立：负载稳定、硬件利用率高、可接受较小/较旧/开源模型、已有运维能力、或本地硬件本来就为其他任务沉没投入。企业数据中心或边缘中心比个人 PC 更可能满足这些条件。
+21:## 质疑 2：PCC/可验证私有云是否吃掉本地化/私有化隐私论证
+23:**判断：部分接受，并修订 Thesis 4/5。**
+37:中美会分化。美国和欧洲的受监管企业更可能接受“托管私有云 / confidential AI / sovereign cloud”，因为它保留云端规模、模型更新和运维能力。中国则会更偏向国内专有云、企业私有云、一体机或本地托管，原因是数据出境规则、重要数据治理、信创/国产化、政企采购习惯共同作用。网信办《促进和规范数据跨境流动规定》和《数据出境安全评估办法》仍是中国侧边界条件，[规定原文](https://www.cac.gov.cn/2024-03/22/c_1712776612187994.htm)、[评估办法](https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm)。修订后的 Thesis 4 应加入：**强合规需求会分流到三类方案：自建/气隙、托管私有云/主权云、可验证 confidential cloud；不同国家和行业的比例不同。**
+39:## 质疑 3：2025“一体机元年”是结构性需求还是 DeepSeek + 信创采购脉冲
+41:**判断：部分接受，且对首轮中国一体机判断降温。**
+51:## 质疑 4：能力鸿沟持续拉大，“本地够用”是否长期追不上
+53:**判断：部分接受。分流边界不是稳定边界，而是动态边界。**
+65:## 质疑 5：真正的问题是“贵的 Token 放哪”，Agent 位置应跟随数据和工具
+67:**判断：接受框架重心调整，但保留 Agent 位置的独立决定性。**
+93:**Thesis 4（修正）：强合规行业不会只走企业自建私有云，还会分流到可验证私有云、confidential cloud、托管私有云和主权云。气隙/自建仍存在，但不是唯一答案。HPE 链接修正为 [NVIDIA AI Computing by HPE](https://www.hpe.com/us/en/solutions/artificial-intelligence/nvidia-collaboration.html)，该页继续覆盖 HPE 与 NVIDIA 的 AI factory、Private Cloud AI 和 Sovereign AI factory。**
+97:## 我仍坚持
+105:## 我已修正
+
+diff --git a/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md b/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a79740a95819496e283383fd73fc24010e306ca2
+--- /dev/null
++++ b/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+@@ -0,0 +1,111 @@
++# AI Agent 部署拓扑演化：第 3 轮回应
++
++本文截至日期：2026-06-04。本轮目标不是重写首轮全文，而是逐条回应合著分析师对 `drafts/codex-r1.md` 的五个质疑，并修订需要收窄的 Thesis。结论先写在前面：我接受“Token 服务位置是主矛盾”的重心调整，也接受“单人/低利用率本地推理不能默认更便宜”的批评；我仍坚持 Agent 位置有独立意义，但它更像控制平面、权限边界和动作位置，而不是主要成本中心。
++
++## 质疑 1：Token 经济学是否结构性利好云，本地只剩隐私/低延迟/离线/合规
++
++**判断：接受主要批评，修正 Thesis 2。**
++
++我把首轮 Thesis 2 写成“本地 Token 会先吃掉高频、低风险、够用子任务”，其中“高频”表述过宽。更准确的版本应是：**本地 Token 先吃掉低风险、低延迟、隐私敏感、可离线、质量够用、且本地硬件已被充分利用的子任务；成本只有在高利用率和质量可替代同时成立时才是优势。**
++
++理由如下。
++
++第一，云端确实有结构性成本优势。大规模推理服务能通过连续批处理、KV cache/prefix cache、请求调度和高利用率摊薄 GPU 成本。vLLM 官方说明其核心是 PagedAttention、continuous batching 和高吞吐服务能力，[vLLM 官方页](https://vllm.ai/)与 NVIDIA vLLM 文档也强调 PagedAttention 可降低 KV cache 浪费、支持更大 batch、提升吞吐，[NVIDIA vLLM overview](https://docs.nvidia.com/deeplearning/frameworks/vllm-release-notes/overview.html)。NVIDIA NIM 也把 LLM 推理定位为低延迟、高吞吐的优化微服务，可跑在云、数据中心、工作站和边缘，[NVIDIA NIM 官方页](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)。这些机制对单人本地机器并不天然成立，因为个人负载很难把硬件持续打满。
++
++第二，云厂商有批处理和缓存价格杠杆。OpenAI 官方价格页列出 Batch API 可对输入和输出节省 50%，并列出 cached input 价格；例如 2026-06-04 页面上 GPT-5.4 mini 标准价格是 input $0.75 / 1M、cached input $0.075 / 1M、output $4.50 / 1M，Batch 进一步降到 input $0.375 / 1M、output $2.25 / 1M，[OpenAI API pricing](https://developers.openai.com/api/docs/pricing)。这直接削弱了“高频一定本地更便宜”的说法。
++
++第三，用 DGX Spark 做单人推理的成本不能轻率判优。NVIDIA 官方商城列出的 DGX Spark 价格是 **$4,699**，[NVIDIA Marketplace](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/)；官方硬件文档列出 128GB 统一内存、最高 1 PFLOP FP4、240W 电源、GB10 SoC TDP 140W，[DGX Spark hardware guide](https://docs.nvidia.com/dgx/dgx-spark/hardware.html)。即便只按 36 个月折旧，硬件也约 $130/月，另加电费、维护、闲置、模型更新和机会成本。若拿云端 mini 模型的批处理 output $2.25 / 1M tokens 对比，单月仅折旧就相当于约 58M output tokens；加入电费和运维后更高。这个粗算不是性能 benchmark，但足以说明：**单人本地成本优势没有被证明，尤其不能和云端批处理直接竞争。**
++
++因此我收回“高频天然迁向本地”的强说法。本地真正稳定的护城河主要是你列的四项：**隐私、低延迟交互、离线、合规**。成本是第五项，但只在以下条件下成立：负载稳定、硬件利用率高、可接受较小/较旧/开源模型、已有运维能力、或本地硬件本来就为其他任务沉没投入。企业数据中心或边缘中心比个人 PC 更可能满足这些条件。
++
++## 质疑 2：PCC/可验证私有云是否吃掉本地化/私有化隐私论证
++
++**判断：部分接受，并修订 Thesis 4/5。**
++
++我同意 PCC 代表的“可验证私有云”会成为第三条路，不能把强合规需求简单二分为“公有云 API”与“企业自建气隙”。Apple PCC 的关键不是“云端私有化营销”，而是把 stateless computation、端到端加密、软件透明度、远程证明和外部研究者验证组合起来。Apple PCC 安全指南明确把“stateless computation on personal user data”和“verifiable transparency”列为安全目标，[Apple PCC Security Guide](https://security.apple.com/documentation/private-cloud-compute)；Apple 的 PCC 研究博客也强调用户数据对 Apple 不可访问，[Private Cloud Compute: A new frontier for AI privacy in the cloud](https://security.apple.com/com/blog/private-cloud-compute/)。
++
++这会分走一部分“既要隐私又要 frontier 能力”的需求。更广义地看，AWS Nitro Enclaves 可创建隔离执行环境处理敏感数据，[AWS Nitro Enclaves](https://aws.amazon.com/ec2/nitro/nitro-enclaves/)；Google Confidential VM 提供 memory encryption / encryption-in-use，[Google Confidential VM docs](https://docs.cloud.google.com/compute/docs/about-confidential-vm)；Azure Confidential Computing 官方说明其用硬件证明的 TEE 保护 data in use，[Azure Confidential Computing overview](https://learn.microsoft.com/en-us/azure/confidential-computing/overview)。主权云也在走同一方向：Microsoft Sovereign Cloud 强调数据驻留、运营监督和客户控制加密，[Microsoft Sovereign Public Cloud](https://learn.microsoft.com/en-us/industry/sovereign-cloud/sovereign-public-cloud/overview-sovereign-public-cloud)；AWS European Sovereign Cloud 强调 EU 内数据驻留和运营自治，[AWS European Sovereign Cloud](https://aws.eu/european-sovereign-cloud/)。
++
++但我不认为它会完全吃掉企业私有化和气隙部署，原因有三点。
++
++第一，PCC 目前是 Apple 生态内的 Apple Intelligence 架构，不是通用企业 LLM 托管标准。它证明了方向，不等于所有企业 Agent 负载都已有等价产品。
++
++第二，confidential computing 主要降低“云运营商/宿主机看到 data in use”的风险，但没有自动解决所有问题：控制平面、司法辖区、供应链、模型权重可控性、日志与审计、离线连续性、内网工具访问、监管现场检查仍然存在。
++
++第三，气隙不是只为隐私，也是为运营隔离、国家安全、涉密网络、故障域隔离和供应链主权。NVIDIA NIM 的 LLM 文档提供 air-gap deployment，[NIM air-gap deployment](https://docs.nvidia.com/nim/large-language-models/latest/deployment/air-gap-deployment.html)；Red Hat OpenShift AI 也有 disconnected environment 安装文档，[Red Hat OpenShift AI disconnected environment](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed_in_a_disconnected_environment/deploying-openshift-ai-in-a-disconnected-environment_install)。这些不是 PCC 的替代品，而是另一类强隔离需求。
++
++中美会分化。美国和欧洲的受监管企业更可能接受“托管私有云 / confidential AI / sovereign cloud”，因为它保留云端规模、模型更新和运维能力。中国则会更偏向国内专有云、企业私有云、一体机或本地托管，原因是数据出境规则、重要数据治理、信创/国产化、政企采购习惯共同作用。网信办《促进和规范数据跨境流动规定》和《数据出境安全评估办法》仍是中国侧边界条件，[规定原文](https://www.cac.gov.cn/2024-03/22/c_1712776612187994.htm)、[评估办法](https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm)。修订后的 Thesis 4 应加入：**强合规需求会分流到三类方案：自建/气隙、托管私有云/主权云、可验证 confidential cloud；不同国家和行业的比例不同。**
++
++## 质疑 3：2025“一体机元年”是结构性需求还是 DeepSeek + 信创采购脉冲
++
++**判断：部分接受，且对首轮中国一体机判断降温。**
++
++我同意：2025 年的一体机热潮里有明显的 DeepSeek 出圈和信创/国产化采购脉冲。首轮把“供给侧成熟”和“采购品类形成”写得偏积极，但没有证明可持续复购/扩容。
++
++支持结构性需求的证据主要是“使用门槛和合规场景”而不是“普遍经济性”。中国信通院《大模型一体机应用研究报告（2025 年）》认为，一体机通过软硬一体封装模型加载、推理加速、知识集成和接口调度，降低使用门槛、缩短部署到见效周期；报告还指出，推理一体机是当前落地主导形态，政务、金融、医疗、制造等行业在数据安全、私有化部署、低延迟和行业知识适配上有明确选型需求，[中国信通院报告 PDF](https://www.caict.ac.cn/kxyj/qwfb/ztbg/202510/P020251031405764520571.pdf)。政府采购网也能看到真实采购项目，例如电子科技大学“AI 大模型训练与推理一体机等”中标金额 618 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202504/t20250411_24429839.htm)；中国科学院软件研究所 2026 年“大模型服务器采购项目”中标金额 410 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202603/t20260306_26237417.htm)。医疗侧也有联想为爱尔眼科本地部署 DeepSeek 的官方案例，[联想案例](https://brand.lenovo.com.cn/brand/ppn03261.html?brandType=&innerKey=&key=%E8%81%94%E6%83%B3&page=1&source=fromwww&type=brand&years=)。
++
++但反证也很强。中国信通院同一报告明确提醒：本地化部署提高初始采购成本和后期运维成本，包括硬件购置、机房改造、电力供应和专业运维团队；在超大规模训练和海量高并发服务中存在瓶颈，更适用于数据隐私要求极高、业务规模相对稳定、且具备资金与技术支持能力的行业用户。另据中国电信天翼智库在 C114 的跟踪文章，2025 年一体机舆情热度从高点回落，截至 2025 年 9 月全国大模型一体机合计中标金额仅 2752 万元，按时序预估全年 3669 万元，远低于年初乐观预测，[C114/天翼智库](https://www.c114.com.cn/news/117/a1300068.html)。这说明“厂商供给和概念热”不等于“客户持续复购”。
++
++所以我的修订判断是：**2025 的通用大模型一体机热潮包含明显一次性脉冲；可持续部分不是“买一台盒子跑 DeepSeek”，而是行业化、可运维、可扩容的私有 AI 平台。**中小企业若没有强合规、固定高并发、内网数据闭环或本地低延迟要求，真实经济性通常不如公有云 API/MaaS/托管私有云。运维复杂度会让相当一部分客户回流到公有云或托管方案。
++
++## 质疑 4：能力鸿沟持续拉大，“本地够用”是否长期追不上
++
++**判断：部分接受。分流边界不是稳定边界，而是动态边界。**
++
++我同意 frontier 能力还在快速提高，本地“够用”的边界会被不断重新定义。Stanford HAI 2026 AI Index 写到，frontier models 在 Humanity's Last Exam 上一年提升 30 个百分点；同时截至 2026 年 3 月，最强闭源模型领先最强开源模型 3.3%，高于 2024 年 8 月的 0.5%；Agent 在结构化 benchmark 上仍约三分之一失败，[Stanford AI Index 2026 Technical Performance](https://hai.stanford.edu/ai-index/2026-ai-index-report/technical-performance)。Epoch AI 的模型数据库持续跟踪训练 compute、参数、训练成本等，并把 frontier model 定义为发布时训练 compute 处在前 10 的模型，[Epoch AI Models](https://epoch.ai/data/ai-models)。这些数据都支持“前沿线仍在移动”。
++
++但这不是单向“向云回摆”。更准确的动态是两条前沿同时移动：
++
++1. **能力前沿向云/大集群移动。**复杂代码、长上下文法律/医疗、深度研究、多模态推理、高可靠 Agent、需要最新 benchmark 能力的任务，会继续向公有云或大型私有云 Token 服务集中。
++
++2. **效率前沿向端侧/边缘扩散。**已经过时一代的 frontier 能力会通过蒸馏、量化、小模型、MoE、推理引擎优化扩散到本地。NVIDIA DGX Spark 官方称单机可测试和推理最高 200B 参数模型，[DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/)；Apple 公开了约 3B 参数端侧模型和更大的服务器模型分工，[Apple Foundation Models](https://machinelearning.apple.com/research/introducing-apple-foundation-models)；DeepSeek-R1 提供 1.5B 到 70B 的蒸馏模型，[DeepSeek-R1 GitHub](https://github.com/deepseek-ai/DeepSeek-R1)；Qwen3 覆盖 0.6B 到 235B，[Qwen3 blog](https://qwenlm.github.io/blog/qwen3/)。
++
++因此边界会“分层摆动”：最难任务向云和大型私有云回摆；低风险、短上下文、私密、低延迟、离线、工具参数化、RAG 前处理、草稿和过滤任务向本地扩散。我的修订 Thesis 2 是：**本地 Token 的份额会在请求数量上增长，但在最高价值/最高难度 tokens 上不一定增长；它更像 Agent 系统的第一跳、过滤器和动作闭环，而不是 frontier model 替代品。**
++
++## 质疑 5：真正的问题是“贵的 Token 放哪”，Agent 位置应跟随数据和工具
++
++**判断：接受框架重心调整，但保留 Agent 位置的独立决定性。**
++
++我同意把决策顺序从“六个格子并列”改为：
++
++1. **先定 Token 服务位置。**核心变量是模型能力、单位 token 成本、合规/数据驻留、可验证隐私、利用率、弹性和供应链。
++2. **再定 Agent 执行位置。**核心变量是数据与工具在哪里、动作权限在哪里、审计与密钥在哪里、是否需要低延迟/离线/always-on。
++
++OpenAI Agents SDK 把 agent 定义为带 instructions、tools、handoffs、guardrails 和 structured outputs 的 LLM 配置，[OpenAI Agents SDK](https://openai.github.io/openai-agents-python/agents/)；LangChain 文档也把 agents 描述为把语言模型和工具结合起来、决定使用哪些工具并迭代完成任务的系统，[LangChain agents](https://docs.langchain.com/oss/python/langchain/agents)。这说明 Agent 编排层本身通常不是主要算力成本中心，真正贵的是反复调用模型生成/推理 tokens。
++
++但 Agent 位置仍有独立决定性，尤其在以下场景：
++
++- **权限与动作边界。**能否操作本地文件、IDE、浏览器、数据库、内网系统、OT 设备，不取决于 Token 在哪，而取决于 Agent runtime 在哪、拥有什么凭据和执行沙箱。
++- **数据引力与工具延迟。**大量业务数据、日志、代码仓库、设计文件、医疗/工控系统在内网或设备侧，Agent 留在数据旁边可以减少数据搬运和权限暴露。
++- **审计和安全责任。**企业通常需要记录谁授权、Agent 调了什么工具、读写了什么数据、失败后如何回滚。这是控制平面问题，不只是模型推理问题。
++- **离线和 always-on。**云端 Agent 适合长任务和并行，边缘 Agent 适合门店/工厂/医院科室的连续运行，本地 Agent 适合桌面动作闭环。
++
++因此六格框架仍有用，但它应降级为“部署诊断矩阵”，不应被读成六类同等重要的市场。新框架应是：**Token 是成本与能力中心，Agent 是控制平面与动作边界；两者解耦，但 Token 位置优先决策。**
++
++## 修订后的 Thesis
++
++**Thesis 1（保留但重写）：Agent 与 Token 解耦仍是核心前提；但决策顺序应先定 Token 服务位置，再让 Agent 位置跟随数据、工具、权限和动作延迟。**
++
++**Thesis 2（明显修正）：本地 Token 不会因“高频”天然胜出。它会先承担低风险、低延迟、隐私敏感、离线、质量够用且本地硬件利用率足够的子任务；单人本地推理默认不是成本赢家。**
++
++**Thesis 3（保留）：边缘中心 Token 仍是家庭、门店、工厂、医院、园区的中间态，但成立条件是多设备共享、局域网低延迟、数据不出场域和可运维。**
++
++**Thesis 4（修正）：强合规行业不会只走企业自建私有云，还会分流到可验证私有云、confidential cloud、托管私有云和主权云。气隙/自建仍存在，但不是唯一答案。HPE 链接修正为 [NVIDIA AI Computing by HPE](https://www.hpe.com/us/en/solutions/artificial-intelligence/nvidia-collaboration.html)，该页继续覆盖 HPE 与 NVIDIA 的 AI factory、Private Cloud AI 和 Sovereign AI factory。**
++
++**Thesis 5（降温）：中国市场的本地化部署拉力仍强于美国，但 2025 一体机热潮包含 DeepSeek + 信创采购脉冲。可持续需求会集中在政务、金融、医疗、制造、能源等强合规/强数据闭环行业，以及能提供行业应用、运维和扩容路径的厂商；通用一体机不应被视为普遍经济性成立。**
++
++## 我仍坚持
++
++- Agent 执行位置与 Token 服务位置必须解耦分析。
++- 未来不会收敛到单一拓扑，而是按能力、成本、合规、数据和动作边界分流。
++- 本地/边缘 Token 会增长，但主要增长在第一跳、前处理、过滤、低延迟动作闭环和隐私敏感任务。
++- 中国市场相对美国会有更强的私有化、本地化、国产化拉力。
++- 企业买的不是“模型”本身，而是模型服务、Agent runtime、权限、审计、RAG、数据治理和运维的组合。
++
++## 我已修正
++
++- 不再把“高频”本身视为本地成本优势；高频也可能正是云端批处理最有优势的区间。
++- 不再把强合规场景默认判给“企业自建私有云/气隙”；新增可验证私有云、confidential cloud、托管私有云、主权云作为第三条路。
++- 不再把 2025 一体机热潮直接等同于长期可持续需求；目前复购/扩容证据不足，通用一体机可能是采购脉冲。
++- 不再把“小模型够用”描述成稳定边界；边界会随 frontier 能力提高而动态移动。
++- 六格框架降级为诊断矩阵；文章主线改为“先定 Token 放哪，再定 Agent 跑哪”。
+
+codex
+已写入 [drafts/codex-r2.md](/Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md)。
+
+我也检查了稿件结构和旧 HPE 失效链接：`private-cloud-ai.html` 没有残留，已替换为 HPE 的 `NVIDIA AI Computing by HPE` 官方页。文末包含 `## 我仍坚持` 和 `## 我已修正` 两个清单。
+diff --git a/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md b/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a79740a95819496e283383fd73fc24010e306ca2
+--- /dev/null
++++ b/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md
+@@ -0,0 +1,111 @@
++# AI Agent 部署拓扑演化：第 3 轮回应
++
++本文截至日期：2026-06-04。本轮目标不是重写首轮全文，而是逐条回应合著分析师对 `drafts/codex-r1.md` 的五个质疑，并修订需要收窄的 Thesis。结论先写在前面：我接受“Token 服务位置是主矛盾”的重心调整，也接受“单人/低利用率本地推理不能默认更便宜”的批评；我仍坚持 Agent 位置有独立意义，但它更像控制平面、权限边界和动作位置，而不是主要成本中心。
++
++## 质疑 1：Token 经济学是否结构性利好云，本地只剩隐私/低延迟/离线/合规
++
++**判断：接受主要批评，修正 Thesis 2。**
++
++我把首轮 Thesis 2 写成“本地 Token 会先吃掉高频、低风险、够用子任务”，其中“高频”表述过宽。更准确的版本应是：**本地 Token 先吃掉低风险、低延迟、隐私敏感、可离线、质量够用、且本地硬件已被充分利用的子任务；成本只有在高利用率和质量可替代同时成立时才是优势。**
++
++理由如下。
++
++第一，云端确实有结构性成本优势。大规模推理服务能通过连续批处理、KV cache/prefix cache、请求调度和高利用率摊薄 GPU 成本。vLLM 官方说明其核心是 PagedAttention、continuous batching 和高吞吐服务能力，[vLLM 官方页](https://vllm.ai/)与 NVIDIA vLLM 文档也强调 PagedAttention 可降低 KV cache 浪费、支持更大 batch、提升吞吐，[NVIDIA vLLM overview](https://docs.nvidia.com/deeplearning/frameworks/vllm-release-notes/overview.html)。NVIDIA NIM 也把 LLM 推理定位为低延迟、高吞吐的优化微服务，可跑在云、数据中心、工作站和边缘，[NVIDIA NIM 官方页](https://www.nvidia.com/en-us/ai-data-science/products/nim-microservices/)。这些机制对单人本地机器并不天然成立，因为个人负载很难把硬件持续打满。
++
++第二，云厂商有批处理和缓存价格杠杆。OpenAI 官方价格页列出 Batch API 可对输入和输出节省 50%，并列出 cached input 价格；例如 2026-06-04 页面上 GPT-5.4 mini 标准价格是 input $0.75 / 1M、cached input $0.075 / 1M、output $4.50 / 1M，Batch 进一步降到 input $0.375 / 1M、output $2.25 / 1M，[OpenAI API pricing](https://developers.openai.com/api/docs/pricing)。这直接削弱了“高频一定本地更便宜”的说法。
++
++第三，用 DGX Spark 做单人推理的成本不能轻率判优。NVIDIA 官方商城列出的 DGX Spark 价格是 **$4,699**，[NVIDIA Marketplace](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/)；官方硬件文档列出 128GB 统一内存、最高 1 PFLOP FP4、240W 电源、GB10 SoC TDP 140W，[DGX Spark hardware guide](https://docs.nvidia.com/dgx/dgx-spark/hardware.html)。即便只按 36 个月折旧，硬件也约 $130/月，另加电费、维护、闲置、模型更新和机会成本。若拿云端 mini 模型的批处理 output $2.25 / 1M tokens 对比，单月仅折旧就相当于约 58M output tokens；加入电费和运维后更高。这个粗算不是性能 benchmark，但足以说明：**单人本地成本优势没有被证明，尤其不能和云端批处理直接竞争。**
++
++因此我收回“高频天然迁向本地”的强说法。本地真正稳定的护城河主要是你列的四项：**隐私、低延迟交互、离线、合规**。成本是第五项，但只在以下条件下成立：负载稳定、硬件利用率高、可接受较小/较旧/开源模型、已有运维能力、或本地硬件本来就为其他任务沉没投入。企业数据中心或边缘中心比个人 PC 更可能满足这些条件。
++
++## 质疑 2：PCC/可验证私有云是否吃掉本地化/私有化隐私论证
++
++**判断：部分接受，并修订 Thesis 4/5。**
++
++我同意 PCC 代表的“可验证私有云”会成为第三条路，不能把强合规需求简单二分为“公有云 API”与“企业自建气隙”。Apple PCC 的关键不是“云端私有化营销”，而是把 stateless computation、端到端加密、软件透明度、远程证明和外部研究者验证组合起来。Apple PCC 安全指南明确把“stateless computation on personal user data”和“verifiable transparency”列为安全目标，[Apple PCC Security Guide](https://security.apple.com/documentation/private-cloud-compute)；Apple 的 PCC 研究博客也强调用户数据对 Apple 不可访问，[Private Cloud Compute: A new frontier for AI privacy in the cloud](https://security.apple.com/com/blog/private-cloud-compute/)。
++
++这会分走一部分“既要隐私又要 frontier 能力”的需求。更广义地看，AWS Nitro Enclaves 可创建隔离执行环境处理敏感数据，[AWS Nitro Enclaves](https://aws.amazon.com/ec2/nitro/nitro-enclaves/)；Google Confidential VM 提供 memory encryption / encryption-in-use，[Google Confidential VM docs](https://docs.cloud.google.com/compute/docs/about-confidential-vm)；Azure Confidential Computing 官方说明其用硬件证明的 TEE 保护 data in use，[Azure Confidential Computing overview](https://learn.microsoft.com/en-us/azure/confidential-computing/overview)。主权云也在走同一方向：Microsoft Sovereign Cloud 强调数据驻留、运营监督和客户控制加密，[Microsoft Sovereign Public Cloud](https://learn.microsoft.com/en-us/industry/sovereign-cloud/sovereign-public-cloud/overview-sovereign-public-cloud)；AWS European Sovereign Cloud 强调 EU 内数据驻留和运营自治，[AWS European Sovereign Cloud](https://aws.eu/european-sovereign-cloud/)。
++
++但我不认为它会完全吃掉企业私有化和气隙部署，原因有三点。
++
++第一，PCC 目前是 Apple 生态内的 Apple Intelligence 架构，不是通用企业 LLM 托管标准。它证明了方向，不等于所有企业 Agent 负载都已有等价产品。
++
++第二，confidential computing 主要降低“云运营商/宿主机看到 data in use”的风险，但没有自动解决所有问题：控制平面、司法辖区、供应链、模型权重可控性、日志与审计、离线连续性、内网工具访问、监管现场检查仍然存在。
++
++第三，气隙不是只为隐私，也是为运营隔离、国家安全、涉密网络、故障域隔离和供应链主权。NVIDIA NIM 的 LLM 文档提供 air-gap deployment，[NIM air-gap deployment](https://docs.nvidia.com/nim/large-language-models/latest/deployment/air-gap-deployment.html)；Red Hat OpenShift AI 也有 disconnected environment 安装文档，[Red Hat OpenShift AI disconnected environment](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.4/html/installing_and_uninstalling_openshift_ai_self-managed_in_a_disconnected_environment/deploying-openshift-ai-in-a-disconnected-environment_install)。这些不是 PCC 的替代品，而是另一类强隔离需求。
++
++中美会分化。美国和欧洲的受监管企业更可能接受“托管私有云 / confidential AI / sovereign cloud”，因为它保留云端规模、模型更新和运维能力。中国则会更偏向国内专有云、企业私有云、一体机或本地托管，原因是数据出境规则、重要数据治理、信创/国产化、政企采购习惯共同作用。网信办《促进和规范数据跨境流动规定》和《数据出境安全评估办法》仍是中国侧边界条件，[规定原文](https://www.cac.gov.cn/2024-03/22/c_1712776612187994.htm)、[评估办法](https://www.cac.gov.cn/2022-07/07/c_1658811536396503.htm)。修订后的 Thesis 4 应加入：**强合规需求会分流到三类方案：自建/气隙、托管私有云/主权云、可验证 confidential cloud；不同国家和行业的比例不同。**
++
++## 质疑 3：2025“一体机元年”是结构性需求还是 DeepSeek + 信创采购脉冲
++
++**判断：部分接受，且对首轮中国一体机判断降温。**
++
++我同意：2025 年的一体机热潮里有明显的 DeepSeek 出圈和信创/国产化采购脉冲。首轮把“供给侧成熟”和“采购品类形成”写得偏积极，但没有证明可持续复购/扩容。
++
++支持结构性需求的证据主要是“使用门槛和合规场景”而不是“普遍经济性”。中国信通院《大模型一体机应用研究报告（2025 年）》认为，一体机通过软硬一体封装模型加载、推理加速、知识集成和接口调度，降低使用门槛、缩短部署到见效周期；报告还指出，推理一体机是当前落地主导形态，政务、金融、医疗、制造等行业在数据安全、私有化部署、低延迟和行业知识适配上有明确选型需求，[中国信通院报告 PDF](https://www.caict.ac.cn/kxyj/qwfb/ztbg/202510/P020251031405764520571.pdf)。政府采购网也能看到真实采购项目，例如电子科技大学“AI 大模型训练与推理一体机等”中标金额 618 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202504/t20250411_24429839.htm)；中国科学院软件研究所 2026 年“大模型服务器采购项目”中标金额 410 万元，[中国政府采购网](https://www.ccgp.gov.cn/cggg/zygg/zbgg/202603/t20260306_26237417.htm)。医疗侧也有联想为爱尔眼科本地部署 DeepSeek 的官方案例，[联想案例](https://brand.lenovo.com.cn/brand/ppn03261.html?brandType=&innerKey=&key=%E8%81%94%E6%83%B3&page=1&source=fromwww&type=brand&years=)。
++
++但反证也很强。中国信通院同一报告明确提醒：本地化部署提高初始采购成本和后期运维成本，包括硬件购置、机房改造、电力供应和专业运维团队；在超大规模训练和海量高并发服务中存在瓶颈，更适用于数据隐私要求极高、业务规模相对稳定、且具备资金与技术支持能力的行业用户。另据中国电信天翼智库在 C114 的跟踪文章，2025 年一体机舆情热度从高点回落，截至 2025 年 9 月全国大模型一体机合计中标金额仅 2752 万元，按时序预估全年 3669 万元，远低于年初乐观预测，[C114/天翼智库](https://www.c114.com.cn/news/117/a1300068.html)。这说明“厂商供给和概念热”不等于“客户持续复购”。
++
++所以我的修订判断是：**2025 的通用大模型一体机热潮包含明显一次性脉冲；可持续部分不是“买一台盒子跑 DeepSeek”，而是行业化、可运维、可扩容的私有 AI 平台。**中小企业若没有强合规、固定高并发、内网数据闭环或本地低延迟要求，真实经济性通常不如公有云 API/MaaS/托管私有云。运维复杂度会让相当一部分客户回流到公有云或托管方案。
++
++## 质疑 4：能力鸿沟持续拉大，“本地够用”是否长期追不上
++
++**判断：部分接受。分流边界不是稳定边界，而是动态边界。**
++
++我同意 frontier 能力还在快速提高，本地“够用”的边界会被不断重新定义。Stanford HAI 2026 AI Index 写到，frontier models 在 Humanity's Last Exam 上一年提升 30 个百分点；同时截至 2026 年 3 月，最强闭源模型领先最强开源模型 3.3%，高于 2024 年 8 月的 0.5%；Agent 在结构化 benchmark 上仍约三分之一失败，[Stanford AI Index 2026 Technical Performance](https://hai.stanford.edu/ai-index/2026-ai-index-report/technical-performance)。Epoch AI 的模型数据库持续跟踪训练 compute、参数、训练成本等，并把 frontier model 定义为发布时训练 compute 处在前 10 的模型，[Epoch AI Models](https://epoch.ai/data/ai-models)。这些数据都支持“前沿线仍在移动”。
++
++但这不是单向“向云回摆”。更准确的动态是两条前沿同时移动：
++
++1. **能力前沿向云/大集群移动。**复杂代码、长上下文法律/医疗、深度研究、多模态推理、高可靠 Agent、需要最新 benchmark 能力的任务，会继续向公有云或大型私有云 Token 服务集中。
++
++2. **效率前沿向端侧/边缘扩散。**已经过时一代的 frontier 能力会通过蒸馏、量化、小模型、MoE、推理引擎优化扩散到本地。NVIDIA DGX Spark 官方称单机可测试和推理最高 200B 参数模型，[DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/)；Apple 公开了约 3B 参数端侧模型和更大的服务器模型分工，[Apple Foundation Models](https://machinelearning.apple.com/research/introducing-apple-foundation-models)；DeepSeek-R1 提供 1.5B 到 70B 的蒸馏模型，[DeepSeek-R1 GitHub](https://github.com/deepseek-ai/DeepSeek-R1)；Qwen3 覆盖 0.6B 到 235B，[Qwen3 blog](https://qwenlm.github.io/blog/qwen3/)。
++
++因此边界会“分层摆动”：最难任务向云和大型私有云回摆；低风险、短上下文、私密、低延迟、离线、工具参数化、RAG 前处理、草稿和过滤任务向本地扩散。我的修订 Thesis 2 是：**本地 Token 的份额会在请求数量上增长，但在最高价值/最高难度 tokens 上不一定增长；它更像 Agent 系统的第一跳、过滤器和动作闭环，而不是 frontier model 替代品。**
++
++## 质疑 5：真正的问题是“贵的 Token 放哪”，Agent 位置应跟随数据和工具
++
++**判断：接受框架重心调整，但保留 Agent 位置的独立决定性。**
++
++我同意把决策顺序从“六个格子并列”改为：
++
++1. **先定 Token 服务位置。**核心变量是模型能力、单位 token 成本、合规/数据驻留、可验证隐私、利用率、弹性和供应链。
++2. **再定 Agent 执行位置。**核心变量是数据与工具在哪里、动作权限在哪里、审计与密钥在哪里、是否需要低延迟/离线/always-on。
++
++OpenAI Agents SDK 把 agent 定义为带 instructions、tools、handoffs、guardrails 和 structured outputs 的 LLM 配置，[OpenAI Agents SDK](https://openai.github.io/openai-agents-python/agents/)；LangChain 文档也把 agents 描述为把语言模型和工具结合起来、决定使用哪些工具并迭代完成任务的系统，[LangChain agents](https://docs.langchain.com/oss/python/langchain/agents)。这说明 Agent 编排层本身通常不是主要算力成本中心，真正贵的是反复调用模型生成/推理 tokens。
++
++但 Agent 位置仍有独立决定性，尤其在以下场景：
++
++- **权限与动作边界。**能否操作本地文件、IDE、浏览器、数据库、内网系统、OT 设备，不取决于 Token 在哪，而取决于 Agent runtime 在哪、拥有什么凭据和执行沙箱。
++- **数据引力与工具延迟。**大量业务数据、日志、代码仓库、设计文件、医疗/工控系统在内网或设备侧，Agent 留在数据旁边可以减少数据搬运和权限暴露。
++- **审计和安全责任。**企业通常需要记录谁授权、Agent 调了什么工具、读写了什么数据、失败后如何回滚。这是控制平面问题，不只是模型推理问题。
++- **离线和 always-on。**云端 Agent 适合长任务和并行，边缘 Agent 适合门店/工厂/医院科室的连续运行，本地 Agent 适合桌面动作闭环。
++
++因此六格框架仍有用，但它应降级为“部署诊断矩阵”，不应被读成六类同等重要的市场。新框架应是：**Token 是成本与能力中心，Agent 是控制平面与动作边界；两者解耦，但 Token 位置优先决策。**
++
++## 修订后的 Thesis
++
++**Thesis 1（保留但重写）：Agent 与 Token 解耦仍是核心前提；但决策顺序应先定 Token 服务位置，再让 Agent 位置跟随数据、工具、权限和动作延迟。**
++
++**Thesis 2（明显修正）：本地 Token 不会因“高频”天然胜出。它会先承担低风险、低延迟、隐私敏感、离线、质量够用且本地硬件利用率足够的子任务；单人本地推理默认不是成本赢家。**
++
++**Thesis 3（保留）：边缘中心 Token 仍是家庭、门店、工厂、医院、园区的中间态，但成立条件是多设备共享、局域网低延迟、数据不出场域和可运维。**
++
++**Thesis 4（修正）：强合规行业不会只走企业自建私有云，还会分流到可验证私有云、confidential cloud、托管私有云和主权云。气隙/自建仍存在，但不是唯一答案。HPE 链接修正为 [NVIDIA AI Computing by HPE](https://www.hpe.com/us/en/solutions/artificial-intelligence/nvidia-collaboration.html)，该页继续覆盖 HPE 与 NVIDIA 的 AI factory、Private Cloud AI 和 Sovereign AI factory。**
++
++**Thesis 5（降温）：中国市场的本地化部署拉力仍强于美国，但 2025 一体机热潮包含 DeepSeek + 信创采购脉冲。可持续需求会集中在政务、金融、医疗、制造、能源等强合规/强数据闭环行业，以及能提供行业应用、运维和扩容路径的厂商；通用一体机不应被视为普遍经济性成立。**
++
++## 我仍坚持
++
++- Agent 执行位置与 Token 服务位置必须解耦分析。
++- 未来不会收敛到单一拓扑，而是按能力、成本、合规、数据和动作边界分流。
++- 本地/边缘 Token 会增长，但主要增长在第一跳、前处理、过滤、低延迟动作闭环和隐私敏感任务。
++- 中国市场相对美国会有更强的私有化、本地化、国产化拉力。
++- 企业买的不是“模型”本身，而是模型服务、Agent runtime、权限、审计、RAG、数据治理和运维的组合。
++
++## 我已修正
++
++- 不再把“高频”本身视为本地成本优势；高频也可能正是云端批处理最有优势的区间。
++- 不再把强合规场景默认判给“企业自建私有云/气隙”；新增可验证私有云、confidential cloud、托管私有云、主权云作为第三条路。
++- 不再把 2025 一体机热潮直接等同于长期可持续需求；目前复购/扩容证据不足，通用一体机可能是采购脉冲。
++- 不再把“小模型够用”描述成稳定边界；边界会随 frontier 能力提高而动态移动。
++- 六格框架降级为诊断矩阵；文章主线改为“先定 Token 放哪，再定 Agent 跑哪”。
+
+tokens used
+257,061
+已写入 [drafts/codex-r2.md](/Users/roger/Work/Blog/从发送到云端说起/Agent部署拓扑演化/drafts/codex-r2.md)。
+
+我也检查了稿件结构和旧 HPE 失效链接：`private-cloud-ai.html` 没有残留，已替换为 HPE 的 `NVIDIA AI Computing by HPE` 官方页。文末包含 `## 我仍坚持` 和 `## 我已修正` 两个清单。

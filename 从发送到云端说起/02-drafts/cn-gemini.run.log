@@ -1,0 +1,19 @@
+Warning: 256-color support not detected. Using a terminal with at least 256-color support is recommended for a better visual experience.
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.
+Attempt 1 failed: You have exhausted your capacity on this model. Your quota will reset after 2s.. Retrying after 5529ms...
+Attempt 1 failed: You have exhausted your capacity on this model. Your quota will reset after 2s.. Retrying after 5696ms...
+Attempt 1 failed: You have exhausted your capacity on this model. Your quota will reset after 1s.. Retrying after 5305ms...
+Attempt 2 failed: You have exhausted your capacity on this model. Your quota will reset after 1s.. Retrying after 10641ms...
+一份关于【中国侧】AI 产业四层格局的结构化研究稿已产出并保存至 `02-drafts/cn-gemini.md`。
+
+### 研究稿核心要点：
+1.  **四层覆盖矩阵**：详细列出了阿里巴巴、华为、百度、腾讯、字节跳动及纯模型/芯片玩家在芯片、云、LLM 及 Agent 层的产品布局与官方链接。
+2.  **芯片层 (Chip)**：重点涵盖了华为昇腾 910C/D/950 系列的国产替代进展、寒武纪 2026 年的盈利转折，以及壁仞科技与昆仑芯的 IPO 现状。
+3.  **云计算层 (Cloud)**：分析了阿里云（MaaS 领先）、火山引擎（超大规模调度）及华为云（政企市场）的竞争态势。
+4.  **LLM 层 (LLM)**：详细梳理了 **阿里巴巴** 在月之暗面（~36%）、MiniMax（~13%）及智谱 AI 中的投资版图，以及字节跳动“梭哈”自研（豆包 MAU 突破 2.2 亿）的策略。
+5.  **Agent 层 (Runtime)**：涵盖了字节跳动 Trae IDE、百度文心快码 Comate 的多智能体矩阵、以及腾讯 CodeBuddy 的最新进展。
+6.  **关系网小结**：深度剖析了云厂商“投资者+开发者+平台方”的三重身份，以及全栈型（华为/阿里/百度）与应用驱动型（字节）的竞争差异。
+
+报告严格遵守了 2026 年 6 月初的时间口径，所有事实均内嵌了可点击的引用链接。

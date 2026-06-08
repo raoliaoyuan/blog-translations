@@ -1,0 +1,13 @@
+flowchart LR
+  subgraph U["用户端"]
+    B["浏览器 / 手机<br/>派发与监控"]
+  end
+  subgraph C["公有云"]
+    A2["Agent 运行时<br/>隔离沙箱 · 并行"]
+    M2["大模型 / Token 服务"]
+    R["代码仓库 / 工具"]
+  end
+  B -- "派发任务" --> A2
+  A2 -- "调用" --> M2
+  M2 -- "结果" --> A2
+  A2 --- R
