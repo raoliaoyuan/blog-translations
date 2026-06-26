@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 620" font-family="-apple-system, 'PingFang SC', sans-serif">
+  <rect width="800" height="620" fill="#FAFAFA"/>
+  <text x="400" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1A1A2E">五层冲击 — 多米诺骨牌</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#666">Agent 上云这一动作,会沿着五个层级依次传导</text>
+
+  <!-- Layer 1: Product Form -->
+  <g transform="translate(60,90)">
+    <rect width="680" height="80" rx="8" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
+    <circle cx="40" cy="40" r="22" fill="#1565C0"/>
+    <text x="40" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#FFF">1</text>
+    <text x="80" y="32" font-size="14" font-weight="700" fill="#0D47A1">产品形态 — AI 从「工具」变「同事」</text>
+    <text x="80" y="52" font-size="11" fill="#1565C0">同步 · 一对一 · 看着 AI 干活    →    异步 · 一对多 · 收到 PR 再审</text>
+    <text x="80" y="68" font-size="10" fill="#1976D2" font-style="italic">IDE 从「AI 的舞台」退化为「远程 agent 的遥控器」</text>
+  </g>
+
+  <!-- arrow -->
+  <path d="M400 175 L400 195" stroke="#666" stroke-width="2" marker-end="url(#arrcas)"/>
+
+  <!-- Layer 2: Market Structure -->
+  <g transform="translate(60,200)">
+    <rect width="680" height="80" rx="8" fill="#FFF3E0" stroke="#E65100" stroke-width="2"/>
+    <circle cx="40" cy="40" r="22" fill="#E65100"/>
+    <text x="40" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#FFF">2</text>
+    <text x="80" y="32" font-size="14" font-weight="700" fill="#BF360C">市场结构 — Runtime 成新护城河</text>
+    <text x="80" y="52" font-size="11" fill="#E65100">谁拥有最强 sandbox 基建(冷启动 &lt; 1s · 强隔离 · 状态持久化)→ 谁握下一轮平台权</text>
+    <text x="80" y="68" font-size="10" fill="#FB8C00" font-style="italic">继 inference API 之后的第二波 TAM 爆发 — 类比 2010s 容器编排之争</text>
+  </g>
+
+  <path d="M400 285 L400 305" stroke="#666" stroke-width="2" marker-end="url(#arrcas)"/>
+
+  <!-- Layer 3: Economic Model -->
+  <g transform="translate(60,310)">
+    <rect width="680" height="80" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+    <circle cx="40" cy="40" r="22" fill="#2E7D32"/>
+    <text x="40" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#FFF">3</text>
+    <text x="80" y="32" font-size="14" font-weight="700" fill="#1B5E20">经济模型 — 从「按 token」到「按 agent-hour」</text>
+    <text x="80" y="52" font-size="11" fill="#2E7D32">客户 AI 支出:可预测的 API 调用 → 难预测的后台运行成本</text>
+    <text x="80" y="68" font-size="10" fill="#558B2F" font-style="italic">新品类崛起:Agent FinOps(预算管理 · 成本归因 · 自动降级)</text>
+  </g>
+
+  <path d="M400 395 L400 415" stroke="#666" stroke-width="2" marker-end="url(#arrcas)"/>
+
+  <!-- Layer 4: Engineering Culture -->
+  <g transform="translate(60,420)">
+    <rect width="680" height="80" rx="8" fill="#F3E5F5" stroke="#6A1B9A" stroke-width="2"/>
+    <circle cx="40" cy="40" r="22" fill="#6A1B9A"/>
+    <text x="40" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#FFF">4</text>
+    <text x="80" y="32" font-size="14" font-weight="700" fill="#4A148C">工程文化 — Vibe Coding 进入「舰队模式」</text>
+    <text x="80" y="52" font-size="11" fill="#6A1B9A">单人和单一 AI 结对的时代结束 → 开发者管理 5-50 个云 agent 的小舰队</text>
+    <text x="80" y="68" font-size="10" fill="#8E24AA" font-style="italic">招聘画像漂移:Senior Engineer → Agent Conductor</text>
+  </g>
+
+  <path d="M400 505 L400 525" stroke="#666" stroke-width="2" marker-end="url(#arrcas)"/>
+
+  <!-- Layer 5: Security & Governance -->
+  <g transform="translate(60,530)">
+    <rect width="680" height="80" rx="8" fill="#FFEBEE" stroke="#C62828" stroke-width="2"/>
+    <circle cx="40" cy="40" r="22" fill="#C62828"/>
+    <text x="40" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#FFF">5</text>
+    <text x="80" y="32" font-size="14" font-weight="700" fill="#B71C1C">安全治理 — 新攻击面 + 新职业</text>
+    <text x="80" y="52" font-size="11" fill="#C62828">Prompt injection 从「骗 chatbot 说脏话」升级到「骗云 agent 转账或泄数据」</text>
+    <text x="80" y="68" font-size="10" fill="#D32F2F" font-style="italic">新职业:Agent SRE · Agent Trust Engineer · 委托凭证治理品类</text>
+  </g>
+
+  <defs>
+    <marker id="arrcas" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 480" font-family="-apple-system, 'PingFang SC', sans-serif">
+  <rect width="880" height="480" fill="#FAFAFA"/>
+  <text x="440" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1A1A2E">2026 年云端 Agent Runtime 全景</text>
+  <text x="440" y="58" text-anchor="middle" font-size="12" fill="#666">七家头部厂商在 14 个月内同步转向</text>
+
+  <!-- Row 1 -->
+  <g transform="translate(30,90)">
+    <rect width="200" height="155" rx="8" fill="#FFF" stroke="#FB8C00" stroke-width="2"/>
+    <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#E65100">Anthropic</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#FFE0B2" stroke-width="1"/>
+    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#1A1A2E">Claude Code</text>
+    <text x="100" y="80" text-anchor="middle" font-size="11" fill="#1A1A2E">Managed Agent</text>
+    <text x="100" y="100" text-anchor="middle" font-size="11" fill="#1A1A2E">Web Sandbox · Routines</text>
+    <text x="100" y="120" text-anchor="middle" font-size="11" fill="#1A1A2E">/code-review ultra</text>
+    <rect x="20" y="130" width="160" height="18" rx="9" fill="#FFE0B2"/>
+    <text x="100" y="143" text-anchor="middle" font-size="10" fill="#BF360C">全栈托管</text>
+  </g>
+
+  <g transform="translate(240,90)">
+    <rect width="200" height="155" rx="8" fill="#FFF" stroke="#1B5E20" stroke-width="2"/>
+    <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1B5E20">OpenAI</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#C8E6C9" stroke-width="1"/>
+    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#1A1A2E">Codex(云沙盒)</text>
+    <text x="100" y="80" text-anchor="middle" font-size="11" fill="#1A1A2E">Operator(浏览器 agent)</text>
+    <rect x="20" y="130" width="160" height="18" rx="9" fill="#C8E6C9"/>
+    <text x="100" y="143" text-anchor="middle" font-size="10" fill="#1B5E20">云端 coding + browser</text>
+  </g>
+
+  <g transform="translate(450,90)">
+    <rect width="200" height="155" rx="8" fill="#FFF" stroke="#283593" stroke-width="2"/>
+    <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#283593">GitHub</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#C5CAE9" stroke-width="1"/>
+    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#1A1A2E">Copilot Workspace</text>
+    <text x="100" y="80" text-anchor="middle" font-size="11" fill="#1A1A2E">@claude / GitHub Actions</text>
+    <rect x="20" y="130" width="160" height="18" rx="9" fill="#C5CAE9"/>
+    <text x="100" y="143" text-anchor="middle" font-size="10" fill="#283593">开发任务全程在云</text>
+  </g>
+
+  <g transform="translate(660,90)">
+    <rect width="200" height="155" rx="8" fill="#FFF" stroke="#0277BD" stroke-width="2"/>
+    <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#0277BD">Cursor · Replit</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#B3E5FC" stroke-width="1"/>
+    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#1A1A2E">Cursor Background Agent</text>
+    <text x="100" y="80" text-anchor="middle" font-size="11" fill="#1A1A2E">Replit Agent + Sandbox</text>
+    <rect x="20" y="130" width="160" height="18" rx="9" fill="#B3E5FC"/>
+    <text x="100" y="143" text-anchor="middle" font-size="10" fill="#01579B">异步云端 coding</text>
+  </g>
+
+  <!-- Row 2 -->
+  <g transform="translate(30,265)">
+    <rect width="200" height="155" rx="8" fill="#FFF" stroke="#C2185B" stroke-width="2"/>
+    <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#C2185B">Cognition</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#F8BBD0" stroke-width="1"/>
+    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#1A1A2E">Devin</text>
+    <text x="100" y="82" text-anchor="middle" font-size="11" fill="#1A1A2E" font-style="italic">cloud-native from day one</text>
+    <rect x="20" y="130" width="160" height="18" rx="9" fill="#F8BBD0"/>
+    <text x="100" y="143" text-anchor="middle" font-size="10" fill="#880E4F">纯云端 AI 工程师</text>
+  </g>
+
+  <g transform="translate(240,265)">
+    <rect width="200" height="155" rx="8" fill="#FFF" stroke="#6A1B9A" stroke-width="2"/>
+    <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#6A1B9A">Cloudflare · Vercel</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#E1BEE7" stroke-width="1"/>
+    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#1A1A2E">Workers AI / Sandbox</text>
+    <text x="100" y="80" text-anchor="middle" font-size="11" fill="#1A1A2E">Vercel Agents</text>
+    <rect x="20" y="130" width="160" height="18" rx="9" fill="#E1BEE7"/>
+    <text x="100" y="143" text-anchor="middle" font-size="10" fill="#4A148C">卖 Agent 基建本身</text>
+  </g>
+
+  <g transform="translate(450,265)">
+    <rect width="200" height="155" rx="8" fill="#FFF" stroke="#E65100" stroke-width="2"/>
+    <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#E65100">AWS</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#FFE0B2" stroke-width="1"/>
+    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#1A1A2E">Bedrock Agents</text>
+    <text x="100" y="80" text-anchor="middle" font-size="11" fill="#1A1A2E">企业流程 agent 托管</text>
+    <rect x="20" y="130" width="160" height="18" rx="9" fill="#FFE0B2"/>
+    <text x="100" y="143" text-anchor="middle" font-size="10" fill="#BF360C">企业级合规</text>
+  </g>
+
+  <g transform="translate(660,265)">
+    <rect width="200" height="155" rx="8" fill="#FFF" stroke="#0D47A1" stroke-width="2"/>
+    <text x="100" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#0D47A1">Google Cloud</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#BBDEFB" stroke-width="1"/>
+    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#1A1A2E">Vertex Agent Builder</text>
+    <text x="100" y="80" text-anchor="middle" font-size="11" fill="#1A1A2E">Agent Engine · ADK</text>
+    <rect x="20" y="130" width="160" height="18" rx="9" fill="#BBDEFB"/>
+    <text x="100" y="143" text-anchor="middle" font-size="10" fill="#0D47A1">编排 + 托管</text>
+  </g>
+
+  <text x="440" y="455" text-anchor="middle" font-size="11" fill="#888" font-style="italic">每一家都把战略重心从「本地客户端」搬到「云端 Runtime」 — 这是行业共识,不是个别赌博</text>
+</svg>
