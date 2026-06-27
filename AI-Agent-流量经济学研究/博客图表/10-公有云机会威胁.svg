@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    .title { font-size: 18px; font-weight: 700; fill: #1f2937; }
+    .quad-title { font-size: 14px; font-weight: 700; }
+    .label { font-size: 12px; fill: #1f2937; }
+    .sub { font-size: 11px; fill: #6b7280; }
+  </style>
+  <text x="20" y="30" class="title">公有云提供商：机会、威胁与差异化窗口</text>
+  <text x="20" y="50" class="sub">谁先做完整的"AI 流量产品族"，谁就建立下一阶段差异化壁垒</text>
+
+  <g transform="translate(20, 80)">
+    <rect x="0" y="0" width="420" height="200" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="20" y="28" class="quad-title" fill="#166534">差异化机会</text>
+    <text x="20" y="48" class="sub" fill="#166534">短期可见、客户友好、对手仍在做的</text>
+
+    <text x="20" y="82" class="label">▸ AI 推理流量专属定价</text>
+    <text x="40" y="100" class="sub">推理服务商作大客户的差异化合约</text>
+
+    <text x="20" y="125" class="label">▸ AI 流量 SLA</text>
+    <text x="40" y="143" class="sub">对推理 API 调用的延迟 / 丢包 / 可靠性单独承诺</text>
+
+    <text x="20" y="168" class="label">▸ AI 流量观测产品</text>
+    <text x="40" y="186" class="sub">让客户看清自己的 AI 流量结构与成本（当前几乎全黑盒）</text>
+  </g>
+
+  <g transform="translate(460, 80)">
+    <rect x="0" y="0" width="420" height="200" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="20" y="28" class="quad-title" fill="#1e40af">协议层差异化</text>
+    <text x="20" y="48" class="sub" fill="#1e40af">已被 OpenAI 验证过的对客户/对自己双赢路径</text>
+
+    <text x="20" y="82" class="label">▸ 自有 API 支持会话状态机制？</text>
+    <text x="40" y="100" class="sub">类似 OpenAI Responses API 的字节削减路径</text>
+
+    <text x="20" y="125" class="label">▸ 客户端 SDK 做去重 / 压缩？</text>
+    <text x="40" y="143" class="sub">低成本、高客户价值，且能降低自家 prefill 成本</text>
+
+    <text x="20" y="168" class="label">▸ 多模态 cache 路径？</text>
+    <text x="40" y="186" class="sub">图像 URL 引用而非每次 base64 重传</text>
+  </g>
+
+  <g transform="translate(20, 300)">
+    <rect x="0" y="0" width="420" height="200" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="20" y="28" class="quad-title" fill="#92400e">结构性挑战</text>
+    <text x="20" y="48" class="sub" fill="#92400e">中期看不能不应对的</text>
+
+    <text x="20" y="82" class="label">▸ "入向免费" 还能撑多久</text>
+    <text x="40" y="100" class="sub">EU Data Act 2027 禁 switching · R2/B2 持续蚕食</text>
+
+    <text x="20" y="125" class="label">▸ 推理服务商既是大客户也是对手</text>
+    <text x="40" y="143" class="sub">Anthropic 多云、OpenAI 摆脱单一依赖 → 议价空间收缩</text>
+
+    <text x="20" y="168" class="label">▸ 私有合约层张力放大</text>
+    <text x="40" y="186" class="sub">大客户合约的"AI 流量"条款必然被重写</text>
+  </g>
+
+  <g transform="translate(460, 300)">
+    <rect x="0" y="0" width="420" height="200" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+    <text x="20" y="28" class="quad-title" fill="#5b21b6">中国云的独有空间</text>
+    <text x="20" y="48" class="sub" fill="#5b21b6">海外同行的牌照与监管约束在这里成为机会</text>
+
+    <text x="20" y="82" class="label">▸ 国内多线 BGP + 跨境加速 + 国内边缘推理</text>
+    <text x="40" y="100" class="sub">恰好对应 AI Agent 流量结构</text>
+
+    <text x="20" y="125" class="label">▸ 与运营商 "云 + 网" 集成</text>
+    <text x="40" y="143" class="sub">运营商既是网络又是云，独有优势</text>
+
+    <text x="20" y="168" class="label">▸ "东数西算 / 算力网络" 政策对接</text>
+    <text x="40" y="186" class="sub">推理算力本地化是国家方向</text>
+  </g>
+</svg>

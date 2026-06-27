@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    .title { font-size: 18px; font-weight: 700; fill: #1f2937; }
+    .h-name { font-size: 14px; font-weight: 700; }
+    .label { font-size: 12px; fill: #1f2937; }
+    .sub { font-size: 11px; fill: #6b7280; }
+    .status { font-size: 11px; font-weight: 700; }
+  </style>
+  <text x="20" y="30" class="title">六项开放假设状态：H6 已闭环、H1–H5 仍开放</text>
+  <text x="20" y="50" class="sub">把"研究边界"显式画出来。引用本文时请注意哪些是事实、哪些仍是待验证</text>
+
+  <line x1="160" y1="80" x2="160" y2="475" stroke="#9ca3af" stroke-dasharray="3,3"/>
+  <text x="125" y="75" text-anchor="end" class="sub" font-weight="600">假设</text>
+  <text x="180" y="75" class="sub" font-weight="600">内容（一句话）</text>
+  <text x="555" y="75" class="sub" font-weight="600">验证路径</text>
+  <text x="780" y="75" class="sub" font-weight="600">状态</text>
+
+  <g transform="translate(0, 95)">
+    <text x="125" y="20" text-anchor="end" class="h-name" fill="#1f2937">H1</text>
+    <text x="180" y="20" class="label">BGP 层流量方向反转</text>
+    <text x="180" y="36" class="sub">用户 ISP → 推理服务商成主导流向</text>
+    <text x="555" y="20" class="sub">IXP 公开曲线 + ASN 实测</text>
+    <text x="555" y="36" class="sub">RouteViews / RIPE RIS</text>
+    <rect x="770" y="6" width="100" height="28" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="820" y="25" text-anchor="middle" class="status" fill="#92400e">开放 · 弱信号</text>
+  </g>
+
+  <g transform="translate(0, 155)">
+    <text x="125" y="20" text-anchor="end" class="h-name" fill="#1f2937">H2</text>
+    <text x="180" y="20" class="label">公有云入向免费可持续性拐点</text>
+    <text x="180" y="36" class="sub">何时被迫调整 inbound 政策</text>
+    <text x="555" y="20" class="sub">云厂价目历史 + 大客户合约</text>
+    <text x="555" y="36" class="sub">财报中网络细分</text>
+    <rect x="770" y="6" width="100" height="28" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="820" y="25" text-anchor="middle" class="status" fill="#92400e">开放 · 待跟踪</text>
+  </g>
+
+  <g transform="translate(0, 215)">
+    <text x="125" y="20" text-anchor="end" class="h-name" fill="#1f2937">H3</text>
+    <text x="180" y="20" class="label">95th percentile 在 AI workload 下失真</text>
+    <text x="180" y="36" class="sub">上下行不同步推高账单</text>
+    <text x="555" y="20" class="sub">ISP 内部链路监控 + 抓包</text>
+    <text x="555" y="36" class="sub">企业出口 1 分钟粒度采样</text>
+    <rect x="770" y="6" width="100" height="28" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="820" y="25" text-anchor="middle" class="status" fill="#92400e">开放 · 不可见</text>
+  </g>
+
+  <g transform="translate(0, 275)">
+    <text x="125" y="20" text-anchor="end" class="h-name" fill="#1f2937">H4</text>
+    <text x="180" y="20" class="label">中国监管路径偏向"算力本地化"</text>
+    <text x="180" y="36" class="sub">引导而非强制本地化</text>
+    <text x="555" y="20" class="sub">工信部 / 信通院文件</text>
+    <text x="555" y="36" class="sub">运营商云收入 + region 部署</text>
+    <rect x="770" y="6" width="100" height="28" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="820" y="25" text-anchor="middle" class="status" fill="#92400e">开放 · 中等支持</text>
+  </g>
+
+  <g transform="translate(0, 335)">
+    <text x="125" y="20" text-anchor="end" class="h-name" fill="#1f2937">H5</text>
+    <text x="180" y="20" class="label">业界 10:1–30:1 估算适用于 Agent 吗</text>
+    <text x="180" y="36" class="sub">业界口径与实测口径需对齐</text>
+    <text x="555" y="20" class="sub">跨用户 / 跨厂商扩样</text>
+    <text x="555" y="36" class="sub">同口径下做对比</text>
+    <rect x="770" y="6" width="100" height="28" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="820" y="25" text-anchor="middle" class="status" fill="#92400e">开放 · 单点数据</text>
+  </g>
+
+  <g transform="translate(0, 395)">
+    <text x="125" y="20" text-anchor="end" class="h-name" fill="#16a34a">H6</text>
+    <text x="180" y="20" class="label">Anthropic prompt caching 削减字节吗</text>
+    <text x="180" y="36" class="sub">字节层与计费层是否同时下降</text>
+    <text x="555" y="20" class="sub">官方文档 + SDK 源码 + Cookbook</text>
+    <text x="555" y="36" class="sub">文献证据法替代抓包</text>
+    <rect x="770" y="6" width="100" height="28" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="820" y="25" text-anchor="middle" class="status" fill="#166534">已 L2 闭环</text>
+  </g>
+
+  <g transform="translate(20, 450)">
+    <rect x="0" y="0" width="14" height="14" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="22" y="12" class="sub">已闭环（可作为 L2 引用）</text>
+    <rect x="200" y="0" width="14" height="14" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="222" y="12" class="sub">仍开放（仅作背景假设，不可作事实引用）</text>
+  </g>
+</svg>

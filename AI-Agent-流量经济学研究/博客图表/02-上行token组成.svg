@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    .title { font-size: 18px; font-weight: 700; fill: #1f2937; }
+    .label { font-size: 13px; fill: #1f2937; }
+    .sub { font-size: 11px; fill: #6b7280; }
+    .big { font-size: 28px; font-weight: 700; }
+  </style>
+  <text x="20" y="30" class="title">上行 usage token 的组成（48,633 次调用实测）</text>
+  <text x="20" y="50" class="sub">总计 65.4 亿 token · 其中 96.1% 是"已被服务端 cache、但客户端仍需重新提交"的内容</text>
+
+  <g transform="translate(120, 90)">
+    <circle cx="120" cy="120" r="100" fill="none" stroke="#e5e7eb" stroke-width="40"/>
+    <path d="M 120 20 A 100 100 0 1 1 119 20 Z" fill="none" stroke="#dc2626" stroke-width="40" stroke-dasharray="603 25" stroke-dashoffset="0"/>
+    <path d="M 120 20 A 100 100 0 0 1 220 122" fill="none" stroke="#facc15" stroke-width="40" stroke-dasharray="22 606"/>
+    <text x="120" y="115" text-anchor="middle" class="big" fill="#dc2626">96.1%</text>
+    <text x="120" y="140" text-anchor="middle" class="sub">cache_read</text>
+  </g>
+
+  <g transform="translate(420, 100)">
+    <rect x="0" y="0" width="20" height="20" fill="#dc2626"/>
+    <text x="30" y="15" class="label">cache_read（命中缓存）</text>
+    <text x="30" y="35" class="sub">62.86 亿 token · 96.1%</text>
+    <text x="30" y="52" class="sub">服务端打折，但客户端仍提交完整字节</text>
+
+    <rect x="0" y="80" width="20" height="20" fill="#facc15"/>
+    <text x="30" y="95" class="label">cache_creation（首次写入缓存）</text>
+    <text x="30" y="115" class="sub">2.38 亿 token · 3.6%</text>
+
+    <rect x="0" y="145" width="20" height="20" fill="#a3a3a3"/>
+    <text x="30" y="160" class="label">新增输入（未命中也未创建）</text>
+    <text x="30" y="180" class="sub">0.19 亿 token · 0.3%</text>
+    <text x="30" y="197" class="sub">真正"用户输入 + 工具结果"的部分</text>
+
+    <rect x="0" y="225" width="280" height="40" rx="4" fill="#fef3c7" stroke="#facc15" stroke-width="1.5"/>
+    <text x="140" y="247" text-anchor="middle" class="label" fill="#92400e">字节层：96.1% cache_read 仍走 HTTP body</text>
+    <text x="140" y="262" text-anchor="middle" class="sub" fill="#92400e">prompt caching 只省 token 计费，不省字节</text>
+  </g>
+</svg>

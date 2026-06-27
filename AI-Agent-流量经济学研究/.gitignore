@@ -1,0 +1,6 @@
+# macOS 系统文件
+.DS_Store
+
+# 原始扫描数据（48,633 行 token 计量，约 13MB）
+# 已通过 scan-summary.md 提供聚合统计；如需复现请用 scan-sessions.py 重新生成
+05-empirical/scan-result.jsonl

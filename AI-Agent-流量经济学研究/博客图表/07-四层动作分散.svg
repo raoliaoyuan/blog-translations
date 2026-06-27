@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    .title { font-size: 18px; font-weight: 700; fill: #1f2937; }
+    .sub-title { font-size: 14px; font-weight: 700; fill: #1f2937; }
+    .label { font-size: 12px; fill: #1f2937; }
+    .sub { font-size: 11px; fill: #6b7280; }
+    .layer-name { font-size: 13px; font-weight: 700; }
+  </style>
+  <text x="20" y="30" class="title">压力分散到四层：没人推"AI 流量费"，但所有人都在动</text>
+  <text x="20" y="50" class="sub">2025-06 到 2026-06 公开动作分布。零售价目几乎没动，所有动作绕到上下层去了</text>
+
+  <g transform="translate(20, 80)">
+    <rect x="0" y="0" width="860" height="100" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="20" y="28" class="layer-name" fill="#92400e">① 容量价格层</text>
+    <text x="20" y="48" class="sub" fill="#92400e">瓶颈从 egress 转到 GPU 容量</text>
+
+    <g transform="translate(160, 12)">
+      <rect x="0" y="0" width="220" height="40" rx="4" fill="#fff" stroke="#f59e0b"/>
+      <text x="110" y="17" text-anchor="middle" class="label" font-weight="600">AWS ML Capacity Blocks</text>
+      <text x="110" y="33" text-anchor="middle" class="sub">2026 H1 复合涨 ~38%</text>
+    </g>
+    <g transform="translate(400, 12)">
+      <rect x="0" y="0" width="220" height="40" rx="4" fill="#fff" stroke="#f59e0b"/>
+      <text x="110" y="17" text-anchor="middle" class="label" font-weight="600">OpenAI Stargate</text>
+      <text x="110" y="33" text-anchor="middle" class="sub">7GW · $400B 三年</text>
+    </g>
+    <g transform="translate(640, 12)">
+      <rect x="0" y="0" width="200" height="40" rx="4" fill="#fff" stroke="#f59e0b"/>
+      <text x="100" y="17" text-anchor="middle" class="label" font-weight="600">Anthropic + Google</text>
+      <text x="100" y="33" text-anchor="middle" class="sub">100 万 TPU · 1GW+</text>
+    </g>
+
+    <text x="430" y="92" text-anchor="middle" class="sub" fill="#92400e" font-style="italic">"稀缺性从 GB 转向可保证容量"</text>
+  </g>
+
+  <g transform="translate(20, 200)">
+    <rect x="0" y="0" width="860" height="100" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="20" y="28" class="layer-name" fill="#1e40af">② 跨云私网层</text>
+    <text x="20" y="48" class="sub" fill="#1e40af">让数据更容易在云之间流动 → 绕开公网 egress</text>
+
+    <g transform="translate(160, 12)">
+      <rect x="0" y="0" width="220" height="40" rx="4" fill="#fff" stroke="#2563eb"/>
+      <text x="110" y="17" text-anchor="middle" class="label" font-weight="600">AWS-GCP 跨云互联</text>
+      <text x="110" y="33" text-anchor="middle" class="sub">2025-12 私网互联</text>
+    </g>
+    <g transform="translate(400, 12)">
+      <rect x="0" y="0" width="240" height="40" rx="4" fill="#fff" stroke="#2563eb"/>
+      <text x="120" y="17" text-anchor="middle" class="label" font-weight="600">GCP EU/UK Data Transfer Essentials</text>
+      <text x="120" y="33" text-anchor="middle" class="sub">2025-09 跨多云免费</text>
+    </g>
+    <g transform="translate(660, 12)">
+      <rect x="0" y="0" width="180" height="40" rx="4" fill="#fff" stroke="#2563eb"/>
+      <text x="90" y="17" text-anchor="middle" class="label" font-weight="600">Equinix Geo Zones</text>
+      <text x="90" y="33" text-anchor="middle" class="sub">2026-05 主权网络</text>
+    </g>
+
+    <text x="430" y="92" text-anchor="middle" class="sub" fill="#1e40af" font-style="italic">"AI workload 天然跨云" 已被视为必然</text>
+  </g>
+
+  <g transform="translate(20, 320)">
+    <rect x="0" y="0" width="860" height="100" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+    <text x="20" y="28" class="layer-name" fill="#5b21b6">③ 协议降本层</text>
+    <text x="20" y="48" class="sub" fill="#5b21b6">能省字节的优化（OpenAI）和只省计费的优化（Anthropic）分两路</text>
+
+    <g transform="translate(160, 12)">
+      <rect x="0" y="0" width="280" height="40" rx="4" fill="#fff" stroke="#16a34a" stroke-width="2"/>
+      <text x="140" y="17" text-anchor="middle" class="label" font-weight="600" fill="#166534">OpenAI Responses API + previous_response_id</text>
+      <text x="140" y="33" text-anchor="middle" class="sub" fill="#166534">✓ 真正削减客户端→服务端字节</text>
+    </g>
+    <g transform="translate(460, 12)">
+      <rect x="0" y="0" width="380" height="40" rx="4" fill="#fff" stroke="#dc2626" stroke-width="2"/>
+      <text x="190" y="17" text-anchor="middle" class="label" font-weight="600" fill="#991b1b">Anthropic prompt caching（cache_read 0.1×）</text>
+      <text x="190" y="33" text-anchor="middle" class="sub" fill="#991b1b">✓ 削减计费 token · ✗ 不削减 HTTP body 字节</text>
+    </g>
+
+    <text x="430" y="92" text-anchor="middle" class="sub" fill="#5b21b6" font-style="italic">采购时分清楚："省 token 计费" ≠ "省 egress 字节"</text>
+  </g>
+
+  <g transform="translate(20, 440)">
+    <rect x="0" y="0" width="860" height="90" rx="6" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+    <text x="20" y="28" class="layer-name" fill="#9d174d">④ 底层路由层</text>
+    <text x="20" y="48" class="sub" fill="#9d174d">海缆、IXP、监管 — 真正的容量博弈下沉到看不见的地方</text>
+
+    <g transform="translate(160, 12)">
+      <rect x="0" y="0" width="170" height="40" rx="4" fill="#fff" stroke="#db2777"/>
+      <text x="85" y="17" text-anchor="middle" class="label" font-weight="600">Google Blue-Raman</text>
+      <text x="85" y="33" text-anchor="middle" class="sub">218 Tbps 欧→印</text>
+    </g>
+    <g transform="translate(340, 12)">
+      <rect x="0" y="0" width="160" height="40" rx="4" fill="#fff" stroke="#db2777"/>
+      <text x="80" y="17" text-anchor="middle" class="label" font-weight="600">DE-CIX AI-IX</text>
+      <text x="80" y="33" text-anchor="middle" class="sub">首个 AI 专项 IXP</text>
+    </g>
+    <g transform="translate(510, 12)">
+      <rect x="0" y="0" width="160" height="40" rx="4" fill="#fff" stroke="#db2777"/>
+      <text x="80" y="17" text-anchor="middle" class="label" font-weight="600">FCC 海缆许可</text>
+      <text x="80" y="33" text-anchor="middle" class="sub">加速 AI + 限中国</text>
+    </g>
+    <g transform="translate(680, 12)">
+      <rect x="0" y="0" width="160" height="40" rx="4" fill="#fff" stroke="#db2777"/>
+      <text x="80" y="17" text-anchor="middle" class="label" font-weight="600">EU Data Act</text>
+      <text x="80" y="33" text-anchor="middle" class="sub">2027 禁 switching 费</text>
+    </g>
+  </g>
+</svg>

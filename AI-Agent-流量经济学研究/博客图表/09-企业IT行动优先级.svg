@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    .title { font-size: 18px; font-weight: 700; fill: #1f2937; }
+    .axis-label { font-size: 13px; font-weight: 600; fill: #1f2937; }
+    .label { font-size: 12px; fill: #1f2937; }
+    .sub { font-size: 10px; fill: #6b7280; }
+    .quad { font-size: 12px; font-weight: 700; }
+  </style>
+  <text x="20" y="30" class="title">企业 IT 6 项行动 · 优先级矩阵</text>
+  <text x="20" y="50" class="sub">建议按"先做右下、再做右上"顺序推进</text>
+
+  <line x1="100" y1="100" x2="100" y2="500" stroke="#1f2937" stroke-width="2"/>
+  <line x1="100" y1="500" x2="850" y2="500" stroke="#1f2937" stroke-width="2"/>
+
+  <text x="475" y="525" text-anchor="middle" class="axis-label">实施成本</text>
+  <text x="180" y="520" text-anchor="middle" class="sub">低</text>
+  <text x="770" y="520" text-anchor="middle" class="sub">高</text>
+
+  <text x="55" y="300" text-anchor="middle" class="axis-label" transform="rotate(-90 55 300)">短期收益</text>
+  <text x="85" y="155" text-anchor="end" class="sub">高</text>
+  <text x="85" y="475" text-anchor="end" class="sub">低</text>
+
+  <line x1="475" y1="100" x2="475" y2="500" stroke="#9ca3af" stroke-dasharray="3,3"/>
+  <line x1="100" y1="300" x2="850" y2="300" stroke="#9ca3af" stroke-dasharray="3,3"/>
+
+  <text x="290" y="120" class="quad" fill="#16a34a">速赢区（低成本高回报）</text>
+  <text x="650" y="120" class="quad" fill="#2563eb">战略区（高成本高回报）</text>
+  <text x="290" y="490" class="quad" fill="#6b7280">维护区</text>
+  <text x="650" y="490" class="quad" fill="#dc2626">慎入区（高成本短期低回报）</text>
+
+  <g transform="translate(150, 170)">
+    <circle cx="0" cy="0" r="32" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="0" y="-3" text-anchor="middle" class="label" font-weight="700">①</text>
+    <text x="0" y="12" text-anchor="middle" class="sub" font-weight="600">实测</text>
+    <text x="0" y="55" text-anchor="middle" class="sub" font-weight="600">扫会话日志</text>
+    <text x="0" y="68" text-anchor="middle" class="sub">立刻有数</text>
+  </g>
+
+  <g transform="translate(300, 200)">
+    <circle cx="0" cy="0" r="32" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="0" y="-3" text-anchor="middle" class="label" font-weight="700">⑤</text>
+    <text x="0" y="12" text-anchor="middle" class="sub" font-weight="600">协议选型</text>
+    <text x="0" y="55" text-anchor="middle" class="sub" font-weight="600">OpenAI vs Anthropic</text>
+    <text x="0" y="68" text-anchor="middle" class="sub">技术决策</text>
+  </g>
+
+  <g transform="translate(550, 180)">
+    <circle cx="0" cy="0" r="34" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="0" y="-3" text-anchor="middle" class="label" font-weight="700">④</text>
+    <text x="0" y="12" text-anchor="middle" class="sub" font-weight="600">合约改写</text>
+    <text x="0" y="57" text-anchor="middle" class="sub" font-weight="600">下次续签必谈</text>
+    <text x="0" y="70" text-anchor="middle" class="sub">AI 流量条款</text>
+  </g>
+
+  <g transform="translate(720, 240)">
+    <circle cx="0" cy="0" r="34" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="0" y="-3" text-anchor="middle" class="label" font-weight="700">②</text>
+    <text x="0" y="12" text-anchor="middle" class="sub" font-weight="600">出口改造</text>
+    <text x="0" y="57" text-anchor="middle" class="sub" font-weight="600">对称带宽 + NAT</text>
+    <text x="0" y="70" text-anchor="middle" class="sub">基础设施级</text>
+  </g>
+
+  <g transform="translate(380, 380)">
+    <circle cx="0" cy="0" r="28" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+    <text x="0" y="-3" text-anchor="middle" class="label" font-weight="700">③</text>
+    <text x="0" y="12" text-anchor="middle" class="sub" font-weight="600">跨境审计</text>
+    <text x="0" y="50" text-anchor="middle" class="sub" font-weight="600">跨境调用 + 合规</text>
+    <text x="0" y="62" text-anchor="middle" class="sub">主要在中国语境</text>
+  </g>
+
+  <g transform="translate(680, 410)">
+    <circle cx="0" cy="0" r="28" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="0" y="-3" text-anchor="middle" class="label" font-weight="700">⑥</text>
+    <text x="0" y="12" text-anchor="middle" class="sub" font-weight="600">边缘推理</text>
+    <text x="0" y="50" text-anchor="middle" class="sub" font-weight="600">小模型 / on-device</text>
+    <text x="0" y="62" text-anchor="middle" class="sub">回报周期长</text>
+  </g>
+</svg>

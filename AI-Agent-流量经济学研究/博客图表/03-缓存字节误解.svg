@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    .title { font-size: 18px; font-weight: 700; fill: #1f2937; }
+    .sub-title { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .label { font-size: 12px; fill: #1f2937; }
+    .sub { font-size: 11px; fill: #6b7280; }
+    .err { fill: #dc2626; }
+    .ok { fill: #16a34a; }
+    .box { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.5; }
+    .arrow { fill: none; stroke: #1f2937; stroke-width: 1.5; }
+  </style>
+  <text x="20" y="30" class="title">prompt caching 的"字节误解"</text>
+  <text x="20" y="50" class="sub">直觉假设（左）vs Anthropic 实际行为（右）</text>
+
+  <g transform="translate(20, 80)">
+    <rect x="0" y="0" width="380" height="350" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5" opacity="0.3"/>
+    <text x="190" y="25" text-anchor="middle" class="sub-title err">直觉假设：cache 命中 → 字节也少</text>
+
+    <rect x="20" y="50" width="100" height="60" rx="4" class="box"/>
+    <text x="70" y="75" text-anchor="middle" class="label">客户端</text>
+    <text x="70" y="92" text-anchor="middle" class="sub">SDK</text>
+
+    <rect x="260" y="50" width="100" height="60" rx="4" class="box"/>
+    <text x="310" y="75" text-anchor="middle" class="label">服务端</text>
+    <text x="310" y="92" text-anchor="middle" class="sub">cache</text>
+
+    <line x1="120" y1="80" x2="255" y2="80" class="arrow" marker-end="url(#arrR)"/>
+    <text x="190" y="70" text-anchor="middle" class="sub err" font-weight="600">cache_id（短）</text>
+    <text x="190" y="100" text-anchor="middle" class="sub">"我已经发过这段，用 id 引用"</text>
+
+    <line x1="255" y1="80" x2="120" y2="80" class="arrow" stroke-dasharray="0" transform="translate(0,40)" marker-end="url(#arrR)"/>
+
+    <rect x="50" y="180" width="280" height="140" rx="4" fill="#fff" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="190" y="205" text-anchor="middle" class="sub-title err">如果是真的：</text>
+    <text x="190" y="230" text-anchor="middle" class="label">HTTP body 字节削减 ~96%</text>
+    <text x="190" y="252" text-anchor="middle" class="label">网络成本随计费成本同步降</text>
+    <text x="190" y="280" text-anchor="middle" class="sub">"我的 egress 账单也会跟着降"</text>
+    <text x="190" y="305" text-anchor="middle" class="err" font-weight="700" font-size="13">❌ 但这是误解</text>
+  </g>
+
+  <g transform="translate(480, 80)">
+    <rect x="0" y="0" width="400" height="350" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" opacity="0.3"/>
+    <text x="200" y="25" text-anchor="middle" class="sub-title ok">实际行为：prefix hash 查找</text>
+
+    <rect x="20" y="50" width="100" height="60" rx="4" class="box"/>
+    <text x="70" y="75" text-anchor="middle" class="label">客户端</text>
+    <text x="70" y="92" text-anchor="middle" class="sub">SDK</text>
+
+    <rect x="280" y="50" width="100" height="60" rx="4" class="box"/>
+    <text x="330" y="75" text-anchor="middle" class="label">服务端</text>
+    <text x="330" y="92" text-anchor="middle" class="sub">hash + cache</text>
+
+    <line x1="120" y1="80" x2="275" y2="80" class="arrow" stroke="#dc2626" stroke-width="3" marker-end="url(#arrR2)"/>
+    <text x="200" y="70" text-anchor="middle" class="sub err" font-weight="600">完整 prompt（长）</text>
+    <text x="200" y="100" text-anchor="middle" class="sub">每次都重传整段</text>
+
+    <rect x="40" y="155" width="320" height="50" rx="4" fill="#fef3c7" stroke="#facc15" stroke-width="1.5"/>
+    <text x="200" y="178" text-anchor="middle" class="label" fill="#92400e">服务端把完整 prompt 哈希</text>
+    <text x="200" y="198" text-anchor="middle" class="sub" fill="#92400e">→ 查 cache 表 → 找到则跳过 prefill</text>
+
+    <rect x="40" y="225" width="320" height="100" rx="4" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="200" y="248" text-anchor="middle" class="sub-title ok">所以实际发生的是：</text>
+    <text x="200" y="272" text-anchor="middle" class="label">✓ token 计费降 90%（cache_read 0.1×）</text>
+    <text x="200" y="292" text-anchor="middle" class="label">✓ 服务端 prefill 计算大幅缩短</text>
+    <text x="200" y="312" text-anchor="middle" class="err" font-weight="700">✗ 客户端→服务端 HTTP 字节 = 不变</text>
+  </g>
+
+  <defs>
+    <marker id="arrR" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L0,10 L9,5 z" fill="#1f2937"/>
+    </marker>
+    <marker id="arrR2" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L0,10 L9,5 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+</svg>

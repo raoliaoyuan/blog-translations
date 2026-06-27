@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 440" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    .title { font-size: 18px; font-weight: 700; fill: #1f2937; }
+    .label { font-size: 13px; fill: #1f2937; }
+    .sub { font-size: 11px; fill: #6b7280; }
+    .rank { font-size: 16px; font-weight: 700; fill: #1f2937; }
+  </style>
+  <text x="20" y="30" class="title">12 个月动作密度（定性排序）</text>
+  <text x="20" y="50" class="sub">"反直觉" 的一个事实：传统互联网承载者（ISP / IXP）排在末尾</text>
+
+  <g transform="translate(0, 80)">
+    <text x="35" y="20" class="rank">1</text>
+    <text x="60" y="20" class="label" font-weight="600">OpenAI / Stargate</text>
+    <rect x="220" y="6" width="450" height="20" fill="#dc2626"/>
+    <text x="680" y="20" class="sub">容量护城河 + 协议层削字节</text>
+
+    <text x="35" y="55" class="rank">2</text>
+    <text x="60" y="55" class="label" font-weight="600">Google / GCP</text>
+    <rect x="220" y="41" width="410" height="20" fill="#ea580c"/>
+    <text x="640" y="55" class="sub">监管 + 跨云 + 海缆 + TPU</text>
+
+    <text x="35" y="90" class="rank">3</text>
+    <text x="60" y="90" class="label" font-weight="600">Anthropic</text>
+    <rect x="220" y="76" width="340" height="20" fill="#f59e0b"/>
+    <text x="570" y="90" class="sub">多云容量 + 缓存（不削字节）</text>
+
+    <text x="35" y="125" class="rank">4</text>
+    <text x="60" y="125" class="label" font-weight="600">美国 / EU 监管</text>
+    <rect x="220" y="111" width="300" height="20" fill="#facc15"/>
+    <text x="530" y="125" class="sub">海缆安全 + 切换约束</text>
+
+    <text x="35" y="160" class="rank">5</text>
+    <text x="60" y="160" class="label" font-weight="600">AWS</text>
+    <rect x="220" y="146" width="250" height="20" fill="#84cc16"/>
+    <text x="480" y="160" class="sub">GPU 涨价 + 跨云互联</text>
+
+    <text x="35" y="195" class="rank">6</text>
+    <text x="60" y="195" class="label" font-weight="600">Azure / Microsoft</text>
+    <rect x="220" y="181" width="180" height="20" fill="#22c55e"/>
+    <text x="410" y="195" class="sub">海缆事件 + 被动响应</text>
+
+    <text x="35" y="230" class="rank">7</text>
+    <text x="60" y="230" class="label" font-weight="600">中国侧</text>
+    <rect x="220" y="216" width="140" height="20" fill="#06b6d4"/>
+    <text x="370" y="230" class="sub">算力网格规划（多为 C 类报道）</text>
+
+    <text x="35" y="265" class="rank">8</text>
+    <text x="60" y="265" class="label" font-weight="600">IXP / ISP</text>
+    <rect x="220" y="251" width="70" height="20" fill="#6b7280"/>
+    <text x="300" y="265" class="sub">通用扩张 · DE-CIX AI-IX 是孤例</text>
+  </g>
+
+  <g transform="translate(20, 365)">
+    <rect x="0" y="0" width="960" height="60" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+    <text x="20" y="22" class="label" font-weight="600">值得警觉的不对称：</text>
+    <text x="20" y="42" class="sub">最该接住流量冲击的承载者（ISP / IXP）动作最少 ≠ 没有压力，更可能是流量已经</text>
+    <text x="20" y="56" class="sub">绕开了公网，去到 hyperscaler 私有骨干与跨云私网里——你在公网看不到的那部分</text>
+  </g>
+</svg>
